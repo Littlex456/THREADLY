@@ -107,9 +107,6 @@
 
         <div class="header-actions">
 
-            
-
-
             <button
                 id="menuButton"
                 class="menu-button"
@@ -255,10 +252,13 @@
 
 
                 <h2>
+
                     Hello,
+
                     <span id="accountName">
                         User
                     </span>
+
                 </h2>
 
 
@@ -299,6 +299,9 @@
 
                 <div class="account-details">
 
+
+                    <!-- FULL NAME -->
+
                     <div class="account-detail-row">
 
                         <div>
@@ -316,6 +319,8 @@
                     </div>
 
 
+                    <!-- EMAIL -->
+
                     <div class="account-detail-row">
 
                         <div>
@@ -331,6 +336,45 @@
                         </div>
 
                     </div>
+
+
+                    <!-- PHONE NUMBER -->
+
+                    <div class="account-detail-row">
+
+                        <div>
+
+                            <span>
+                                Phone Number
+                            </span>
+
+                            <strong id="accountPhone">
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- USERNAME -->
+
+                    <div class="account-detail-row">
+
+                        <div>
+
+                            <span>
+                                Username
+                            </span>
+
+                            <strong id="accountUsername">
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
 
                 </div>
 
@@ -458,9 +502,7 @@
 
             <div class="account-logout-section">
 
-                <p>
-                    Finished shopping?
-                </p>
+                
 
 
                 <button
@@ -528,8 +570,9 @@
 
     </footer>
 
-
-    <script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
 
 </body>
 

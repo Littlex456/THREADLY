@@ -1,3 +1,4 @@
+
 // =========================================
 // THREADLY AUTHENTICATION SYSTEM
 // =========================================
@@ -235,7 +236,7 @@
                     data,
                     error
                 } =
-                    await supabase.auth.getUser();
+                    await supabase.auth.getSession();
 
 
                 if (error) {
@@ -254,7 +255,7 @@
 
 
                 currentUser =
-                    data.user || null;
+                    data.session?.user || null;
 
 
                 return currentUser;
@@ -522,18 +523,27 @@
             }
 
 
+            /*
+            Stop navigation first so the browser
+            does not leave the current page before
+            authentication is checked.
+            */
+
+            event.preventDefault();
+
+
             const loggedIn =
                 await isLoggedIn();
 
 
             if (loggedIn) {
 
+                window.location.href =
+                    href;
+
                 return;
 
             }
-
-
-            event.preventDefault();
 
 
             const requestedPage =
@@ -3890,20 +3900,22 @@ updateQuantity();
 
 })();
 // =========================================
-// SECTION 11: ACCOUNT
+// ACCOUNT PAGE
 // =========================================
 
-(function () {
+(async function () {
 
     const accountName =
         document.getElementById(
             "accountName"
         );
 
+
     const accountFullName =
         document.getElementById(
             "accountFullName"
         );
+
 
     const accountEmail =
         document.getElementById(
@@ -3911,136 +3923,231 @@ updateQuantity();
         );
 
 
-    let savedUser = null;
+    // These are optional.
+    // They will work automatically if the
+    // Account page has these IDs.
+
+    const accountPhone =
+        document.getElementById(
+            "accountPhone"
+        );
+
+
+    const accountUsername =
+        document.getElementById(
+            "accountUsername"
+        );
+
+
+    const accountRole =
+        document.getElementById(
+            "accountRole"
+        );
 
 
     try {
 
-        savedUser =
-            JSON.parse(
-                localStorage.getItem(
-                    "threadlyUser"
-                )
+        // =========================================
+        // GET SUPABASE CLIENT
+        // =========================================
+
+        const supabase =
+            await window.threadlyGetSupabase();
+
+
+        if (!supabase) {
+
+            console.error(
+                "THREADLY Supabase client is unavailable."
             );
+
+            return;
+
+        }
+
+
+        // =========================================
+        // GET CURRENT AUTH USER
+        // =========================================
+
+        const {
+            data: userData,
+            error: userError
+        } =
+            await supabase.auth.getUser();
+
+
+        if (
+            userError ||
+            !userData.user
+        ) {
+
+            console.error(
+                "THREADLY account user could not be loaded:",
+                userError
+            );
+
+            return;
+
+        }
+
+
+        const user =
+            userData.user;
+
+
+        // =========================================
+        // GET PROFILE
+        // =========================================
+
+        const {
+            data: profile,
+            error: profileError
+        } =
+            await supabase
+                .from("profiles")
+                .select(
+                    "full_name, phone, username, role"
+                )
+                .eq(
+                    "id",
+                    user.id
+                )
+                .single();
+
+
+        if (profileError) {
+
+            console.error(
+                "THREADLY profile could not be loaded:",
+                profileError
+            );
+
+            return;
+
+        }
+
+
+        // =========================================
+        // PROFILE VALUES
+        // =========================================
+
+        const fullName =
+            profile?.full_name ||
+            user.user_metadata?.full_name ||
+            "THREADLY Customer";
+
+
+        const phone =
+            profile?.phone ||
+            user.user_metadata?.phone ||
+            "";
+
+
+        const username =
+            profile?.username ||
+            user.user_metadata?.username ||
+            "";
+
+
+        const role =
+            profile?.role ||
+            "customer";
+
+
+        const email =
+            user.email ||
+            "";
+
+
+        // =========================================
+        // DISPLAY ACCOUNT INFORMATION
+        // =========================================
+
+        if (accountName) {
+
+            accountName.textContent =
+                fullName;
+
+        }
+
+
+        if (accountFullName) {
+
+            accountFullName.textContent =
+                fullName;
+
+        }
+
+
+        if (accountEmail) {
+
+            accountEmail.textContent =
+                email;
+
+        }
+
+
+        if (accountPhone) {
+
+            accountPhone.textContent =
+                phone;
+
+        }
+
+
+        if (accountUsername) {
+
+            accountUsername.textContent =
+                username;
+
+        }
+
+
+        if (accountRole) {
+
+            accountRole.textContent =
+                role;
+
+        }
+
+
+        // =========================================
+        // SAVE NON-SENSITIVE USER DATA
+        // FOR EXISTING THREADLY FEATURES
+        // =========================================
+
+        localStorage.setItem(
+            "threadlyUser",
+            JSON.stringify({
+
+                name:
+                    fullName,
+
+                email:
+                    email,
+
+                phone:
+                    phone,
+
+                username:
+                    username
+
+            })
+        );
+
 
     } catch (error) {
 
-        savedUser = null;
-
-    }
-
-
-    if (!savedUser) return;
-
-
-    if (accountName) {
-
-        accountName.textContent =
-            savedUser.name || "";
-
-    }
-
-
-    if (accountFullName) {
-
-        accountFullName.textContent =
-            savedUser.name || "";
-
-    }
-
-
-    if (accountEmail) {
-
-        accountEmail.textContent =
-            savedUser.email || "";
-
-    }
-
-
-    // -----------------------------------------
-    // ORDER COUNT
-    // -----------------------------------------
-
-    const orderCount =
-        document.getElementById(
-            "accountOrderCount"
+        console.error(
+            "THREADLY account page error:",
+            error
         );
-
-
-    if (orderCount) {
-
-        let orders = [];
-
-        try {
-
-            const savedOrders =
-                JSON.parse(
-                    localStorage.getItem(
-                        "threadlyOrders"
-                    )
-                );
-
-            if (Array.isArray(savedOrders)) {
-
-                orders = savedOrders;
-
-            }
-
-        } catch (error) {
-
-            orders = [];
-
-        }
-
-
-        orderCount.textContent =
-            orders.length;
-
-    }
-
-
-    // -----------------------------------------
-    // SAVED ITEMS COUNT
-    // -----------------------------------------
-
-    const savedCount =
-        document.getElementById(
-            "accountSavedCount"
-        );
-
-
-    if (savedCount) {
-
-        let savedItems = [];
-
-        try {
-
-            const saved =
-                JSON.parse(
-                    localStorage.getItem(
-                        "threadlySaved"
-                    )
-                );
-
-            if (Array.isArray(saved)) {
-
-                savedItems = saved;
-
-            }
-
-        } catch (error) {
-
-            savedItems = [];
-
-        }
-
-
-        savedCount.textContent =
-            savedItems.length;
 
     }
 
 })();
+
 /* =========================================================
    SECTION 12: LOGOUT
 ========================================================= */
