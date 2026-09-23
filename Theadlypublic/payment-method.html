@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Payment Method | THREADLY</title>
+    <script>
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("threadlyTheme") ||
+        "system";
+
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+
+    const shouldUseDark =
+        savedTheme === "dark" ||
+        (
+            savedTheme === "system" &&
+            prefersDark
+        );
+
+    if (shouldUseDark) {
+        document.documentElement.classList.add(
+            "threadly-dark"
+        );
+    }
+
+})();
+</script>
+
+<link rel="stylesheet" href="style.css">
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="site-header">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            THREADLY
+        </a>
+
+
+        <nav class="desktop-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+            <a href="cart.html">
+                Cart
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+           
+
+
+            <button
+                id="menuButton"
+                class="menu-button"
+                type="button"
+                aria-label="Open menu"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MOBILE MENU ================= -->
+
+    <div
+        id="menuOverlay"
+        class="menu-overlay"
+    ></div>
+
+
+    <aside
+        id="mobileMenu"
+        class="mobile-menu"
+    >
+
+        <div class="mobile-menu-header">
+
+            <span>
+                MENU
+            </span>
+
+            <button
+                id="closeMenu"
+                class="close-menu"
+                type="button"
+                aria-label="Close menu"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="mobile-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+
+            <div class="mobile-menu-divider"></div>
+
+
+            <a href="account.html">
+                My Account
+            </a>
+
+            <a href="cart.html">
+                My Cart
+            </a>
+
+            <a href="saved.html">
+                Saved Items
+            </a>
+
+            <a href="orders.html">
+                My Orders
+            </a>
+
+            <a href="settings.html">
+                Settings
+            </a>
+
+            <a href="help.html">
+                Help &amp; Support
+            </a>
+
+            <a href="about.html">
+                About THREADLY
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="payment-page">
+
+        <div class="payment-top">
+
+            <a
+                href="checkout.html"
+                class="back-to-shop"
+            >
+                ← Back to Checkout
+            </a>
+
+
+            <div class="payment-heading">
+
+                <p class="section-label">
+                    THREADLY PAYMENT
+                </p>
+
+                <h1>
+                    Choose how you'd like to pay.
+                </h1>
+
+                <p>
+                    Select a payment method to continue with your order.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <section class="payment-layout">
+
+
+            <!-- ================= PAYMENT METHODS ================= -->
+
+            <div class="payment-methods-card">
+
+                <div class="payment-card-heading">
+
+                    <p class="section-label">
+                        PAYMENT METHOD
+                    </p>
+
+                    <h2>
+                        Select a method
+                    </h2>
+
+                </div>
+
+
+                <div class="payment-method-options">
+
+
+                    <!-- BANK TRANSFER -->
+
+                    <button
+                        type="button"
+                        class="payment-method-option active"
+                        id="bankTransferOption"
+                    >
+
+                        <div class="payment-method-icon">
+                            ₦
+                        </div>
+
+
+                        <div class="payment-method-content">
+
+                            <h3>
+                                Bank Transfer
+                            </h3>
+
+                            <p>
+                                Transfer directly to the THREADLY account and upload your receipt for verification.
+                            </p>
+
+                        </div>
+
+
+                        <span class="payment-method-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <!-- CARD / ONLINE PAYMENT -->
+
+                    <button
+                        type="button"
+                        class="payment-method-option disabled"
+                        type="button"
+                    >
+
+                        <div class="payment-method-icon">
+                            #
+                        </div>
+
+
+                        <div class="payment-method-content">
+
+                            <h3>
+                                Card / Online Payment
+                            </h3>
+
+                            <p>
+                                Online payment will be available soon.
+                            </p>
+
+                        </div>
+
+
+                        <span class="payment-method-status">
+                            SOON
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- ================= SELECTED METHOD ================= -->
+
+                <div
+                    class="selected-payment-box"
+                    id="bankTransferDetails"
+                >
+
+                    <div class="selected-payment-heading">
+
+                        <p class="section-label">
+                            SELECTED
+                        </p>
+
+                        <h2>
+                            Bank Transfer
+                        </h2>
+
+                    </div>
+
+
+                    <p>
+                        You will receive our bank details on the next step. After making your transfer, upload the receipt so the THREADLY team can verify your payment.
+                    </p>
+
+
+                    <button
+                        type="button"
+                        class="primary-button payment-continue-button"
+                        id="continueBankTransfer"
+                    >
+                        CONTINUE
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= ORDER SUMMARY ================= -->
+
+            <aside class="payment-summary-card">
+
+                <div class="payment-card-heading">
+
+                    <p class="section-label">
+                        YOUR ORDER
+                    </p>
+
+                    <h2>
+                        Order Summary
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="paymentOrderItems"
+                    class="payment-order-items"
+                ></div>
+
+
+                <div class="payment-summary-divider"></div>
+
+
+                <div class="payment-summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong id="paymentSubtotal">
+                        ₦0
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-summary-row">
+
+                    <span>
+                        Delivery
+                    </span>
+
+                    <strong id="paymentDelivery">
+                        ₦0
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-summary-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="paymentTotal">
+                        ₦0
+                    </strong>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="site-footer">
+
+        <div class="footer-brand">
+
+            <h2>
+                THREADLY
+            </h2>
+
+            <p>
+                Wear your thread.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <div>
+
+                <h3>
+                    SHOP
+                </h3>
+
+                <a href="shop.html">
+                    All Products
+                </a>
+
+                <a href="shop.html?category=men">
+                    Men
+                </a>
+
+                <a href="shop.html?category=women">
+                    Women
+                </a>
+
+                <a href="shop.html?category=shoes">
+                    Shoes
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    HELP
+                </h3>
+
+                <a href="help.html">
+                    Contact
+                </a>
+
+                <a href="delivery.html">
+                    Delivery
+                </a>
+
+                <a href="returns.html">
+                    Returns
+                </a>
+
+                <a href="help.html#faq">
+                    FAQ
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 THREADLY. All rights reserved to the AWOJIDE AND FATUSA Family.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

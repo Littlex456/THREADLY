@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Returns | THREADLY</title>
+
+
+    <!-- THEME -->
+
+    <script>
+
+        (function () {
+
+            const savedTheme =
+                localStorage.getItem("threadlyTheme") ||
+                "system";
+
+            const prefersDark =
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches;
+
+            const shouldUseDark =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    prefersDark
+                );
+
+            if (shouldUseDark) {
+
+                document.documentElement.classList.add(
+                    "threadly-dark"
+                );
+
+            }
+
+        })();
+
+    </script>
+
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header class="site-header">
+
+        <a
+            href="index.html"
+            class="logo-link"
+        >
+
+            <h1>THREADLY</h1>
+
+        </a>
+
+
+        <nav class="desktop-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+            <a href="cart.html">
+                Cart
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+            
+
+
+            <button
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open menu"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- MOBILE MENU -->
+
+    <div
+        id="mobileMenu"
+        class="mobile-menu"
+    >
+
+        <div class="mobile-menu-header">
+
+            <h2>
+                MENU
+            </h2>
+
+
+            <button
+                id="closeMenu"
+                class="close-menu"
+                aria-label="Close menu"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="mobile-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a href="account.html">
+                My Account
+            </a>
+
+            <a href="cart.html">
+                My Cart
+            </a>
+
+            <a href="saved.html">
+                Saved Items
+            </a>
+
+            <a href="orders.html">
+                My Orders
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a href="settings.html">
+                Settings
+            </a>
+
+            <a href="help.html">
+                Help &amp; Support
+            </a>
+
+            <a href="about.html">
+                About THREADLY
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a
+                href="#"
+                id="mobileLogout"
+            >
+                Log Out
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <div
+        id="menuOverlay"
+        class="menu-overlay"
+    ></div>
+
+
+
+    <!-- RETURNS PAGE -->
+
+    <main class="returns-page">
+
+
+        <!-- HERO -->
+
+        <section class="returns-hero">
+
+            <span class="returns-eyebrow">
+                THREADLY RETURNS
+            </span>
+
+
+            <h1>
+                Returns Made Simple
+            </h1>
+
+
+            <p>
+                We want you to feel confident about
+                every purchase. If something isn't right,
+                here's how returns work at THREADLY.
+            </p>
+
+        </section>
+
+
+
+        <!-- RETURN POLICY -->
+
+        <section class="returns-section">
+
+            <div class="returns-section-heading">
+
+                <span class="returns-heading-icon">
+                    ↩
+                </span>
+
+
+                <div>
+
+                    <span class="returns-label">
+                        RETURN POLICY
+                    </span>
+
+                    <h2>
+                        Before You Return
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="returns-policy">
+
+                <p>
+                    Items may be returned if they are
+                    eligible under THREADLY's return
+                    conditions.
+                </p>
+
+
+                <ul>
+
+                    <li>
+                        Items should be unused and in
+                        their original condition.
+                    </li>
+
+                    <li>
+                        Clothing should still have its
+                        original tags where applicable.
+                    </li>
+
+                    <li>
+                        Shoes should be returned without
+                        damage or excessive wear.
+                    </li>
+
+                    <li>
+                        Items should be returned with
+                        their original packaging where
+                        possible.
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- HOW RETURNS WORK -->
+
+        <section class="returns-section">
+
+            <div class="returns-section-heading">
+
+                <span class="returns-heading-icon">
+                    ✓
+                </span>
+
+
+                <div>
+
+                    <span class="returns-label">
+                        THE PROCESS
+                    </span>
+
+                    <h2>
+                        How Returns Work
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="returns-steps">
+
+
+                <div class="returns-step">
+
+                    <span class="returns-step-number">
+                        01
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Contact Us
+                        </h3>
+
+                        <p>
+                            Contact THREADLY through our
+                            Help &amp; Support page and
+                            tell us about the item you
+                            want to return.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="returns-step">
+
+                    <span class="returns-step-number">
+                        02
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Return Approval
+                        </h3>
+
+                        <p>
+                            Our team will review the
+                            request and provide the
+                            necessary return instructions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="returns-step">
+
+                    <span class="returns-step-number">
+                        03
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Send the Item
+                        </h3>
+
+                        <p>
+                            Once your return is approved,
+                            follow the instructions provided
+                            by THREADLY to send the item back.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="returns-step">
+
+                    <span class="returns-step-number">
+                        04
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Return Completed
+                        </h3>
+
+                        <p>
+                            After the returned item has
+                            been received and checked,
+                            the next step will be handled
+                            according to the return outcome.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ELIGIBILITY -->
+
+        <section class="returns-section">
+
+            <div class="returns-section-heading">
+
+                <span class="returns-heading-icon">
+                    !
+                </span>
+
+
+                <div>
+
+                    <span class="returns-label">
+                        ELIGIBILITY
+                    </span>
+
+                    <h2>
+                        Items That May Not Qualify
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="returns-info-grid">
+
+
+                <div class="returns-info-card">
+
+                    <h3>
+                        Used Items
+                    </h3>
+
+                    <p>
+                        Items that show signs of
+                        significant use or damage may
+                        not qualify for a return.
+                    </p>
+
+                </div>
+
+
+
+                <div class="returns-info-card">
+
+                    <h3>
+                        Damaged Items
+                    </h3>
+
+                    <p>
+                        Items damaged after delivery may
+                        not be accepted as a standard
+                        return.
+                    </p>
+
+                </div>
+
+
+
+                <div class="returns-info-card">
+
+                    <h3>
+                        Missing Packaging
+                    </h3>
+
+                    <p>
+                        Where original packaging is
+                        required, missing packaging may
+                        affect return eligibility.
+                    </p>
+
+                </div>
+
+
+
+                <div class="returns-info-card">
+
+                    <h3>
+                        Non-Eligible Items
+                    </h3>
+
+                    <p>
+                        Certain products may have specific
+                        return conditions. Contact us if
+                        you are unsure.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- IMPORTANT NOTICE -->
+
+        <section class="returns-notice">
+
+            <div class="returns-notice-icon">
+                i
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Need help with a return?
+                </h3>
+
+                <p>
+                    If you're unsure whether your item
+                    qualifies for a return, contact us
+                    before sending anything back.
+                </p>
+
+
+                <a
+                    href="help.html"
+                    class="returns-button"
+                >
+                    Contact Support
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ORDERS -->
+
+        <section class="returns-order-box">
+
+            <div>
+
+                <span class="returns-label">
+                    YOUR ORDERS
+                </span>
+
+
+                <h2>
+                    Need to check an order?
+                </h2>
+
+
+                <p>
+                    View your order history and check
+                    the status of your purchases.
+                </p>
+
+            </div>
+
+
+            <a
+                href="orders.html"
+                class="returns-button"
+            >
+                View My Orders
+            </a>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+
+            <div class="footer-brand">
+
+                <h3>
+                    THREADLY
+                </h3>
+
+
+                <p>
+                    Modern clothing and footwear
+                    for everyday style.
+                </p>
+
+            </div>
+
+
+
+            <div class="footer-links">
+
+                <a href="help.html">
+                    Contact
+                </a>
+
+                <a href="delivery.html">
+                    Delivery
+                </a>
+
+                <a href="returns.html">
+                    Returns
+                </a>
+
+                <a href="help.html#faq">
+                    FAQ
+                </a>
+
+                <a href="about.html">
+                    About THREADLY
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 THREADLY. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- THREADLY JAVASCRIPT -->
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

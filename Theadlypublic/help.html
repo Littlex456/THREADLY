@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Help & Support | THREADLY</title>
+
+
+    <!-- Prevent theme flash -->
+
+    <script>
+        (function () {
+
+            const savedTheme =
+                localStorage.getItem("threadlyTheme") ||
+                "system";
+
+            const prefersDark =
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches;
+
+            const shouldUseDark =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    prefersDark
+                );
+
+            if (shouldUseDark) {
+
+                document.documentElement.classList.add(
+                    "threadly-dark"
+                );
+
+            }
+
+        })();
+    </script>
+
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="site-header">
+
+        <a
+            href="index.html"
+            class="logo-link"
+        >
+            <h1>THREADLY</h1>
+        </a>
+
+
+        <nav class="desktop-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+            <a href="cart.html">
+                Cart
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+            
+
+
+            <button
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open menu"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         MOBILE MENU
+    ========================== -->
+
+    <div
+        id="mobileMenu"
+        class="mobile-menu"
+    >
+
+        <div class="mobile-menu-header">
+
+            <h2>
+                MENU
+            </h2>
+
+
+            <button
+                id="closeMenu"
+                class="close-menu"
+                aria-label="Close menu"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="mobile-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a href="account.html">
+                My Account
+            </a>
+
+            <a href="cart.html">
+                My Cart
+            </a>
+
+            <a href="saved.html">
+                Saved Items
+            </a>
+
+            <a href="orders.html">
+                My Orders
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a href="settings.html">
+                Settings
+            </a>
+
+            <a
+                href="help.html"
+                class="active"
+            >
+                Help &amp; Support
+            </a>
+
+            <a href="about.html">
+                About THREADLY
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a
+                href="login.html"
+                id="mobileLogout"
+            >
+                Log Out
+            </a>
+
+        </nav>
+
+    </div>
+
+
+
+    <div
+        id="menuOverlay"
+        class="menu-overlay"
+    ></div>
+
+
+
+    <!-- =========================
+         HELP & SUPPORT PAGE
+    ========================== -->
+
+    <main class="settings-page">
+
+        <div class="settings-container">
+
+
+            <!-- =========================
+                 PAGE HEADING
+            ========================== -->
+
+            <section class="settings-hero">
+
+                <p class="settings-eyebrow">
+                    THREADLY SUPPORT
+                </p>
+
+                <h2>
+                    Help &amp; Support
+                </h2>
+
+                <p>
+                    Find answers, get help with your
+                    orders, or contact the THREADLY
+                    support team.
+                </p>
+
+            </section>
+
+
+
+            <!-- =========================
+                 QUICK HELP
+            ========================== -->
+
+            <section class="settings-section">
+
+                <div class="settings-section-heading">
+
+                    <div class="settings-heading-icon">
+                        ?
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Quick Help
+                        </h3>
+
+                        <p>
+                            Get help with the things you
+                            use most on THREADLY.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-links">
+
+                    <a
+                        href="orders.html"
+                        class="settings-link"
+                    >
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                My Orders
+                            </strong>
+
+                            <span>
+                                Check your orders and
+                                delivery status.
+                            </span>
+
+                        </div>
+
+
+                        <span class="settings-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="account.html"
+                        class="settings-link"
+                    >
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                My Account
+                            </strong>
+
+                            <span>
+                                View and manage your
+                                account information.
+                            </span>
+
+                        </div>
+
+
+                        <span class="settings-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="cart.html"
+                        class="settings-link"
+                    >
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                Shopping Cart
+                            </strong>
+
+                            <span>
+                                Review your items before
+                                checkout.
+                            </span>
+
+                        </div>
+
+
+                        <span class="settings-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 FREQUENTLY ASKED QUESTIONS
+            ========================== -->
+
+            <section class="settings-section">
+
+                <div class="settings-section-heading">
+
+                    <div class="settings-heading-icon">
+                        +
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Frequently Asked Questions
+                        </h3>
+
+                        <p>
+                            Quick answers to common
+                            THREADLY questions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="threadly-faq">
+
+
+                    <!-- FAQ 1 -->
+
+                    <details class="threadly-faq-item">
+
+                        <summary>
+                            How do I place an order?
+                        </summary>
+
+                        <div class="threadly-faq-answer">
+
+                            <p>
+                                Browse the THREADLY shop,
+                                select a product, choose
+                                your preferred size, and
+                                add it to your cart.
+                                Continue to checkout when
+                                you are ready to place your
+                                order.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+
+                    <!-- FAQ 2 -->
+
+                    <details class="threadly-faq-item">
+
+                        <summary>
+                            What payment methods are available?
+                        </summary>
+
+                        <div class="threadly-faq-answer">
+
+                            <p>
+                                THREADLY currently supports
+                                the payment methods made
+                                available during checkout.
+                                Follow the instructions shown
+                                on the payment page after
+                                placing your order.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+
+                    <!-- FAQ 3 -->
+
+                    <details class="threadly-faq-item">
+
+                        <summary>
+                            How do I know if my payment was confirmed?
+                        </summary>
+
+                        <div class="threadly-faq-answer">
+
+                            <p>
+                                After submitting your payment
+                                receipt, THREADLY will verify
+                                the payment. You can check
+                                the payment status through
+                                the order process and contact
+                                support if verification is
+                                taking longer than expected.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+
+                    <!-- FAQ 4 -->
+
+                    <details class="threadly-faq-item">
+
+                        <summary>
+                            How can I track my order?
+                        </summary>
+
+                        <div class="threadly-faq-answer">
+
+                            <p>
+                                Open My Orders from your
+                                account or menu. Select the
+                                order you want to view to
+                                see its current delivery
+                                status and tracking
+                                information.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+
+                    <!-- FAQ 5 -->
+
+                    <details class="threadly-faq-item">
+
+                        <summary>
+                            What if my order is delayed?
+                        </summary>
+
+                        <div class="threadly-faq-answer">
+
+                            <p>
+                                First check the delivery
+                                status in My Orders. If you
+                                need more information, contact
+                                THREADLY support using one of
+                                the contact options below.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+
+
+                    <!-- FAQ 6 -->
+
+                    <details class="threadly-faq-item">
+
+                        <summary>
+                            Can I contact THREADLY about my order?
+                        </summary>
+
+                        <div class="threadly-faq-answer">
+
+                            <p>
+                                Yes. You can contact the
+                                THREADLY support team through
+                                WhatsApp, email, or phone.
+                                Keep your order number nearby
+                                so we can assist you faster.
+                            </p>
+
+                        </div>
+
+                    </details>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 CONTACT SUPPORT
+            ========================== -->
+
+            <section class="settings-section">
+
+                <div class="settings-section-heading">
+
+                    <div class="settings-heading-icon">
+                        @
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Contact Support
+                        </h3>
+
+                        <p>
+                            Need personal assistance?
+                            Reach THREADLY directly.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-links">
+
+
+                    <!-- WHATSAPP -->
+
+                 <!-- WHATSAPP -->
+
+<a
+    href="https://wa.me/2348073622876"
+    id="supportWhatsApp"
+    class="settings-link"
+    target="_blank"
+    rel="noopener noreferrer"
+>
+
+    <div class="settings-link-content">
+
+        <strong>
+            WhatsApp
+        </strong>
+
+        <span id="supportWhatsAppText">
+            Chat with THREADLY support.
+        </span>
+
+    </div>
+
+
+    <span class="settings-link-arrow">
+        →
+    </span>
+
+</a>
+
+
+
+<!-- EMAIL -->
+
+<a
+    href="mailto:littlex638@gmail.com"
+    id="supportEmail"
+    class="settings-link"
+>
+
+    <div class="settings-link-content">
+
+        <strong>
+            Email
+        </strong>
+
+        <span id="supportEmailText">
+            Send us an email for assistance.
+        </span>
+
+    </div>
+
+
+    <span class="settings-link-arrow">
+        →
+    </span>
+
+</a>
+
+
+
+<!-- PHONE -->
+
+<a
+    href="tel:2348073622876"
+    id="supportPhone"
+    class="settings-link"
+>
+
+    <div class="settings-link-content">
+
+        <strong>
+            Phone Call
+        </strong>
+
+        <span id="supportPhoneText">
+            Speak directly with THREADLY support.
+        </span>
+
+    </div>
+
+
+    <span class="settings-link-arrow">
+        →
+    </span>
+
+</a>
+
+            <!-- =========================
+                 SUPPORT MESSAGE
+            ========================== -->
+
+            <section class="settings-section">
+
+                <div class="settings-section-heading">
+
+                    <div class="settings-heading-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Before Contacting Support
+                        </h3>
+
+                        <p>
+                            A few details can help us
+                            assist you faster.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-links">
+
+                    <div class="settings-link">
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                Keep your order number ready
+                            </strong>
+
+                            <span>
+                                Include your THREADLY order
+                                number when asking about
+                                an order.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-link">
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                Explain the issue clearly
+                            </strong>
+
+                            <span>
+                                Tell us what happened and
+                                what you need help with.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+
+                <h3>
+                    THREADLY
+                </h3>
+
+                <p>
+                    Modern clothing and footwear
+                    for everyday style.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="help.html">
+                    Contact
+                </a>
+
+                <a href="delivery.html">
+                    Delivery
+                </a>
+
+                <a href="returns.html">
+                    Returns
+                </a>
+
+                <a href="help.html#faq">
+                    FAQ
+                </a>
+
+                <a href="about.html">
+                    About THREADLY
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 THREADLY. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <script src="app.js"></script>
+
+
+    <!-- =========================
+         HELP & SUPPORT CONTACTS
+    ========================== -->
+
+    <script>
+
+        /*
+            Default THREADLY support contacts.
+
+            These are temporary defaults.
+            Later the vendor dashboard will
+            be able to change them.
+        */
+
+        const defaultSupportContacts = {
+
+            whatsapp:
+                "2348073622876",
+
+            email:
+                "littlex638@gmail.com",
+
+            phone:
+                "2348073622876"
+
+        };
+
+
+        /*
+            Get vendor support contacts.
+
+            If the vendor has already saved
+            different contact information,
+            use that instead.
+        */
+
+        const savedSupportContacts =
+            JSON.parse(
+                localStorage.getItem(
+                    "threadlySupportContacts"
+                )
+            ) ||
+            defaultSupportContacts;
+
+
+        /*
+            WHATSAPP
+        */
+
+        const supportWhatsApp =
+            document.getElementById(
+                "supportWhatsApp"
+            );
+
+
+        const supportWhatsAppText =
+            document.getElementById(
+                "supportWhatsAppText"
+            );
+
+
+        if (supportWhatsApp) {
+
+            supportWhatsApp.href =
+                "https://wa.me/" +
+                savedSupportContacts.whatsapp;
+
+        }
+
+
+        if (supportWhatsAppText) {
+
+            supportWhatsAppText.textContent =
+                "Chat with THREADLY support on WhatsApp.";
+
+        }
+
+
+        /*
+            EMAIL
+        */
+
+        const supportEmail =
+            document.getElementById(
+                "supportEmail"
+            );
+
+
+        const supportEmailText =
+            document.getElementById(
+                "supportEmailText"
+            );
+
+
+        if (supportEmail) {
+
+            supportEmail.href =
+                "mailto:" +
+                savedSupportContacts.email;
+
+        }
+
+
+        if (supportEmailText) {
+
+            supportEmailText.textContent =
+                savedSupportContacts.email;
+
+        }
+
+
+        /*
+            PHONE
+        */
+
+        const supportPhone =
+            document.getElementById(
+                "supportPhone"
+            );
+
+
+        const supportPhoneText =
+            document.getElementById(
+                "supportPhoneText"
+            );
+
+
+        if (supportPhone) {
+
+            supportPhone.href =
+                "tel:" +
+                savedSupportContacts.phone;
+
+        }
+
+
+        if (supportPhoneText) {
+
+            supportPhoneText.textContent =
+                "Call " +
+                savedSupportContacts.phone;
+
+        }
+
+
+        /*
+            MOBILE LOGOUT
+        */
+
+        const mobileLogout =
+            document.getElementById(
+                "mobileLogout"
+            );
+
+
+        if (mobileLogout) {
+
+            mobileLogout.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    localStorage.removeItem(
+                        "threadlyLoggedIn"
+                    );
+
+                    window.location.href =
+                        "login.html";
+
+                }
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>

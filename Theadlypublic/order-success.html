@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Confirmed | THREADLY</title>
+    <script>
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("threadlyTheme") ||
+        "system";
+
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+
+    const shouldUseDark =
+        savedTheme === "dark" ||
+        (
+            savedTheme === "system" &&
+            prefersDark
+        );
+
+    if (shouldUseDark) {
+        document.documentElement.classList.add(
+            "threadly-dark"
+        );
+    }
+
+})();
+</script>
+
+<link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+
+        <a href="index.html" class="logo-link">
+            <h1>THREADLY</h1>
+        </a>
+
+        <nav>
+
+            <a href="index.html">Home</a>
+
+            <a href="shop.html">Shop</a>
+
+            <a href="shop.html">Men</a>
+
+            <a href="shop.html">Women</a>
+
+            <a href="cart.html">Cart</a>
+
+        </nav>
+
+        <button id="themeToggle">🌙</button>
+
+    </header>
+
+
+    <!-- ORDER SUCCESS -->
+    <main class="order-success-page">
+
+        <section class="order-success">
+
+            <p class="success-label">
+                THREADLY ORDER
+            </p>
+
+            <h2>
+                Order Confirmed
+            </h2>
+
+            <p class="success-message">
+                Thank you for shopping with THREADLY.
+                Your order has been received.
+            </p>
+
+
+            <div class="order-reference-box">
+
+                <p>
+                    ORDER REFERENCE
+                </p>
+
+                <h3 id="orderReference">
+                    THR-00000
+                </h3>
+
+            </div>
+
+
+            <p class="success-note">
+                Please keep your order reference safe.
+                You can use it to check your order status.
+            </p>
+
+
+            <a
+                href="shop.html"
+                class="shop-button"
+            >
+                Continue Shopping
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

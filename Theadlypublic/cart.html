@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cart | THREADLY</title>
+    <script>
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("threadlyTheme") ||
+        "system";
+
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+
+    const shouldUseDark =
+        savedTheme === "dark" ||
+        (
+            savedTheme === "system" &&
+            prefersDark
+        );
+
+    if (shouldUseDark) {
+        document.documentElement.classList.add(
+            "threadly-dark"
+        );
+    }
+
+})();
+</script>
+
+<link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <a href="index.html" class="logo">
+        THREADLY
+    </a>
+
+    <nav class="desktop-nav">
+
+        <a href="index.html">Home</a>
+
+        <a href="shop.html">Shop</a>
+
+        <a href="shop.html?category=men">Men</a>
+
+        <a href="shop.html?category=women">Women</a>
+
+        <a href="shop.html?category=shoes">Shoes</a>
+
+        <a href="cart.html" class="active">Cart</a>
+
+    </nav>
+
+    <div class="header-actions">
+
+        
+
+        <button
+            id="menuButton"
+            class="menu-button"
+            aria-label="Open menu"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- MOBILE MENU -->
+
+<div id="menuOverlay" class="menu-overlay"></div>
+
+<aside id="mobileMenu" class="mobile-menu">
+
+    <div class="mobile-menu-header">
+
+        <span>MENU</span>
+
+        <button
+            id="closeMenu"
+            class="close-menu"
+            aria-label="Close menu"
+        >
+            ×
+        </button>
+
+    </div>
+
+    <nav class="mobile-nav">
+
+        <a href="index.html">Home</a>
+
+        <a href="shop.html">Shop</a>
+
+        <a href="shop.html?category=men">Men</a>
+
+        <a href="shop.html?category=women">Women</a>
+
+        <a href="shop.html?category=shoes">Shoes</a>
+
+        <div class="mobile-menu-divider"></div>
+
+        <a href="account.html">My Account</a>
+
+        <a href="cart.html">My Cart</a>
+
+        <a href="saved.html">Saved Items</a>
+
+        <a href="orders.html">My Orders</a>
+
+        <a href="settings.html">Settings</a>
+
+        <a href="help.html">Help &amp; Support</a>
+
+        <a href="about.html">About THREADLY</a>
+
+    </nav>
+
+</aside>
+
+
+<main class="cart-page">
+
+    <!-- PAGE INTRO -->
+
+    <section class="cart-intro">
+
+        <p class="section-label">
+            THREADLY
+        </p>
+
+        <h1>
+            Your Cart
+        </h1>
+
+        <p>
+            Review your selected pieces before checkout.
+        </p>
+
+    </section>
+
+
+    <!-- CART CONTENT -->
+
+    <section class="cart-layout">
+
+        <!-- PRODUCTS -->
+
+        <div class="cart-products-section">
+
+            <div
+                id="cartItems"
+                class="cart-items"
+            ></div>
+
+
+            <!-- EMPTY CART -->
+
+            <div
+                id="emptyCart"
+                class="empty-cart"
+                style="display: none;"
+            >
+
+                <div class="empty-cart-icon">
+                    +
+                </div>
+
+                <h2>
+                    Your cart is empty
+                </h2>
+
+                <p>
+                    You haven't added anything to your
+                    THREADLY collection yet.
+                </p>
+
+                <a
+                    href="shop.html"
+                    class="primary-button empty-cart-button"
+                >
+                    START SHOPPING
+                </a>
+
+            </div>
+
+
+            <a
+                href="shop.html"
+                class="continue-shopping"
+            >
+                ← Continue Shopping
+            </a>
+
+        </div>
+
+
+        <!-- ORDER SUMMARY -->
+
+        <aside class="cart-summary">
+
+            <p class="section-label">
+                ORDER SUMMARY
+            </p>
+
+            <h2>
+                Your Order
+            </h2>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <span id="cartSubtotal">
+                    ₦0
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Delivery
+                </span>
+
+                <span id="cartDelivery">
+                    ₦0
+                </span>
+
+            </div>
+
+
+            <div class="summary-divider"></div>
+
+
+            <div class="summary-total">
+
+                <span>
+                    Total
+                </span>
+
+                <span id="cartTotal">
+                    ₦0
+                </span>
+
+            </div>
+
+
+            <button
+                id="checkoutButton"
+                class="primary-button checkout-button"
+                type="button"
+            >
+                PROCEED TO CHECKOUT
+            </button>
+
+
+            <p class="cart-summary-note">
+                Delivery charges may vary depending on
+                your location.
+            </p>
+
+        </aside>
+
+    </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+    <div class="footer-brand">
+
+        <h2>THREADLY</h2>
+
+        <p>
+            Wear your thread.
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <div>
+
+            <h3>SHOP</h3>
+
+            <a href="shop.html">
+                All Products
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>HELP</h3>
+
+            <a href="help.html">
+                Contact
+            </a>
+
+            <a href="delivery.html">
+                Delivery
+            </a>
+
+            <a href="returns.html">
+                Returns
+            </a>
+
+            <a href="help.html#faq">
+                FAQ
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 THREADLY. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>

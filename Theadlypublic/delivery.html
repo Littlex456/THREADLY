@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Delivery | THREADLY</title>
+
+
+    <!-- Prevent theme flash -->
+
+    <script>
+        (function () {
+
+            const savedTheme =
+                localStorage.getItem("threadlyTheme") ||
+                "system";
+
+            const prefersDark =
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches;
+
+            const shouldUseDark =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    prefersDark
+                );
+
+            if (shouldUseDark) {
+
+                document.documentElement.classList.add(
+                    "threadly-dark"
+                );
+
+            }
+
+        })();
+    </script>
+
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="site-header">
+
+        <a
+            href="index.html"
+            class="logo-link"
+        >
+            <h1>THREADLY</h1>
+        </a>
+
+
+        <nav class="desktop-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+            <a href="cart.html">
+                Cart
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+           
+
+
+            <button
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open menu"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         MOBILE MENU
+    ========================== -->
+
+    <div
+        id="mobileMenu"
+        class="mobile-menu"
+    >
+
+        <div class="mobile-menu-header">
+
+            <h2>
+                MENU
+            </h2>
+
+
+            <button
+                id="closeMenu"
+                class="close-menu"
+                aria-label="Close menu"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="mobile-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a href="account.html">
+                My Account
+            </a>
+
+            <a href="cart.html">
+                My Cart
+            </a>
+
+            <a href="saved.html">
+                Saved Items
+            </a>
+
+            <a href="orders.html">
+                My Orders
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a href="settings.html">
+                Settings
+            </a>
+
+            <a href="help.html">
+                Help &amp; Support
+            </a>
+
+            <a href="about.html">
+                About THREADLY
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a
+                href="#"
+                id="mobileLogout"
+            >
+                Log Out
+            </a>
+
+        </nav>
+
+    </div>
+
+
+
+    <div
+        id="menuOverlay"
+        class="menu-overlay"
+    ></div>
+
+
+
+    <!-- =========================
+         DELIVERY PAGE
+    ========================== -->
+
+    <main class="delivery-page">
+
+        <div class="delivery-container">
+
+
+            <!-- HERO -->
+
+            <section class="delivery-hero">
+
+                <p class="delivery-eyebrow">
+                    THREADLY INFORMATION
+                </p>
+
+                <h2>
+                    Delivery
+                </h2>
+
+                <p>
+                    Everything you need to know about
+                    receiving your THREADLY order.
+                </p>
+
+            </section>
+
+
+
+            <!-- HOW DELIVERY WORKS -->
+
+            <section class="delivery-section">
+
+                <div class="delivery-section-heading">
+
+                    <div class="delivery-heading-icon">
+                        01
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            How Delivery Works
+                        </h3>
+
+                        <p>
+                            From checkout to your doorstep.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="delivery-steps">
+
+
+                    <div class="delivery-step">
+
+                        <span>
+                            01
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Place Your Order
+                            </strong>
+
+                            <p>
+                                Choose your products, select
+                                your options and complete
+                                checkout.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="delivery-step">
+
+                        <span>
+                            02
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Order Processing
+                            </strong>
+
+                            <p>
+                                Your order is prepared and
+                                checked before it is sent
+                                for delivery.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="delivery-step">
+
+                        <span>
+                            03
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Order Shipped
+                            </strong>
+
+                            <p>
+                                Once your order is on its
+                                way, you can check its status
+                                from My Orders.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="delivery-step">
+
+                        <span>
+                            04
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Delivered
+                            </strong>
+
+                            <p>
+                                Your order arrives at the
+                                delivery address provided
+                                during checkout.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- DELIVERY INFORMATION -->
+
+            <section class="delivery-section">
+
+                <div class="delivery-section-heading">
+
+                    <div class="delivery-heading-icon">
+                        02
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Delivery Information
+                        </h3>
+
+                        <p>
+                            Important details about your order.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="delivery-info-grid">
+
+
+                    <div class="delivery-info-card">
+
+                        <strong>
+                            Processing Time
+                        </strong>
+
+                        <p>
+                            Orders need to be processed
+                            before they can be sent for
+                            delivery. Processing time may
+                            vary depending on the order.
+                        </p>
+
+                    </div>
+
+
+                    <div class="delivery-info-card">
+
+                        <strong>
+                            Delivery Area
+                        </strong>
+
+                        <p>
+                            Delivery availability depends
+                            on the location provided during
+                            checkout.
+                        </p>
+
+                    </div>
+
+
+                    <div class="delivery-info-card">
+
+                        <strong>
+                            Delivery Fee
+                        </strong>
+
+                        <p>
+                            Any applicable delivery fee will
+                            be shown during the checkout
+                            process before you complete
+                            your order.
+                        </p>
+
+                    </div>
+
+
+                    <div class="delivery-info-card">
+
+                        <strong>
+                            Order Tracking
+                        </strong>
+
+                        <p>
+                            You can check the current status
+                            of your order through the
+                            My Orders section.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- DELAY -->
+
+            <section class="delivery-section">
+
+                <div class="delivery-notice">
+
+                    <div class="delivery-notice-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Is Your Order Delayed?
+                        </h3>
+
+                        <p>
+                            If your order has taken longer
+                            than expected, check your order
+                            status first. If you still need
+                            assistance, contact THREADLY
+                            through Help &amp; Support.
+                        </p>
+
+                        <a
+                            href="help.html"
+                            class="delivery-button"
+                        >
+                            Contact Support
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ORDER LINK -->
+
+            <section class="delivery-section">
+
+                <div class="delivery-order-box">
+
+                    <div>
+
+                        <p class="delivery-small-label">
+                            TRACK YOUR ORDER
+                        </p>
+
+                        <h3>
+                            Want to see where your order is?
+                        </h3>
+
+                        <p>
+                            Open My Orders to view your
+                            current order status and
+                            available delivery information.
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="orders.html"
+                        class="delivery-button"
+                    >
+                        My Orders
+                    </a>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+
+                <h3>
+                    THREADLY
+                </h3>
+
+                <p>
+                    Modern clothing and footwear
+                    for everyday style.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="help.html">
+                    Contact
+                </a>
+
+                <a href="delivery.html">
+                    Delivery
+                </a>
+
+                <a href="returns.html">
+                    Returns
+                </a>
+
+                <a href="help.html#faq">
+                    FAQ
+                </a>
+
+                <a href="about.html">
+                    About THREADLY
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 THREADLY. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <script src="app.js"></script>
+
+
+</body>
+
+</html>

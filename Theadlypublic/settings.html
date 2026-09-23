@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Settings | THREADLY</title>
+
+
+    <!-- Prevent theme flash -->
+
+    <script>
+        (function () {
+
+            const savedTheme =
+                localStorage.getItem("threadlyTheme") ||
+                "system";
+
+            const prefersDark =
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches;
+
+            const shouldUseDark =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    prefersDark
+                );
+
+            if (shouldUseDark) {
+
+                document.documentElement.classList.add(
+                    "threadly-dark"
+                );
+
+            }
+
+        })();
+    </script>
+
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="site-header">
+
+        <a
+            href="index.html"
+            class="logo-link"
+        >
+            <h1>THREADLY</h1>
+        </a>
+
+
+        <nav class="desktop-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+            <a href="cart.html">
+                Cart
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+            
+
+
+            <button
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open menu"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         MOBILE MENU
+    ========================== -->
+
+    <div
+        id="mobileMenu"
+        class="mobile-menu"
+    >
+
+        <div class="mobile-menu-header">
+
+            <h2>
+                MENU
+            </h2>
+
+
+            <button
+                id="closeMenu"
+                class="close-menu"
+                aria-label="Close menu"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="mobile-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a href="account.html">
+                My Account
+            </a>
+
+            <a href="cart.html">
+                My Cart
+            </a>
+
+            <a href="saved.html">
+                Saved Items
+            </a>
+
+            <a href="orders.html" class="active">
+                My Orders
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a
+                href="settings.html"
+                class="active"
+            >
+                Settings
+            </a>
+
+            <a href="help.html">
+                Help &amp; Support
+            </a>
+
+            <a href="about.html">
+                About THREADLY
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a
+                href="#"
+                id="mobileLogout"
+            >
+                Log Out
+            </a>
+
+        </nav>
+
+    </div>
+
+
+
+    <div
+        id="menuOverlay"
+        class="menu-overlay"
+    ></div>
+
+
+
+    <!-- =========================
+         SETTINGS PAGE
+    ========================== -->
+
+    <main class="settings-page">
+
+        <div class="settings-container">
+
+
+            <!-- PAGE HEADING -->
+
+            <section class="settings-hero">
+
+                <p class="settings-eyebrow">
+                    MY THREADLY
+                </p>
+
+                <h2>
+                    Settings
+                </h2>
+
+                <p>
+                    Manage your account, appearance
+                    and shopping preferences.
+                </p>
+
+            </section>
+
+
+
+            <!-- =========================
+                 APPEARANCE
+            ========================== -->
+
+            <section class="settings-section">
+
+                <div class="settings-section-heading">
+
+                    <div class="settings-heading-icon">
+                        ◐
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Appearance
+                        </h3>
+
+                        <p>
+                            Choose how THREADLY looks
+                            on your device.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="theme-options">
+
+
+                    <!-- LIGHT -->
+
+                    <button
+                        type="button"
+                        id="themeLight"
+                        class="theme-option"
+                        data-theme="light"
+                    >
+
+                        <div class="theme-option-content">
+
+                            <div class="theme-option-icon">
+                                ☀
+                            </div>
+
+
+                            <div class="theme-option-text">
+
+                                <strong>
+                                    Light
+                                </strong>
+
+                                <span>
+                                    Use the bright THREADLY theme.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="theme-option-check">
+                            ✓
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- DARK -->
+
+                    <button
+                        type="button"
+                        id="themeDark"
+                        class="theme-option"
+                        data-theme="dark"
+                    >
+
+                        <div class="theme-option-content">
+
+                            <div class="theme-option-icon">
+                                ☾
+                            </div>
+
+
+                            <div class="theme-option-text">
+
+                                <strong>
+                                    Dark
+                                </strong>
+
+                                <span>
+                                    Easier on the eyes in darker
+                                    environments.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="theme-option-check">
+                            ✓
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- SYSTEM -->
+
+                    <button
+                        type="button"
+                        id="themeSystem"
+                        class="theme-option"
+                        data-theme="system"
+                    >
+
+                        <div class="theme-option-content">
+
+                            <div class="theme-option-icon">
+                                ◌
+                            </div>
+
+
+                            <div class="theme-option-text">
+
+                                <strong>
+                                    System
+                                </strong>
+
+                                <span>
+                                    Follow your device's
+                                    appearance setting.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="theme-option-check">
+                            ✓
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 ACCOUNT
+            ========================== -->
+
+            <section class="settings-section">
+
+                <div class="settings-section-heading">
+
+                    <div class="settings-heading-icon">
+                        ◎
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Account
+                        </h3>
+
+                        <p>
+                            Manage your THREADLY account.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-links">
+
+                    <a
+                        href="account.html"
+                        class="settings-link"
+                    >
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                My Account
+                            </strong>
+
+                            <span>
+                                View your account information.
+                            </span>
+
+                        </div>
+
+
+                        <span class="settings-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="saved.html"
+                        class="settings-link"
+                    >
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                Saved Items
+                            </strong>
+
+                            <span>
+                                View products you saved.
+                            </span>
+
+                        </div>
+
+
+                        <span class="settings-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="orders.html"
+                        class="settings-link"
+                    >
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                My Orders
+                            </strong>
+
+                            <span>
+                                View your previous orders.
+                            </span>
+
+                        </div>
+
+
+                        <span class="settings-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 SUPPORT
+            ========================== -->
+
+            <section class="settings-section">
+
+                <div class="settings-section-heading">
+
+                    <div class="settings-heading-icon">
+                        ?
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Support
+                        </h3>
+
+                        <p>
+                            Get information and assistance.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-links">
+
+                    <a
+                        href="help.html"
+                        class="settings-link"
+                    >
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                Help &amp; Support
+                            </strong>
+
+                            <span>
+                                Get help with your THREADLY
+                                experience.
+                            </span>
+
+                        </div>
+
+
+                        <span class="settings-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        class="settings-link"
+                    >
+
+                        <div class="settings-link-content">
+
+                            <strong>
+                                About THREADLY
+                            </strong>
+
+                            <span>
+                                Learn more about THREADLY.
+                            </span>
+
+                        </div>
+
+
+                        <span class="settings-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 LOGOUT
+            ========================== -->
+
+            <section class="settings-logout-section">
+
+                <button
+                    id="settingsLogout"
+                    class="settings-logout-button"
+                    type="button"
+                >
+                    Log Out
+                </button>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+
+                <h3>
+                    THREADLY
+                </h3>
+
+                <p>
+                    Modern clothing and footwear
+                    for everyday style.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="help.html">
+                    Contact
+                </a>
+
+                <a href="delivery.html">
+                    Delivery
+                </a>
+
+                <a href="returns.html">
+                    Returns
+                </a>
+
+                <a href="help.html#faq">
+                    FAQ
+                </a>
+
+                <a href="about.html">
+                    About THREADLY
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 THREADLY. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <script src="app.js"></script>
+
+
+    <!-- Settings logout -->
+
+    <script>
+
+        const settingsLogout =
+            document.getElementById(
+                "settingsLogout"
+            );
+
+        if (settingsLogout) {
+
+            settingsLogout.addEventListener(
+                "click",
+                function () {
+
+                    localStorage.removeItem(
+                        "threadlyLoggedIn"
+                    );
+
+                    window.location.href =
+                        "login.html";
+
+                }
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+

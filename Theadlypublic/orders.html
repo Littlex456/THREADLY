@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>My Orders | THREADLY</title>
+
+
+<!-- ==============================
+     THEME
+============================== -->
+
+<script>
+
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("threadlyTheme") ||
+        "system";
+
+
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+
+
+    const shouldUseDark =
+        savedTheme === "dark" ||
+        (
+            savedTheme === "system" &&
+            prefersDark
+        );
+
+
+    if (shouldUseDark) {
+
+        document.documentElement.classList.add(
+            "threadly-dark"
+        );
+
+    }
+
+})();
+
+</script>
+
+
+<link
+    rel="stylesheet"
+    href="style.css"
+>
+
+</head>
+
+
+<body>
+
+
+<!-- ==============================
+     HEADER
+============================== -->
+
+<header class="site-header">
+
+<a
+    href="index.html"
+    class="logo-link"
+>
+
+    <h1>
+        THREADLY
+    </h1>
+
+</a>
+
+
+<nav class="desktop-nav">
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="shop.html">
+        Shop
+    </a>
+
+    <a href="shop.html?category=men">
+        Men
+    </a>
+
+    <a href="shop.html?category=women">
+        Women
+    </a>
+
+    <a href="shop.html?category=shoes">
+        Shoes
+    </a>
+
+    <a href="cart.html">
+        Cart
+    </a>
+
+</nav>
+
+
+<div class="header-actions">
+
+    <button
+        id="menuButton"
+        class="menu-button"
+        type="button"
+        aria-label="Open menu"
+    >
+
+        ☰
+
+    </button>
+
+</div>
+
+</header>
+
+
+<!-- ==============================
+     MOBILE MENU
+============================== -->
+
+<div
+    id="mobileMenu"
+    class="mobile-menu"
+>
+
+<div class="mobile-menu-header">
+
+    <h2>
+        MENU
+    </h2>
+
+
+    <button
+        id="closeMenu"
+        class="close-menu"
+        type="button"
+        aria-label="Close menu"
+    >
+
+        ×
+
+    </button>
+
+</div>
+
+
+<nav class="mobile-nav">
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="shop.html">
+        Shop
+    </a>
+
+    <a href="shop.html?category=men">
+        Men
+    </a>
+
+    <a href="shop.html?category=women">
+        Women
+    </a>
+
+    <a href="shop.html?category=shoes">
+        Shoes
+    </a>
+
+
+    <div class="menu-divider"></div>
+
+
+    <a href="login.html">
+        My Account
+    </a>
+
+    <a
+        href="orders.html"
+        class="active"
+    >
+        My Orders
+    </a>
+
+    <a href="cart.html">
+        My Cart
+    </a>
+
+    <a href="saved.html">
+        Saved Items
+    </a>
+
+
+    <div class="menu-divider"></div>
+
+
+    <a href="settings.html">
+        Settings
+    </a>
+
+    <a href="help.html">
+        Help &amp; Support
+    </a>
+
+</nav>
+
+</div>
+
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
+
+
+<!-- ==============================
+     MY ORDERS
+============================== -->
+
+<main class="orders-page">
+
+
+<!-- PAGE HEADER -->
+
+<section class="orders-header">
+
+    <p>
+        YOUR SHOPPING HISTORY
+    </p>
+
+
+    <h2>
+        My Orders
+    </h2>
+
+
+    <span>
+        Track and manage your THREADLY orders.
+    </span>
+
+</section>
+
+
+<!-- ==============================
+     ORDER FILTER
+============================== -->
+
+<div class="orders-filter">
+
+    <button
+        class="order-filter active"
+        data-filter="all"
+        type="button"
+    >
+        All
+    </button>
+
+
+    <button
+        class="order-filter"
+        data-filter="processing"
+        type="button"
+    >
+        Processing
+    </button>
+
+
+    <button
+        class="order-filter"
+        data-filter="shipped"
+        type="button"
+    >
+        Shipped
+    </button>
+
+
+    <button
+        class="order-filter"
+        data-filter="delivered"
+        type="button"
+    >
+        Delivered
+    </button>
+
+</div>
+
+
+<!-- ==============================
+     ORDER LIST
+============================== -->
+
+<section
+    class="orders-list"
+    id="ordersList"
+>
+</section>
+
+
+<!-- ==============================
+     EMPTY ORDER MESSAGE
+============================== -->
+
+<div
+    class="orders-empty"
+    id="ordersEmpty"
+>
+
+    <div class="empty-order-icon">
+        🛍
+    </div>
+
+
+    <h3>
+        No orders found
+    </h3>
+
+
+    <p>
+        Your orders will appear here once you
+        make a purchase.
+    </p>
+
+
+    <a href="shop.html">
+        START SHOPPING
+    </a>
+
+</div>
+
+
+</main>
+
+
+<!-- ==============================
+     ORDERS JAVASCRIPT
+============================== -->
+
+<script>
+
+(function () {
+
+    const ordersList =
+        document.getElementById(
+            "ordersList"
+        );
+
+
+    const ordersEmpty =
+        document.getElementById(
+            "ordersEmpty"
+        );
+
+
+    const filterButtons =
+        document.querySelectorAll(
+            ".order-filter"
+        );
+
+
+    let orders = [];
+
+
+    /* =====================================================
+       LOAD ORDERS
+    ===================================================== */
+
+    function loadOrders() {
+
+        orders = [];
+
+
+        try {
+
+            const savedOrders =
+                JSON.parse(
+                    localStorage.getItem(
+                        "threadlyOrders"
+                    )
+                );
+
+
+            if (Array.isArray(savedOrders)) {
+
+                orders =
+                    savedOrders;
+
+            }
+
+        } catch (error) {
+
+            orders = [];
+
+        }
+
+
+        /*
+         * Also check the current pending order.
+         * This makes sure the newest order is not
+         * lost if it has not yet been added to
+         * threadlyOrders.
+         */
+
+        try {
+
+            const pendingOrder =
+                JSON.parse(
+                    localStorage.getItem(
+                        "threadlyPendingOrder"
+                    )
+                );
+
+
+            if (pendingOrder) {
+
+                const pendingId =
+                    pendingOrder.orderId ||
+                    pendingOrder.id ||
+                    pendingOrder.orderReference;
+
+
+                const alreadyExists =
+                    orders.some(
+                        function (order) {
+
+                            const orderId =
+                                order.orderId ||
+                                order.id ||
+                                order.orderReference;
+
+
+                            return (
+                                orderId ===
+                                pendingId
+                            );
+
+                        }
+                    );
+
+
+                if (!alreadyExists) {
+
+                    orders.unshift(
+                        pendingOrder
+                    );
+
+                }
+
+            }
+
+        } catch (error) {
+
+            /* Nothing to do */
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FORMAT PRICE
+    ===================================================== */
+
+    function formatPrice(value) {
+
+        const number =
+            Number(value) || 0;
+
+
+        return (
+            "₦" +
+            number.toLocaleString()
+        );
+
+    }
+
+
+    /* =====================================================
+       FORMAT DATE
+    ===================================================== */
+
+    function formatDate(value) {
+
+        if (!value) {
+
+            return "Recent order";
+
+        }
+
+
+        const date =
+            new Date(value);
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return value;
+
+        }
+
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       GET ORDER ID
+    ===================================================== */
+
+    function getOrderId(order) {
+
+        return (
+            order.orderId ||
+            order.id ||
+            order.orderReference ||
+            "THR-000000"
+        );
+
+    }
+
+
+    /* =====================================================
+       GET ORDER STATUS
+    ===================================================== */
+
+    function getStatus(order) {
+
+        let status =
+            order.status ||
+            order.deliveryStatus ||
+            "processing";
+
+
+        status =
+            String(status)
+                .toLowerCase()
+                .replace(
+                    /[_\s]+/g,
+                    "-"
+                );
+
+
+        if (
+            status === "paid" ||
+            status === "confirmed"
+        ) {
+
+            status =
+                "processing";
+
+        }
+
+
+        if (
+            status !== "processing" &&
+            status !== "shipped" &&
+            status !== "delivered"
+        ) {
+
+            status =
+                "processing";
+
+        }
+
+
+        return status;
+
+    }
+
+
+    /* =====================================================
+       GET ORDER ITEMS
+    ===================================================== */
+
+    function getItems(order) {
+
+        if (
+            Array.isArray(
+                order.items
+            ) &&
+            order.items.length
+        ) {
+
+            return order.items;
+
+        }
+
+
+        if (
+            Array.isArray(
+                order.products
+            ) &&
+            order.products.length
+        ) {
+
+            return order.products;
+
+        }
+
+
+        /*
+         * Support an order containing
+         * one direct product.
+         */
+
+        if (
+            order.product ||
+            order.productName ||
+            order.name ||
+            order.title
+        ) {
+
+            return [
+                order
+            ];
+
+        }
+
+
+        return [];
+
+    }
+
+
+    /* =====================================================
+       GET PRODUCT NAME
+    ===================================================== */
+
+    function getProductName(item) {
+
+        return (
+            item.name ||
+            item.productName ||
+            item.title ||
+            item.product?.name ||
+            "THREADLY Product"
+        );
+
+    }
+
+
+    /* =====================================================
+       GET PRODUCT IMAGE
+    ===================================================== */
+
+    function getProductImage(item) {
+
+        return (
+            item.image ||
+            item.imageUrl ||
+            item.productImage ||
+            item.product?.image ||
+            "images/hoodie-001.jpg"
+        );
+
+    }
+
+
+    /* =====================================================
+       GET PRODUCT SIZE
+    ===================================================== */
+
+    function getProductSize(item) {
+
+        return (
+            item.size ||
+            item.selectedSize ||
+            item.product?.size ||
+            "N/A"
+        );
+
+    }
+
+
+    /* =====================================================
+       GET PRODUCT QUANTITY
+    ===================================================== */
+
+    function getProductQuantity(item) {
+
+        return (
+            Number(
+                item.quantity ||
+                item.qty ||
+                1
+            )
+        );
+
+    }
+
+
+    /* =====================================================
+       GET TOTAL
+    ===================================================== */
+
+    function getOrderTotal(order, items) {
+
+        if (
+            order.total !== undefined &&
+            order.total !== null
+        ) {
+
+            return Number(
+                order.total
+            ) || 0;
+
+        }
+
+
+        if (
+            order.grandTotal !== undefined
+        ) {
+
+            return Number(
+                order.grandTotal
+            ) || 0;
+
+        }
+
+
+        if (
+            order.amount !== undefined
+        ) {
+
+            return Number(
+                order.amount
+            ) || 0;
+
+        }
+
+
+        let total = 0;
+
+
+        items.forEach(
+            function (item) {
+
+                const price =
+                    Number(
+                        item.price ||
+                        item.product?.price ||
+                        0
+                    );
+
+
+                const quantity =
+                    getProductQuantity(
+                        item
+                    );
+
+
+                total +=
+                    price * quantity;
+
+            }
+        );
+
+
+        return total;
+
+    }
+
+
+    /* =====================================================
+       GET PRODUCT ID
+    ===================================================== */
+
+    function getProductId(item) {
+
+        return (
+            item.productId ||
+            item.product?.id ||
+            item.id ||
+            item.slug ||
+            ""
+        );
+
+    }
+
+
+    /* =====================================================
+       CREATE ORDER CARD
+    ===================================================== */
+
+    function createOrderCard(order) {
+
+        const orderId =
+            getOrderId(order);
+
+
+        const status =
+            getStatus(order);
+
+
+        const items =
+            getItems(order);
+
+
+        const total =
+            getOrderTotal(
+                order,
+                items
+            );
+
+
+        const date =
+            formatDate(
+                order.date ||
+                order.createdAt ||
+                order.orderDate ||
+                order.created
+            );
+
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+
+        card.className =
+            "order-card";
+
+
+        card.dataset.orderId =
+            orderId;
+
+
+        card.dataset.status =
+            status;
+
+
+        /* =================================================
+           TOP
+        ================================================= */
+
+        const top =
+            document.createElement(
+                "div"
+            );
+
+
+        top.className =
+            "order-top";
+
+
+        top.innerHTML = `
+
+            <div>
+
+                <p class="order-label">
+                    ORDER
+                </p>
+
+                <h3>
+                    #${orderId}
+                </h3>
+
+            </div>
+
+            <span class="order-date">
+                ${date}
+            </span>
+
+        `;
+
+
+        card.appendChild(
+            top
+        );
+
+
+        /* =================================================
+           PRODUCTS
+        ================================================= */
+
+        const productWrapper =
+            document.createElement(
+                "div"
+            );
+
+
+        productWrapper.className =
+            "order-product";
+
+
+        if (items.length) {
+
+            const firstItem =
+                items[0];
+
+
+            const imageWrapper =
+                document.createElement(
+                    "div"
+                );
+
+
+            imageWrapper.className =
+                "order-product-image";
+
+
+            const image =
+                document.createElement(
+                    "img"
+                );
+
+
+            image.src =
+                getProductImage(
+                    firstItem
+                );
+
+
+            image.alt =
+                getProductName(
+                    firstItem
+                );
+
+
+            image.onerror =
+                function () {
+
+                    this.src =
+                        "images/hoodie-001.jpg";
+
+                };
+
+
+            imageWrapper.appendChild(
+                image
+            );
+
+
+            const info =
+                document.createElement(
+                    "div"
+                );
+
+
+            info.className =
+                "order-product-info";
+
+
+            const name =
+                document.createElement(
+                    "h4"
+                );
+
+
+            name.textContent =
+                getProductName(
+                    firstItem
+                );
+
+
+            info.appendChild(
+                name
+            );
+
+
+            const size =
+                document.createElement(
+                    "p"
+                );
+
+
+            size.textContent =
+                "Size: " +
+                getProductSize(
+                    firstItem
+                );
+
+
+            info.appendChild(
+                size
+            );
+
+
+            const quantity =
+                document.createElement(
+                    "p"
+                );
+
+
+            quantity.textContent =
+                "Quantity: " +
+                getProductQuantity(
+                    firstItem
+                );
+
+
+            info.appendChild(
+                quantity
+            );
+
+
+            /*
+             * If there are multiple products,
+             * show the number of additional items.
+             */
+
+            if (items.length > 1) {
+
+                const more =
+                    document.createElement(
+                        "p"
+                    );
+
+
+                more.textContent =
+                    "+" +
+                    (
+                        items.length - 1
+                    ) +
+                    " more item" +
+                    (
+                        items.length - 1 === 1
+                            ? ""
+                            : "s"
+                    );
+
+
+                info.appendChild(
+                    more
+                );
+
+            }
+
+
+            productWrapper.appendChild(
+                imageWrapper
+            );
+
+
+            productWrapper.appendChild(
+                info
+            );
+
+        }
+
+
+        card.appendChild(
+            productWrapper
+        );
+
+
+        /* =================================================
+           BOTTOM
+        ================================================= */
+
+        const bottom =
+            document.createElement(
+                "div"
+            );
+
+
+        bottom.className =
+            "order-bottom";
+
+
+        bottom.innerHTML = `
+
+            <div class="order-price">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ${formatPrice(total)}
+                </strong>
+
+            </div>
+
+            <div class="order-status">
+
+                <span class="payment-status">
+                    ${
+                        order.paymentStatus ===
+                        "awaiting-verification"
+                            ? "VERIFYING"
+                            : "PAID"
+                    }
+                </span>
+
+                <span class="delivery-status ${status}">
+                    ${status.toUpperCase()}
+                </span>
+
+            </div>
+
+        `;
+
+
+        card.appendChild(
+            bottom
+        );
+
+
+        /* =================================================
+           VIEW PRODUCT BUTTON
+        ================================================= */
+
+        const viewButton =
+            document.createElement(
+                "a"
+            );
+
+
+        const firstItem =
+            items[0];
+
+
+        const productId =
+            firstItem
+                ? getProductId(
+                    firstItem
+                )
+                : "";
+
+
+        if (productId) {
+
+            viewButton.href =
+                "product.html?id=" +
+                encodeURIComponent(
+                    productId
+                );
+
+        } else {
+
+            viewButton.href =
+                "shop.html";
+
+        }
+
+
+        viewButton.className =
+            "view-order-button";
+
+
+        viewButton.textContent =
+            "VIEW PRODUCT";
+
+
+        card.appendChild(
+            viewButton
+        );
+
+
+        return card;
+
+    }
+
+
+    /* =====================================================
+       DISPLAY ORDERS
+    ===================================================== */
+
+    function displayOrders(
+        filter = "all"
+    ) {
+
+        ordersList.innerHTML =
+            "";
+
+
+        const filteredOrders =
+            orders.filter(
+                function (order) {
+
+                    if (
+                        filter === "all"
+                    ) {
+
+                        return true;
+
+                    }
+
+
+                    return (
+                        getStatus(order) ===
+                        filter
+                    );
+
+                }
+            );
+
+
+        if (
+            filteredOrders.length === 0
+        ) {
+
+            ordersEmpty.style.display =
+                "";
+
+
+            return;
+
+        }
+
+
+        ordersEmpty.style.display =
+            "none";
+
+
+        filteredOrders.forEach(
+            function (order) {
+
+                ordersList.appendChild(
+                    createOrderCard(
+                        order
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       FILTER BUTTONS
+    ===================================================== */
+
+    filterButtons.forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    filterButtons.forEach(
+                        function (item) {
+
+                            item.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+
+                    this.classList.add(
+                        "active"
+                    );
+
+
+                    displayOrders(
+                        this.dataset.filter ||
+                        "all"
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       START
+    ===================================================== */
+
+    loadOrders();
+
+    displayOrders("all");
+
+})();
+
+</script>
+
+
+<!-- ==============================
+     APP JS
+============================== -->
+
+<script src="app.js"></script>
+
+
+</body>
+
+</html>

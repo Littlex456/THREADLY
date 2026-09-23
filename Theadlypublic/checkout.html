@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Checkout | THREADLY</title>
+
+    <script>
+        (function () {
+
+            const savedTheme =
+                localStorage.getItem("threadlyTheme") ||
+                "system";
+
+            const prefersDark =
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches;
+
+            const shouldUseDark =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    prefersDark
+                );
+
+            if (shouldUseDark) {
+                document.documentElement.classList.add(
+                    "threadly-dark"
+                );
+            }
+
+        })();
+    </script>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<header class="site-header">
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+        THREADLY
+    </a>
+
+
+    <nav class="desktop-nav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="shop.html">
+            Shop
+        </a>
+
+        <a href="shop.html?category=men">
+            Men
+        </a>
+
+        <a href="shop.html?category=women">
+            Women
+        </a>
+
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
+
+        <a href="cart.html">
+            Cart
+        </a>
+
+    </nav>
+
+
+    <div class="header-actions">
+
+
+
+
+        <button
+            id="menuButton"
+            class="menu-button"
+            type="button"
+            aria-label="Open menu"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </div>
+
+</header>
+
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
+
+
+<aside
+    id="mobileMenu"
+    class="mobile-menu"
+>
+
+    <div class="mobile-menu-header">
+
+        <span>
+            MENU
+        </span>
+
+        <button
+            id="closeMenu"
+            class="close-menu"
+            type="button"
+            aria-label="Close menu"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <nav class="mobile-nav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="shop.html">
+            Shop
+        </a>
+
+        <a href="shop.html?category=men">
+            Men
+        </a>
+
+        <a href="shop.html?category=women">
+            Women
+        </a>
+
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
+
+
+        <div class="mobile-menu-divider"></div>
+
+
+        <a href="account.html">
+            My Account
+        </a>
+
+        <a href="cart.html">
+            My Cart
+        </a>
+
+        <a href="saved.html">
+            Saved Items
+        </a>
+
+        <a href="orders.html">
+            My Orders
+        </a>
+
+        <a href="settings.html">
+            Settings
+        </a>
+
+        <a href="help.html">
+            Help &amp; Support
+        </a>
+
+        <a href="about.html">
+            About THREADLY
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<main class="checkout-page">
+
+    <div class="checkout-top">
+
+        <a
+            href="cart.html"
+            class="back-to-shop"
+        >
+            ← Back to Cart
+        </a>
+
+
+        <div class="checkout-heading">
+
+            <p class="section-label">
+                THREADLY CHECKOUT
+            </p>
+
+            <h1>
+                Complete your order.
+            </h1>
+
+            <p>
+                Enter your delivery details and choose your preferred delivery option.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <section class="checkout-layout">
+
+
+        <!-- CUSTOMER DETAILS -->
+
+        <div class="checkout-details">
+
+            <div class="checkout-card">
+
+                <div class="checkout-card-heading">
+
+                    <p class="section-label">
+                        01
+                    </p>
+
+                    <h2>
+                        Delivery Details
+                    </h2>
+
+                </div>
+
+
+                <form
+                    id="checkoutForm"
+                    class="checkout-form"
+                >
+
+                    <div class="checkout-form-row">
+
+                        <div class="checkout-field">
+
+                            <label for="checkoutFullName">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="checkoutFullName"
+                                name="fullName"
+                                placeholder="Enter your full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="checkout-field">
+
+                            <label for="checkoutPhone">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="checkoutPhone"
+                                name="phone"
+                                placeholder="08012345678"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="checkout-field">
+
+                        <label for="checkoutEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="checkoutEmail"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="checkout-field">
+
+                        <label for="checkoutAddress">
+                            Delivery Address
+                        </label>
+
+                        <textarea
+                            id="checkoutAddress"
+                            name="address"
+                            rows="4"
+                            placeholder="Enter your full delivery address"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="checkout-form-row">
+
+                        <div class="checkout-field">
+
+                            <label for="checkoutState">
+                                State
+                            </label>
+
+                            <input
+                                type="text"
+                                id="checkoutState"
+                                name="state"
+                                placeholder="Lagos"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="checkout-field">
+
+                            <label for="checkoutCity">
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                id="checkoutCity"
+                                name="city"
+                                placeholder="Ikeja"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DELIVERY OPTION -->
+
+                    <div class="checkout-section">
+
+                        <div class="checkout-card-heading">
+
+                            <p class="section-label">
+                                02
+                            </p>
+
+                            <h2>
+                                Delivery Option
+                            </h2>
+
+                        </div>
+
+
+                        <div class="delivery-options">
+
+                            <label class="delivery-option">
+
+                                <input
+                                    type="radio"
+                                    name="deliveryMethod"
+                                    value="standard"
+                                    checked
+                                >
+
+                                <span class="delivery-option-content">
+
+                                    <span>
+
+                                        <strong>
+                                            Standard Delivery
+                                        </strong>
+
+                                        <small>
+                                            Delivery within 3–7 business days
+                                        </small>
+
+                                    </span>
+
+                                    <strong>
+                                        ₦2,500
+                                    </strong>
+
+                                </span>
+
+                            </label>
+
+
+                            <label class="delivery-option">
+
+                                <input
+                                    type="radio"
+                                    name="deliveryMethod"
+                                    value="express"
+                                >
+
+                                <span class="delivery-option-content">
+
+                                    <span>
+
+                                        <strong>
+                                            Express Delivery
+                                        </strong>
+
+                                        <small>
+                                            Faster delivery within 1–3 business days
+                                        </small>
+
+                                    </span>
+
+                                    <strong>
+                                        ₦4,500
+                                    </strong>
+
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PAYMENT -->
+
+                    <div class="checkout-section">
+
+                        <div class="checkout-card-heading">
+
+                            <p class="section-label">
+                                03
+                            </p>
+
+                            <h2>
+                                Payment
+                            </h2>
+
+                        </div>
+
+
+                        <div class="payment-placeholder">
+
+                            <div class="payment-placeholder-icon">
+                                ₦
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Bank Transfer
+                                </strong>
+
+                                <p>
+                                    Continue to the secure bank transfer page to complete your payment.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="checkout-place-order"
+                        id="continueToPayment"
+                    >
+                        CONTINUE TO PAYMENT
+                    </button>
+
+
+                    <p
+                        id="checkoutMessage"
+                        class="checkout-message"
+                    ></p>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER SUMMARY -->
+
+        <aside class="checkout-summary">
+
+            <div class="checkout-summary-card">
+
+                <div class="checkout-card-heading">
+
+                    <p class="section-label">
+                        YOUR ORDER
+                    </p>
+
+                    <h2>
+                        Order Summary
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="checkoutItems"
+                    class="checkout-items"
+                ></div>
+
+
+                <div class="checkout-summary-divider"></div>
+
+
+                <div class="checkout-summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong id="checkoutSubtotal">
+                        ₦0
+                    </strong>
+
+                </div>
+
+
+                <div class="checkout-summary-row">
+
+                    <span>
+                        Delivery
+                    </span>
+
+                    <strong id="checkoutDelivery">
+                        ₦2,500
+                    </strong>
+
+                </div>
+
+
+                <div class="checkout-summary-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="checkoutTotal">
+                        ₦0
+                    </strong>
+
+                </div>
+
+
+                <div class="checkout-secure-note">
+
+                    <span>
+                        ✓
+                    </span>
+
+                    <p>
+                        Your order details are saved securely during checkout.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+    <div class="footer-brand">
+
+        <h2>
+            THREADLY
+        </h2>
+
+        <p>
+            Wear your thread.
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <div>
+
+            <h3>
+                SHOP
+            </h3>
+
+            <a href="shop.html">
+                All Products
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                HELP
+            </h3>
+
+            <a href="help.html">
+                Contact
+            </a>
+
+            <a href="delivery.html">
+                Delivery
+            </a>
+
+            <a href="returns.html">
+                Returns
+            </a>
+
+            <a href="help.html#faq">
+                FAQ
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 THREADLY. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+(function () {
+
+    const continueToPayment =
+        document.getElementById("continueToPayment");
+
+    const checkoutMessage =
+        document.getElementById("checkoutMessage");
+
+    const checkoutItems =
+        document.getElementById("checkoutItems");
+
+    const checkoutSubtotal =
+        document.getElementById("checkoutSubtotal");
+
+    const checkoutDelivery =
+        document.getElementById("checkoutDelivery");
+
+    const checkoutTotal =
+        document.getElementById("checkoutTotal");
+
+
+    /* =========================================================
+       LOAD CART
+    ========================================================= */
+
+    let cart = [];
+
+    try {
+
+        const savedCart =
+            localStorage.getItem("threadlyCart");
+
+        if (savedCart) {
+
+            const parsedCart =
+                JSON.parse(savedCart);
+
+            if (Array.isArray(parsedCart)) {
+
+                cart = parsedCart;
+
+            }
+
+        }
+
+    } catch (error) {
+
+        cart = [];
+
+    }
+
+
+    /* =========================================================
+       NORMALIZE CART ITEMS
+    ========================================================= */
+
+    cart = cart.map(function (item) {
+
+        return {
+
+            id:
+                item.id ||
+                item.productId ||
+                "",
+
+            name:
+                item.name ||
+                item.title ||
+                "THREADLY Product",
+
+            price:
+                Number(
+                    item.price ||
+                    0
+                ),
+
+            image:
+                item.image ||
+                item.img ||
+                "",
+
+            size:
+                item.size ||
+                "",
+
+            quantity:
+                Number(
+                    item.quantity ||
+                    item.qty ||
+                    1
+                )
+
+        };
+
+    });
+
+
+    /* =========================================================
+       CALCULATE SUBTOTAL
+    ========================================================= */
+
+    function calculateSubtotal() {
+
+        return cart.reduce(
+            function (total, item) {
+
+                return total +
+                    (
+                        Number(item.price) *
+                        Number(item.quantity)
+                    );
+
+            },
+            0
+        );
+
+    }
+
+
+    /* =========================================================
+       DISPLAY CART ITEMS
+    ========================================================= */
+
+    function displayCartItems() {
+
+        if (!checkoutItems) {
+            return;
+        }
+
+
+        checkoutItems.innerHTML = "";
+
+
+        if (cart.length === 0) {
+
+            checkoutItems.innerHTML =
+                "<p>Your cart is empty.</p>";
+
+            if (continueToPayment) {
+
+                continueToPayment.disabled =
+                    true;
+
+            }
+
+            return;
+
+        }
+
+
+        cart.forEach(function (item) {
+
+            const itemElement =
+                document.createElement("div");
+
+            itemElement.className =
+                "checkout-item";
+
+
+            const image =
+                document.createElement("img");
+
+            image.src =
+                item.image ||
+                "images/hoodie-001.jpg";
+
+            image.alt =
+                item.name;
+
+
+            const details =
+                document.createElement("div");
+
+            details.className =
+                "checkout-item-details";
+
+
+            const name =
+                document.createElement("strong");
+
+            name.textContent =
+                item.name;
+
+
+            const quantity =
+                document.createElement("span");
+
+            quantity.textContent =
+                "Qty: " +
+                item.quantity;
+
+
+            if (item.size) {
+
+                const size =
+                    document.createElement("span");
+
+                size.textContent =
+                    "Size: " +
+                    item.size;
+
+                details.appendChild(size);
+
+            }
+
+
+            const price =
+                document.createElement("strong");
+
+            price.textContent =
+                "₦" +
+                (
+                    Number(item.price) *
+                    Number(item.quantity)
+                ).toLocaleString();
+
+
+            details.insertBefore(
+                name,
+                details.firstChild
+            );
+
+            details.appendChild(
+                quantity
+            );
+
+            details.appendChild(
+                price
+            );
+
+
+            itemElement.appendChild(
+                image
+            );
+
+            itemElement.appendChild(
+                details
+            );
+
+
+            checkoutItems.appendChild(
+                itemElement
+            );
+
+        });
+
+    }
+
+
+    /* =========================================================
+       UPDATE TOTALS
+    ========================================================= */
+
+    function updateTotals() {
+
+        const subtotal =
+            calculateSubtotal();
+
+
+        const selectedDelivery =
+            document.querySelector(
+                'input[name="deliveryMethod"]:checked'
+            );
+
+
+        const delivery =
+            selectedDelivery &&
+            selectedDelivery.value === "express"
+                ? 4500
+                : 2500;
+
+
+        const total =
+            subtotal +
+            delivery;
+
+
+        if (checkoutSubtotal) {
+
+            checkoutSubtotal.textContent =
+                "₦" +
+                subtotal.toLocaleString();
+
+        }
+
+
+        if (checkoutDelivery) {
+
+            checkoutDelivery.textContent =
+                "₦" +
+                delivery.toLocaleString();
+
+        }
+
+
+        if (checkoutTotal) {
+
+            checkoutTotal.textContent =
+                "₦" +
+                total.toLocaleString();
+
+        }
+
+
+        return {
+
+            subtotal:
+                subtotal,
+
+            delivery:
+                delivery,
+
+            total:
+                total
+
+        };
+
+    }
+
+
+    /* =========================================================
+       DELIVERY CHANGE
+    ========================================================= */
+
+    document
+        .querySelectorAll(
+            'input[name="deliveryMethod"]'
+        )
+        .forEach(function (radio) {
+
+            radio.addEventListener(
+                "change",
+                updateTotals
+            );
+
+        });
+
+
+    /* =========================================================
+       INITIAL DISPLAY
+    ========================================================= */
+
+    displayCartItems();
+
+    updateTotals();
+
+
+    /* =========================================================
+       CONTINUE TO PAYMENT
+    ========================================================= */
+
+    if (continueToPayment) {
+
+        continueToPayment.addEventListener(
+            "click",
+            function () {
+
+                const form =
+                    document.getElementById(
+                        "checkoutForm"
+                    );
+
+
+                if (!form.checkValidity()) {
+
+                    form.reportValidity();
+
+                    return;
+
+                }
+
+
+                if (cart.length === 0) {
+
+                    if (checkoutMessage) {
+
+                        checkoutMessage.textContent =
+                            "Your cart is empty.";
+
+                    }
+
+                    return;
+
+                }
+
+
+                const selectedDelivery =
+                    document.querySelector(
+                        'input[name="deliveryMethod"]:checked'
+                    );
+
+
+                const customerDetails = {
+
+                    fullName:
+                        document.getElementById(
+                            "checkoutFullName"
+                        ).value.trim(),
+
+                    phone:
+                        document.getElementById(
+                            "checkoutPhone"
+                        ).value.trim(),
+
+                    email:
+                        document.getElementById(
+                            "checkoutEmail"
+                        ).value.trim(),
+
+                    address:
+                        document.getElementById(
+                            "checkoutAddress"
+                        ).value.trim(),
+
+                    state:
+                        document.getElementById(
+                            "checkoutState"
+                        ).value.trim(),
+
+                    city:
+                        document.getElementById(
+                            "checkoutCity"
+                        ).value.trim(),
+
+                    deliveryMethod:
+                        selectedDelivery
+                            ? selectedDelivery.value
+                            : "standard"
+
+                };
+
+
+                const totals =
+                    updateTotals();
+
+
+                /* =================================================
+                   CREATE ORDER ID
+                ================================================= */
+
+                const orderId =
+                    "THR-" +
+                    Date.now()
+                        .toString()
+                        .slice(-6);
+
+
+                /* =================================================
+                   CREATE COMPLETE PENDING ORDER
+                ================================================= */
+
+                const pendingOrder = {
+
+                    orderId:
+                        orderId,
+
+                    items:
+                        cart.map(function (item) {
+
+                            return {
+
+                                id:
+                                    item.id,
+
+                                name:
+                                    item.name,
+
+                                price:
+                                    Number(
+                                        item.price
+                                    ),
+
+                                image:
+                                    item.image,
+
+                                size:
+                                    item.size,
+
+                                quantity:
+                                    Number(
+                                        item.quantity
+                                    )
+
+                            };
+
+                        }),
+
+                    customer:
+                        customerDetails,
+
+                    fullName:
+                        customerDetails.fullName,
+
+                    phone:
+                        customerDetails.phone,
+
+                    email:
+                        customerDetails.email,
+
+                    address:
+                        customerDetails.address,
+
+                    state:
+                        customerDetails.state,
+
+                    city:
+                        customerDetails.city,
+
+                    deliveryMethod:
+                        customerDetails.deliveryMethod,
+
+                    subtotal:
+                        totals.subtotal,
+
+                    deliveryFee:
+                        totals.delivery,
+
+                    total:
+                        totals.total,
+
+                    status:
+                        "processing",
+
+                    paymentMethod:
+                        "transfer",
+
+                    paymentStatus:
+                        "awaiting-payment",
+
+                    createdAt:
+                        new Date().toISOString()
+
+                };
+
+
+                /* =================================================
+                   SAVE CHECKOUT DETAILS
+                ================================================= */
+
+                localStorage.setItem(
+                    "threadlyCheckoutDetails",
+                    JSON.stringify(
+                        customerDetails
+                    )
+                );
+
+
+                /* =================================================
+                   SAVE COMPLETE PENDING ORDER
+                ================================================= */
+
+                localStorage.setItem(
+                    "threadlyPendingOrder",
+                    JSON.stringify(
+                        pendingOrder
+                    )
+                );
+
+
+                /* =================================================
+                   SAVE LAST ORDER
+                ================================================= */
+
+                localStorage.setItem(
+                    "threadlyLastOrder",
+                    JSON.stringify(
+                        pendingOrder
+                    )
+                );
+
+
+                /* =================================================
+                   GO TO TRANSFER
+                ================================================= */
+
+                window.location.href =
+                    "transfer.html";
+
+            }
+        );
+
+}})();
+
+</script>
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>

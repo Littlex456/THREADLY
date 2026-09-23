@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>THREADLY | Fashion Store</title>
+    <script>
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("threadlyTheme") ||
+        "system";
+
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+
+    const shouldUseDark =
+        savedTheme === "dark" ||
+        (
+            savedTheme === "system" &&
+            prefersDark
+        );
+
+    if (shouldUseDark) {
+        document.documentElement.classList.add(
+            "threadly-dark"
+        );
+    }
+
+})();
+</script>
+
+<link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="site-header">
+
+        <a href="index.html" class="logo">
+            THREADLY
+        </a>
+
+
+        <!-- Desktop Navigation -->
+
+        <nav class="desktop-nav">
+
+            <a href="index.html" class="active">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+            <a href="cart.html">
+                Cart
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+            
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                aria-label="Open menu"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MOBILE MENU ================= -->
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+
+    <aside class="mobile-menu" id="mobileMenu">
+
+        <div class="mobile-menu-header">
+
+            <span>
+                MENU
+            </span>
+
+            <button
+                id="closeMenu"
+                class="close-menu"
+                aria-label="Close menu"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="mobile-nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+            <div class="mobile-menu-divider"></div>
+
+            <a href="account.html">
+                My Account
+            </a>
+
+            <a href="cart.html">
+                My Cart
+            </a>
+
+            <a href="saved.html">
+                Saved Items
+            </a>
+
+            <a href="orders.html">
+                My Orders
+            </a>
+
+            <a href="settings.html">
+                Settings
+            </a>
+
+            <a href="help.html">
+                Help & Support
+            </a>
+
+            <a href="about.html">
+                About THREADLY
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- ================= HERO ================= -->
+
+    <main>
+
+        <section class="home-hero">
+
+            <div class="home-hero-content">
+
+                <p class="hero-small-text">
+                    NEW SEASON / 2026
+                </p>
+
+                <h1>
+                    WEAR YOUR<br>
+                    THREAD.
+                </h1>
+
+                <p class="hero-description">
+                    Discover clothing and footwear made
+                    for your everyday style.
+                </p>
+
+                <a
+                    href="shop.html"
+                    class="primary-button"
+                >
+                    SHOP COLLECTION
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <section class="home-search-section">
+
+            <div class="home-search">
+
+                <input
+                    type="text"
+                    id="homeSearchInput"
+                    placeholder="Search for products..."
+                >
+
+                <button
+                    id="homeSearchButton"
+                    aria-label="Search"
+                >
+                    🔍
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= CATEGORIES ================= -->
+
+        <section class="home-section home-categories-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="section-label">
+                        EXPLORE
+                    </p>
+
+                    <h2>
+                        Shop by Category
+                    </h2>
+                </div>
+
+                <a href="shop.html" class="view-all">
+                    View All
+                </a>
+
+            </div>
+
+
+            <div class="home-categories">
+
+                <a
+                    href="shop.html?category=men"
+                    class="category-card"
+                >
+
+                    <div class="category-card-content">
+
+                        <span>
+                            01
+                        </span>
+
+                        <h3>
+                            Men
+                        </h3>
+
+                        <p>
+                            Explore men's fashion
+                        </p>
+
+                    </div>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+
+                <a
+                    href="shop.html?category=women"
+                    class="category-card"
+                >
+
+                    <div class="category-card-content">
+
+                        <span>
+                            02
+                        </span>
+
+                        <h3>
+                            Women
+                        </h3>
+
+                        <p>
+                            Explore women's fashion
+                        </p>
+
+                    </div>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+
+                <a
+                    href="shop.html?category=shoes"
+                    class="category-card"
+                >
+
+                    <div class="category-card-content">
+
+                        <span>
+                            03
+                        </span>
+
+                        <h3>
+                            Shoes
+                        </h3>
+
+                        <p>
+                            Complete your look
+                        </p>
+
+                    </div>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= NEW ARRIVALS ================= -->
+
+        <section class="home-section home-products-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        JUST IN
+                    </p>
+
+                    <h2>
+                        New Arrivals
+                    </h2>
+
+                </div>
+
+                <a
+                    href="shop.html"
+                    class="view-all"
+                >
+                    View All
+                </a>
+
+            </div>
+
+
+            <div class="home-product-grid">
+
+
+                <!-- Product 1 -->
+
+                <article class="home-product-card">
+
+                    <a
+                        href="product.html?id=hoodie-001"
+                        class="home-product-image"
+                    >
+
+                        <img
+                            src="images/hoodie-001.jpg"
+                            alt="Oversized Hoodie"
+                        >
+
+                    </a>
+
+                    <div class="home-product-info">
+
+                        <p class="product-category">
+                            MEN
+                        </p>
+
+                        <h3>
+                            Oversized Hoodie
+                        </h3>
+
+                        <p class="product-price">
+                            ₦25,000
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- Product 2 -->
+
+                <article class="home-product-card">
+
+                    <a
+                        href="product.html?id=shirt-001"
+                        class="home-product-image"
+                    >
+
+                        <img
+                            src="images/shirt-001.jpg"
+                            alt="Classic Shirt"
+                        >
+
+                    </a>
+
+                    <div class="home-product-info">
+
+                        <p class="product-category">
+                            MEN
+                        </p>
+
+                        <h3>
+                            Classic Shirt
+                        </h3>
+
+                        <p class="product-price">
+                            ₦18,000
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- Product 3 -->
+
+                <article class="home-product-card">
+
+                    <a
+                        href="product.html?id=cargo-001"
+                        class="home-product-image"
+                    >
+
+                        <img
+                            src="images/cargo-001.jpg"
+                            alt="Cargo Trousers"
+                        >
+
+                    </a>
+
+                    <div class="home-product-info">
+
+                        <p class="product-category">
+                            MEN
+                        </p>
+
+                        <h3>
+                            Cargo Trousers
+                        </h3>
+
+                        <p class="product-price">
+                            ₦22,000
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- Product 4 -->
+
+                <article class="home-product-card">
+
+                    <a
+                        href="product.html?id=denim-001"
+                        class="home-product-image"
+                    >
+
+                        <img
+                            src="images/denim-001.jpg"
+                            alt="Classic Denim"
+                        >
+
+                    </a>
+
+                    <div class="home-product-info">
+
+                        <p class="product-category">
+                            WOMEN
+                        </p>
+
+                        <h3>
+                            Classic Denim
+                        </h3>
+
+                        <p class="product-price">
+                            ₦28,000
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= SPECIAL DEAL ================= -->
+
+        <section class="home-deals">
+
+            <div class="home-deals-content">
+
+                <p class="section-label">
+                    THREADLY SPECIAL
+                </p>
+
+                <h2>
+                    Style shouldn't<br>
+                    cost a fortune.
+                </h2>
+
+                <p>
+                    Discover selected pieces at special
+                    prices while they last.
+                </p>
+
+                <a
+                    href="shop.html?discount=true"
+                    class="deal-button"
+                >
+                    SHOP DEALS
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= FEATURED SHOES ================= -->
+
+        <section class="home-section home-products-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        STEP UP
+                    </p>
+
+                    <h2>
+                        Featured Shoes
+                    </h2>
+
+                </div>
+
+                <a
+                    href="shop.html?category=shoes"
+                    class="view-all"
+                >
+                    View All
+                </a>
+
+            </div>
+
+
+            <div class="home-product-grid">
+
+
+                <!-- Shoe 1 -->
+
+                <article class="home-product-card">
+
+                    <a
+                        href="product.html?id=shoe-001"
+                        class="home-product-image"
+                    >
+
+                        <img
+                            src="images/shoe-001.jpg"
+                            alt="Classic Sneakers"
+                        >
+
+                    </a>
+
+                    <div class="home-product-info">
+
+                        <p class="product-category">
+                            SHOES
+                        </p>
+
+                        <h3>
+                            Classic Sneakers
+                        </h3>
+
+                        <p class="product-price">
+                            ₦35,000
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- Shoe 2 -->
+
+                <article class="home-product-card">
+
+                    <a
+                        href="product.html?id=shoe-002"
+                        class="home-product-image"
+                    >
+
+                        <img
+                            src="images/shoe-002.jpg"
+                            alt="Street Sneakers"
+                        >
+
+                    </a>
+
+                    <div class="home-product-info">
+
+                        <p class="product-category">
+                            SHOES
+                        </p>
+
+                        <h3>
+                            Street Sneakers
+                        </h3>
+
+                        <p class="product-price">
+                            ₦42,000
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="site-footer">
+
+        <div class="footer-brand">
+
+            <h2>
+                THREADLY
+            </h2>
+
+            <p>
+                Wear your thread.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <div>
+
+                <h3>
+                    SHOP
+                </h3>
+
+                <a href="shop.html">
+                    All Products
+                </a>
+
+                <a href="shop.html?category=men">
+                    Men
+                </a>
+
+                <a href="shop.html?category=women">
+                    Women
+                </a>
+
+                <a href="shop.html?category=shoes">
+                    Shoes
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    HELP
+                </h3>
+
+                <a href="help.html">
+                    Contact
+                </a>
+
+                <a href="delivery.html">
+                    Delivery
+                </a>
+
+                <a href="returns.html">
+                    Returns
+                </a>
+
+                <a href="help.html#faq">
+                    FAQ
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 THREADLY. All rights reserved to the AWOJIDE AND FATUSA Family.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

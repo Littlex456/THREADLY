@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Bank Transfer | THREADLY</title>
+    <script>
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("threadlyTheme") ||
+        "system";
+
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+
+    const shouldUseDark =
+        savedTheme === "dark" ||
+        (
+            savedTheme === "system" &&
+            prefersDark
+        );
+
+    if (shouldUseDark) {
+        document.documentElement.classList.add(
+            "threadly-dark"
+        );
+    }
+
+})();
+</script>
+
+<link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <a href="index.html" class="logo">
+        THREADLY
+    </a>
+
+    <nav class="desktop-nav">
+
+        <a href="index.html">Home</a>
+
+        <a href="shop.html">Shop</a>
+
+        <a href="shop.html?category=men">Men</a>
+
+        <a href="shop.html?category=women">Women</a>
+
+        <a href="shop.html?category=shoes">Shoes</a>
+
+        <a href="cart.html">Cart</a>
+
+    </nav>
+
+    <div class="header-actions">
+
+        
+
+        <button
+            id="menuButton"
+            class="menu-button"
+            type="button"
+            aria-label="Open menu"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </div>
+
+</header>
+
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
+
+
+<aside
+    id="mobileMenu"
+    class="mobile-menu"
+>
+
+    <div class="mobile-menu-header">
+
+        <span>MENU</span>
+
+        <button
+            id="closeMenu"
+            class="close-menu"
+            type="button"
+            aria-label="Close menu"
+        >
+            ×
+        </button>
+
+    </div>
+
+    <nav class="mobile-nav">
+
+        <a href="index.html">Home</a>
+
+        <a href="shop.html">Shop</a>
+
+        <a href="shop.html?category=men">Men</a>
+
+        <a href="shop.html?category=women">Women</a>
+
+        <a href="shop.html?category=shoes">Shoes</a>
+
+        <div class="mobile-menu-divider"></div>
+
+        <a href="account.html">My Account</a>
+
+        <a href="cart.html">My Cart</a>
+
+        <a href="saved.html">Saved Items</a>
+
+        <a href="orders.html">My Orders</a>
+
+        <a href="settings.html">Settings</a>
+
+        <a href="help.html">Help &amp; Support</a>
+
+        <a href="about.html">About THREADLY</a>
+
+    </nav>
+
+</aside>
+
+
+<main class="transfer-page">
+
+    <div class="transfer-top">
+
+        <a
+            href="payment-method.html"
+            class="back-to-shop"
+        >
+            ← Back to Payment Method
+        </a>
+
+        <div class="transfer-heading">
+
+            <p class="section-label">
+                THREADLY BANK TRANSFER
+            </p>
+
+            <h1>
+                Make your transfer.
+            </h1>
+
+            <p>
+                Transfer the exact amount below, then submit your receipt for verification.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <section class="transfer-layout">
+
+        <div class="transfer-card">
+
+            <div class="transfer-card-heading">
+
+                <p class="section-label">
+                    PAYMENT DETAILS
+                </p>
+
+                <h2>
+                    Transfer to THREADLY
+                </h2>
+
+            </div>
+
+
+            <div class="bank-details">
+
+                <div class="bank-detail-row">
+
+                    <span>
+                        Bank
+                    </span>
+
+                    <strong id="transferBank">
+                        YOUR BANK
+                    </strong>
+
+                </div>
+
+
+                <div class="bank-detail-row">
+
+                    <span>
+                        Account Name
+                    </span>
+
+                    <strong id="transferAccountName">
+                        THREADLY
+                    </strong>
+
+                </div>
+
+
+                <div class="bank-detail-row">
+
+                    <span>
+                        Account Number
+                    </span>
+
+                    <div class="account-number-wrapper">
+
+                        <strong id="transferAccountNumber">
+                            0000000000
+                        </strong>
+
+                        <button
+                            type="button"
+                            id="copyAccountNumber"
+                            class="copy-account-button"
+                        >
+                            COPY
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="transfer-amount-box">
+
+                <span>
+                    Amount to Transfer
+                </span>
+
+                <strong id="transferAmount">
+                    ₦0
+                </strong>
+
+            </div>
+
+
+            <div class="transfer-note">
+
+                <strong>
+                    Important
+                </strong>
+
+                <p>
+                    Please transfer the exact amount shown above. Your payment will be verified after you submit your receipt.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="transferDoneButton"
+                class="primary-button transfer-done-button"
+            >
+                I'VE MADE THE TRANSFER
+            </button>
+
+
+            <p
+                id="copyMessage"
+                class="copy-message"
+            ></p>
+
+        </div>
+
+
+        <aside class="transfer-side-card">
+
+            <div class="transfer-side-number">
+                01
+            </div>
+
+            <h2>
+                How it works
+            </h2>
+
+            <div class="transfer-steps">
+
+                <div class="transfer-step">
+
+                    <span>
+                        01
+                    </span>
+
+                    <p>
+                        Transfer the exact order amount to the account displayed.
+                    </p>
+
+                </div>
+
+
+                <div class="transfer-step">
+
+                    <span>
+                        02
+                    </span>
+
+                    <p>
+                        Click "I've Made The Transfer".
+                    </p>
+
+                </div>
+
+
+                <div class="transfer-step">
+
+                    <span>
+                        03
+                    </span>
+
+                    <p>
+                        Upload your transfer receipt for verification.
+                    </p>
+
+                </div>
+
+
+                <div class="transfer-step">
+
+                    <span>
+                        04
+                    </span>
+
+                    <p>
+                        Wait for THREADLY to confirm your payment.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+    <div class="footer-brand">
+
+        <h2>
+            THREADLY
+        </h2>
+
+        <p>
+            Wear your thread.
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <div>
+
+            <h3>
+                SHOP
+            </h3>
+
+            <a href="shop.html">
+                All Products
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                HELP
+            </h3>
+
+            <a href="#">
+                Contact
+            </a>
+
+            <a href="#">
+                Delivery
+            </a>
+
+            <a href="#">
+                Returns
+            </a>
+
+            <a href="#">
+                FAQ
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 THREADLY. All rights reserved to the AWOJIDE AND FATUSA Family.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Shop | THREADLY</title>
+
+
+<script>
+
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("threadlyTheme") ||
+        "system";
+
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+
+    const shouldUseDark =
+        savedTheme === "dark" ||
+        (
+            savedTheme === "system" &&
+            prefersDark
+        );
+
+    if (shouldUseDark) {
+
+        document.documentElement.classList.add(
+            "threadly-dark"
+        );
+
+    }
+
+})();
+
+</script>
+
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header class="site-header">
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+        THREADLY
+    </a>
+
+
+    <nav class="desktop-nav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a
+            href="shop.html"
+            class="active"
+        >
+            Shop
+        </a>
+
+        <a href="shop.html?category=men">
+            Men
+        </a>
+
+        <a href="shop.html?category=women">
+            Women
+        </a>
+
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
+
+        <a href="cart.html">
+            Cart
+        </a>
+
+    </nav>
+
+
+    <div class="header-actions">
+
+        
+
+
+        <button
+            id="menuButton"
+            class="menu-button"
+            aria-label="Open menu"
+        >
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= MOBILE MENU ================= -->
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
+
+
+<aside
+    id="mobileMenu"
+    class="mobile-menu"
+>
+
+    <div class="mobile-menu-header">
+
+        <span>
+            MENU
+        </span>
+
+        <button
+            id="closeMenu"
+            class="close-menu"
+            aria-label="Close menu"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <nav class="mobile-nav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="shop.html">
+            Shop
+        </a>
+
+        <a href="shop.html?category=men">
+            Men
+        </a>
+
+        <a href="shop.html?category=women">
+            Women
+        </a>
+
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
+
+
+        <div class="mobile-menu-divider"></div>
+
+
+        <a href="account.html">
+            My Account
+        </a>
+
+        <a href="cart.html">
+            My Cart
+        </a>
+
+        <a href="saved.html">
+            Saved Items
+        </a>
+
+        <a href="orders.html">
+            My Orders
+        </a>
+
+        <a href="settings.html">
+            Settings
+        </a>
+
+        <a href="help.html">
+            Help &amp; Support
+        </a>
+
+        <a href="about.html">
+            About THREADLY
+        </a>
+
+    </nav>
+
+</aside>
+
+
+
+<!-- ================= SHOP ================= -->
+
+<main class="shop-page">
+
+
+    <!-- SHOP INTRO -->
+
+    <section class="shop-intro">
+
+        <p class="section-label">
+            THREADLY COLLECTION
+        </p>
+
+        <h1>
+            Shop All
+        </h1>
+
+        <p>
+            Discover clothing and footwear
+            selected for your everyday style.
+        </p>
+
+    </section>
+
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <section class="shop-search-section">
+
+        <div class="shop-search">
+
+            <input
+                type="text"
+                id="shopSearch"
+                placeholder="Search products..."
+            >
+
+
+            <button
+                type="button"
+                id="shopSearchButton"
+                aria-label="Search"
+            >
+
+                <span class="search-icon"></span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= FILTERS ================= -->
+
+    <section class="shop-controls">
+
+        <div class="filters">
+
+
+            <button
+                type="button"
+                class="active"
+                data-filter="all"
+            >
+                All
+            </button>
+
+
+            <button
+                type="button"
+                data-filter="men"
+            >
+                Men
+            </button>
+
+
+            <button
+                type="button"
+                data-filter="women"
+            >
+                Women
+            </button>
+
+
+            <button
+                type="button"
+                data-filter="shoes"
+            >
+                Shoes
+            </button>
+
+
+            <!-- FILTER BUTTON -->
+
+            <button
+                type="button"
+                id="filterToggle"
+                class="filter-toggle"
+            >
+                FILTER
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FILTER PANEL
+    ===================================================== -->
+
+    <section class="shop-filter-area">
+
+
+        <div
+            id="filterPanel"
+            class="filter-panel"
+        >
+
+
+            <div class="filter-panel-header">
+
+                <div>
+
+                    <p class="section-label">
+                        REFINE
+                    </p>
+
+                    <h2>
+                        Filter Products
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="filterClose"
+                    class="filter-close"
+                    aria-label="Close filter"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- ================= CATEGORY ================= -->
+
+            <div class="filter-group">
+
+                <h3>
+                    Category
+                </h3>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="filterCategory"
+                        value="men"
+                    >
+
+                    <span>
+                        Men
+                    </span>
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="filterCategory"
+                        value="women"
+                    >
+
+                    <span>
+                        Women
+                    </span>
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="filterCategory"
+                        value="shoes"
+                    >
+
+                    <span>
+                        Shoes
+                    </span>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- ================= PRICE RANGE ================= -->
+
+            <div class="filter-group">
+
+                <h3>
+                    Price Range
+                </h3>
+
+
+                <div class="filter-price-values">
+
+                    <div>
+
+                        <span>
+                            Minimum
+                        </span>
+
+                        <strong id="filterMinPriceValue">
+                            ₦0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Maximum
+                        </span>
+
+                        <strong id="filterMaxPriceValue">
+                            ₦100,000
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="price-range-sliders">
+
+                    <input
+                        type="range"
+                        id="filterMinPrice"
+                        min="0"
+                        max="100000"
+                        step="1000"
+                        value="0"
+                    >
+
+
+                    <input
+                        type="range"
+                        id="filterMaxPrice"
+                        min="0"
+                        max="100000"
+                        step="1000"
+                        value="100000"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= CLOTHING SIZE ================= -->
+
+            <div
+                class="filter-group"
+                id="clothingSizeGroup"
+            >
+
+                <h3>
+                    Clothing Size
+                </h3>
+
+
+                <div class="filter-size-options">
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="clothingSize"
+                            value="S"
+                        >
+
+                        <span>
+                            S
+                        </span>
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="clothingSize"
+                            value="M"
+                        >
+
+                        <span>
+                            M
+                        </span>
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="clothingSize"
+                            value="L"
+                        >
+
+                        <span>
+                            L
+                        </span>
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="clothingSize"
+                            value="XL"
+                        >
+
+                        <span>
+                            XL
+                        </span>
+
+                    </label>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= SHOE SIZE ================= -->
+
+            <div
+                class="filter-group"
+                id="shoeSizeGroup"
+            >
+
+                <h3>
+                    Shoe Size
+                </h3>
+
+
+                <div class="filter-size-options">
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="shoeSize"
+                            value="39"
+                        >
+
+                        <span>
+                            39
+                        </span>
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="shoeSize"
+                            value="40"
+                        >
+
+                        <span>
+                            40
+                        </span>
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="shoeSize"
+                            value="41"
+                        >
+
+                        <span>
+                            41
+                        </span>
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="shoeSize"
+                            value="42"
+                        >
+
+                        <span>
+                            42
+                        </span>
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="shoeSize"
+                            value="43"
+                        >
+
+                        <span>
+                            43
+                        </span>
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="shoeSize"
+                            value="44"
+                        >
+
+                        <span>
+                            44
+                        </span>
+
+                    </label>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= AVAILABILITY ================= -->
+
+            <div class="filter-group">
+
+                <h3>
+                    Availability
+                </h3>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        id="filterInStock"
+                    >
+
+                    <span>
+                        In Stock Only
+                    </span>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- ================= SORT ================= -->
+
+            <div class="filter-group">
+
+                <h3>
+                    Sort By
+                </h3>
+
+
+                <select
+                    id="filterSort"
+                    class="filter-sort"
+                >
+
+                    <option value="default">
+                        Recommended
+                    </option>
+
+                    <option value="price-low">
+                        Price: Low to High
+                    </option>
+
+                    <option value="price-high">
+                        Price: High to Low
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- ================= ACTIONS ================= -->
+
+            <div class="filter-actions">
+
+                <button
+                    type="button"
+                    id="clearFilters"
+                    class="secondary-button"
+                >
+                    CLEAR ALL
+                </button>
+
+
+                <button
+                    type="button"
+                    id="applyFilters"
+                    class="primary-button"
+                >
+                    APPLY FILTERS
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <section class="shop-products">
+
+        <div class="shop-product-grid">
+
+
+            <!-- ================= HOODIE ================= -->
+
+            <article
+                class="shop-product-card product-link"
+                data-category="men"
+                data-name="Oversized Hoodie"
+            >
+
+                <a
+                    href="product.html?id=hoodie-001"
+                    class="shop-product-image"
+                >
+
+                    <img
+                        src="images/hoodie-001.jpg"
+                        alt="Oversized Hoodie"
+                    >
+
+                </a>
+
+
+                <div class="shop-product-info">
+
+                    <p class="product-category">
+                        MEN'S COLLECTION
+                    </p>
+
+                    <h2>
+                        Oversized Hoodie
+                    </h2>
+
+                    <p class="product-price">
+                        ₦25,000
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- ================= SHIRT ================= -->
+
+            <article
+                class="shop-product-card product-link"
+                data-category="men"
+                data-name="Classic White Shirt"
+            >
+
+                <a
+                    href="product.html?id=shirt-001"
+                    class="shop-product-image"
+                >
+
+                    <img
+                        src="images/shirt-001.jpg"
+                        alt="Classic White Shirt"
+                    >
+
+                </a>
+
+
+                <div class="shop-product-info">
+
+                    <p class="product-category">
+                        MEN'S COLLECTION
+                    </p>
+
+                    <h2>
+                        Classic White Shirt
+                    </h2>
+
+                    <p class="product-price">
+                        ₦18,000
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- ================= CARGO ================= -->
+
+            <article
+                class="shop-product-card product-link"
+                data-category="men"
+                data-name="Cargo Trousers"
+            >
+
+                <a
+                    href="product.html?id=cargo-001"
+                    class="shop-product-image"
+                >
+
+                    <img
+                        src="images/cargo-001.jpg"
+                        alt="Cargo Trousers"
+                    >
+
+                </a>
+
+
+                <div class="shop-product-info">
+
+                    <p class="product-category">
+                        MEN'S COLLECTION
+                    </p>
+
+                    <h2>
+                        Cargo Trousers
+                    </h2>
+
+                    <p class="product-price">
+                        ₦32,000
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- ================= DENIM ================= -->
+
+            <article
+                class="shop-product-card product-link"
+                data-category="men"
+                data-name="Denim Jacket"
+            >
+
+                <a
+                    href="product.html?id=denim-001"
+                    class="shop-product-image"
+                >
+
+                    <img
+                        src="images/denim-001.jpg"
+                        alt="Denim Jacket"
+                    >
+
+                </a>
+
+
+                <div class="shop-product-info">
+
+                    <p class="product-category">
+                        MEN'S COLLECTION
+                    </p>
+
+                    <h2>
+                        Denim Jacket
+                    </h2>
+
+                    <p class="product-price">
+                        ₦40,000
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- ================= SHOE 1 ================= -->
+
+            <article
+                class="shop-product-card product-link"
+                data-category="shoes"
+                data-name="Classic Runner"
+            >
+
+                <a
+                    href="product.html?id=shoe-001"
+                    class="shop-product-image"
+                >
+
+                    <img
+                        src="images/shoe-001.jpg"
+                        alt="Classic Runner"
+                    >
+
+                </a>
+
+
+                <div class="shop-product-info">
+
+                    <p class="product-category">
+                        SHOES
+                    </p>
+
+                    <h2>
+                        Classic Runner
+                    </h2>
+
+                    <p class="product-price">
+                        ₦35,000
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- ================= SHOE 2 ================= -->
+
+            <article
+                class="shop-product-card product-link"
+                data-category="shoes"
+                data-name="Street Sneaker"
+            >
+
+                <a
+                    href="product.html?id=shoe-002"
+                    class="shop-product-image"
+                >
+
+                    <img
+                        src="images/shoe-002.jpg"
+                        alt="Street Sneaker"
+                    >
+
+                </a>
+
+
+                <div class="shop-product-info">
+
+                    <p class="product-category">
+                        SHOES
+                    </p>
+
+                    <h2>
+                        Street Sneaker
+                    </h2>
+
+                    <p class="product-price">
+                        ₦42,000
+                    </p>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="site-footer">
+
+    <div class="footer-brand">
+
+        <h2>
+            THREADLY
+        </h2>
+
+        <p>
+            Wear your thread.
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+
+        <div>
+
+            <h3>
+                SHOP
+            </h3>
+
+            <a href="shop.html">
+                All Products
+            </a>
+
+            <a href="shop.html?category=men">
+                Men
+            </a>
+
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                HELP
+            </h3>
+
+            <a href="help.html">
+                Contact
+            </a>
+
+            <a href="delivery.html">
+                Delivery
+            </a>
+
+            <a href="returns.html">
+                Returns
+            </a>
+
+            <a href="help.html#faq">
+                FAQ
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 THREADLY. All rights reserved to the AWOJIDE AND FATUSA Family.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>

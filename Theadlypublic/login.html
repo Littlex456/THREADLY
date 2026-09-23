@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Login | THREADLY</title>
+
+<script>
+    (function () {
+
+        const savedTheme =
+            localStorage.getItem("threadlyTheme") ||
+            "system";
+
+        const prefersDark =
+            window.matchMedia &&
+            window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            ).matches;
+
+        const shouldUseDark =
+            savedTheme === "dark" ||
+            (
+                savedTheme === "system" &&
+                prefersDark
+            );
+
+        if (shouldUseDark) {
+            document.documentElement.classList.add(
+                "threadly-dark"
+            );
+        }
+
+    })();
+</script>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <a href="index.html" class="logo-link">
+        <h1>THREADLY</h1>
+    </a>
+
+    <nav class="desktop-nav">
+
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="shop.html">Men</a>
+        <a href="shop.html">Women</a>
+        <a href="shop.html">Shoes</a>
+        <a href="cart.html">Cart</a>
+
+    </nav>
+
+    <div class="header-actions">
+
+        <button
+            id="menuButton"
+            class="menu-button"
+            aria-label="Open menu"
+        >
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+
+<div id="mobileMenu" class="mobile-menu">
+
+    <div class="mobile-menu-header">
+
+        <h2>THREADLY</h2>
+
+        <button
+            id="closeMenu"
+            class="close-menu"
+            aria-label="Close menu"
+        >
+            ×
+        </button>
+
+    </div>
+
+    <nav class="mobile-nav">
+
+        <a href="login.html">Login</a>
+        <a href="signup.html">Create Account</a>
+
+        <div class="menu-divider"></div>
+
+        <a href="settings.html">Settings</a>
+        <a href="help.html">Help &amp; Support</a>
+
+    </nav>
+
+</div>
+
+<div id="menuOverlay" class="menu-overlay"></div>
+
+
+<main class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="auth-heading">
+
+            <p>WELCOME BACK</p>
+
+            <h2>Login</h2>
+
+            <span>
+                Sign in to continue shopping with THREADLY.
+            </span>
+
+        </div>
+
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label for="loginEmail">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    autocomplete="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="loginPassword">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    autocomplete="current-password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <p
+                id="loginMessage"
+                class="auth-message"
+            ></p>
+
+
+            <button
+                type="submit"
+                class="auth-button"
+            >
+                LOGIN
+            </button>
+
+        </form>
+
+
+        <p class="auth-switch">
+
+            Don't have an account?
+
+            <a href="signup.html">
+                Create one
+            </a>
+
+        </p>
+
+    </div>
+
+</main>
+
+
+<script src="app.js"></script>
+```
+
+</body>
+
+</html>
