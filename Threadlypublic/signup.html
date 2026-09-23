@@ -3,7 +3,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+
+<meta charset="UTF-8">
 
 <meta
     name="viewport"
@@ -12,18 +13,22 @@
 
 <title>Create Account | THREADLY</title>
 
+
 <script>
+
     (function () {
 
         const savedTheme =
             localStorage.getItem("threadlyTheme") ||
             "system";
 
+
         const prefersDark =
             window.matchMedia &&
             window.matchMedia(
                 "(prefers-color-scheme: dark)"
             ).matches;
+
 
         const shouldUseDark =
             savedTheme === "dark" ||
@@ -32,16 +37,24 @@
                 prefersDark
             );
 
+
         if (shouldUseDark) {
+
             document.documentElement.classList.add(
                 "threadly-dark"
             );
+
         }
 
     })();
+
 </script>
 
-<link rel="stylesheet" href="style.css">
+
+<link
+    rel="stylesheet"
+    href="style.css"
+>
 
 </head>
 
@@ -49,188 +62,278 @@
 
 <header class="site-header">
 
-    <a href="index.html" class="logo-link">
-        <h1>THREADLY</h1>
-    </a>
-
-    <nav class="desktop-nav">
-
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-        <a href="shop.html">Men</a>
-        <a href="shop.html">Women</a>
-        <a href="shop.html">Shoes</a>
-        <a href="cart.html">Cart</a>
-
-    </nav>
-
-    <div class="header-actions">
-
-        <button
-            id="menuButton"
-            class="menu-button"
-            aria-label="Open menu"
-        >
-            ☰
-        </button>
-
-    </div>
-
-</header>
+<a
+    href="index.html"
+    class="logo-link"
+>
+    <h1>THREADLY</h1>
+</a>
 
 
-<div id="mobileMenu" class="mobile-menu">
+<nav class="desktop-nav">
 
-    <div class="mobile-menu-header">
+    <a href="index.html">Home</a>
 
-        <h2>THREADLY</h2>
+    <a href="shop.html">Shop</a>
 
-        <button
-            id="closeMenu"
-            class="close-menu"
-            aria-label="Close menu"
-        >
-            ×
-        </button>
+    <a href="shop.html">Men</a>
 
-    </div>
+    <a href="shop.html">Women</a>
 
-    <nav class="mobile-nav">
+    <a href="shop.html">Shoes</a>
 
-        <a href="login.html">Login</a>
-        <a href="signup.html">Create Account</a>
+    <a href="cart.html">Cart</a>
 
-        <div class="menu-divider"></div>
+</nav>
 
-        <a href="settings.html">Settings</a>
-        <a href="help.html">Help &amp; Support</a>
 
-    </nav>
+<div class="header-actions">
+
+    <button
+        id="menuButton"
+        class="menu-button"
+        type="button"
+        aria-label="Open menu"
+    >
+        ☰
+    </button>
 
 </div>
 
-<div id="menuOverlay" class="menu-overlay"></div>
+</header>
 
+<div
+    id="mobileMenu"
+    class="mobile-menu"
+>
+
+<div class="mobile-menu-header">
+
+    <h2>THREADLY</h2>
+
+
+    <button
+        id="closeMenu"
+        class="close-menu"
+        type="button"
+        aria-label="Close menu"
+    >
+        ×
+    </button>
+
+</div>
+
+
+<nav class="mobile-nav">
+
+    <a href="login.html">
+        Login
+    </a>
+
+    <a href="signup.html">
+        Create Account
+    </a>
+
+
+    <div class="menu-divider"></div>
+
+
+    <a href="settings.html">
+        Settings
+    </a>
+
+    <a href="help.html">
+        Help &amp; Support
+    </a>
+
+</nav>
+
+</div>
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
 
 <main class="auth-page">
 
-    <div class="auth-container">
+<div class="auth-container">
 
-        <div class="auth-heading">
 
-            <p>JOIN THREADLY</p>
+    <div class="auth-heading">
 
-            <h2>Create Account</h2>
+        <p>
+            JOIN THREADLY
+        </p>
 
-            <span>
-                Create your account to start shopping.
-            </span>
+
+        <h2>
+            Create Account
+        </h2>
+
+
+        <span>
+            Create your account to start shopping.
+        </span>
+
+    </div>
+
+
+
+    <form id="signupForm">
+
+
+        <div class="form-group">
+
+            <label for="signupName">
+                Full Name
+            </label>
+
+
+            <input
+                type="text"
+                id="signupName"
+                autocomplete="name"
+                placeholder="Enter your name"
+                required
+            >
 
         </div>
 
 
-        <form id="signupForm">
 
-            <div class="form-group">
+        <div class="form-group">
 
-                <label for="signupName">
-                    Full Name
-                </label>
-
-                <input
-                    type="text"
-                    id="signupName"
-                    autocomplete="name"
-                    placeholder="Enter your name"
-                    required
-                >
-
-            </div>
+            <label for="signupEmail">
+                Email Address
+            </label>
 
 
-            <div class="form-group">
-
-                <label for="signupEmail">
-                    Email Address
-                </label>
-
-                <input
-                    type="email"
-                    id="signupEmail"
-                    autocomplete="email"
-                    placeholder="Enter your email"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="signupPassword">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="signupPassword"
-                    autocomplete="new-password"
-                    minlength="8"
-                    placeholder="Create a password"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="signupConfirmPassword">
-                    Confirm Password
-                </label>
-
-                <input
-                    type="password"
-                    id="signupConfirmPassword"
-                    autocomplete="new-password"
-                    minlength="8"
-                    placeholder="Confirm your password"
-                    required
-                >
-
-            </div>
-
-
-            <p
-                id="signupMessage"
-                class="auth-message"
-            ></p>
-
-
-            <button
-                type="submit"
-                class="auth-button"
+            <input
+                type="email"
+                id="signupEmail"
+                autocomplete="email"
+                placeholder="Enter your email"
+                required
             >
-                CREATE ACCOUNT
-            </button>
 
-        </form>
+        </div>
 
 
-        <p class="auth-switch">
 
-            Already have an account?
+        <div class="form-group">
 
-            <a href="login.html">
-                Login
-            </a>
+            <label for="signupPhone">
+                Phone Number
+            </label>
 
-        </p>
 
-    </div>
+            <input
+                type="tel"
+                id="signupPhone"
+                autocomplete="tel"
+                placeholder="Enter your phone number"
+                required
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="signupUsername">
+                Username
+            </label>
+
+
+            <input
+                type="text"
+                id="signupUsername"
+                autocomplete="username"
+                placeholder="Choose a username"
+                required
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="signupPassword">
+                Password
+            </label>
+
+
+            <input
+                type="password"
+                id="signupPassword"
+                autocomplete="new-password"
+                minlength="8"
+                placeholder="Create a password"
+                required
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="signupConfirmPassword">
+                Confirm Password
+            </label>
+
+
+            <input
+                type="password"
+                id="signupConfirmPassword"
+                autocomplete="new-password"
+                minlength="8"
+                placeholder="Confirm your password"
+                required
+            >
+
+        </div>
+
+
+
+        <p
+            id="signupMessage"
+            class="auth-message"
+        ></p>
+
+
+
+        <button
+            type="submit"
+            class="auth-button"
+        >
+            CREATE ACCOUNT
+        </button>
+
+    </form>
+
+
+
+    <p class="auth-switch">
+
+        Already have an account?
+
+        <a href="login.html">
+            Login
+        </a>
+
+    </p>
+
+</div>
 
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-client.js"></script>
 
 <script src="app.js"></script>
 

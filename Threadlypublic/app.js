@@ -753,112 +753,268 @@ const products = {
     }
 
 };
+
 // =========================================
 // SECTION 4: SIGNUP
 // =========================================
 
 (function () {
 
-    const signupForm = document.getElementById("signupForm");
+    const signupForm =
+        document.getElementById("signupForm");
 
     if (!signupForm) return;
 
-    const signupName = document.getElementById("signupName");
-    const signupEmail = document.getElementById("signupEmail");
-    const signupPassword = document.getElementById("signupPassword");
+    const signupName =
+        document.getElementById("signupName");
+
+    const signupEmail =
+        document.getElementById("signupEmail");
+
+    const signupPhone =
+        document.getElementById("signupPhone");
+
+    const signupUsername =
+        document.getElementById("signupUsername");
+
+    const signupPassword =
+        document.getElementById("signupPassword");
+
     const signupConfirmPassword =
         document.getElementById("signupConfirmPassword");
+
     const signupMessage =
         document.getElementById("signupMessage");
 
-    signupForm.addEventListener("submit", function (event) {
+    signupForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const name = signupName.value.trim();
-        const email = signupEmail.value.trim().toLowerCase();
-        const password = signupPassword.value;
-        const confirmPassword = signupConfirmPassword.value;
+            const name =
+                signupName?.value.trim() || "";
 
-        // Clear previous message
-        signupMessage.textContent = "";
+            const email =
+                signupEmail?.value.trim().toLowerCase() || "";
 
-        // Check all fields
-        if (!name || !email || !password || !confirmPassword) {
+            const phone =
+                signupPhone?.value.trim() || "";
+
+            const username =
+                signupUsername?.value.trim().toLowerCase() || "";
+
+            const password =
+                signupPassword?.value || "";
+
+            const confirmPassword =
+                signupConfirmPassword?.value || "";
+
+            signupMessage.textContent = "";
+
+            // =========================================
+            // CHECK ALL FIELDS
+            // =========================================
+
+            if (
+                !name ||
+                !email ||
+                !phone ||
+                !username ||
+                !password ||
+                !confirmPassword
+            ) {
+
+                signupMessage.textContent =
+                    "Please fill in all fields.";
+
+                return;
+            }
+
+            // =========================================
+            // CHECK PASSWORD LENGTH
+            // =========================================
+
+            if (password.length < 8) {
+
+                signupMessage.textContent =
+                    "Your password must be at least 8 characters long.";
+
+                return;
+            }
+
+            // =========================================
+            // CHECK CAPITAL LETTER
+            // =========================================
+
+            if (!/[A-Z]/.test(password)) {
+
+                signupMessage.textContent =
+                    "Your password must contain at least one capital letter (A-Z).";
+
+                return;
+            }
+
+            // =========================================
+            // CHECK PASSWORD CONFIRMATION
+            // =========================================
+
+            if (password !== confirmPassword) {
+
+                signupMessage.textContent =
+                    "The passwords do not match. Please enter the same password in both fields.";
+
+                return;
+            }
+
+            // =========================================
+            // CHECK SUPABASE
+            // =========================================
+
+            const supabase =
+                window.threadlySupabase;
+
+            if (!supabase) {
+
+                signupMessage.textContent =
+                    "Authentication service is unavailable.";
+
+                console.error(
+                    "THREADLY Supabase client was not found."
+                );
+
+                return;
+            }
 
             signupMessage.textContent =
-                "Please fill in all fields.";
+                "Creating your account...";
 
-            return;
-        }
+            // =========================================
+            // CREATE SUPABASE ACCOUNT
+            // =========================================
 
-        // Check password length
-        if (password.length < 8) {
+            const { data, error } =
+                await supabase.auth.signUp({
+
+                    email: email,
+
+                    password: password,
+
+                   options: {
+
+    data: {
+
+        full_name: name,
+        phone: phone,
+        username: username
+
+    },
+
+    emailRedirectTo:
+        window.location.origin + "/login.html"
+
+}
+
+                });
+
+            // =========================================
+            // HANDLE ERROR
+            // =========================================
+
+            if (error) {
+
+                console.error(
+                    "THREADLY signup error:",
+                    error
+                );
+
+                signupMessage.textContent =
+                    error.message;
+
+                return;
+            }
+
+            // =========================================
+            // CHECK USER
+            // =========================================
+
+            if (!data.user) {
+
+                signupMessage.textContent =
+                    "Account could not be created.";
+
+                return;
+            }
+
+            // =========================================
+            // SAVE NON-SENSITIVE USER INFORMATION
+            // =========================================
+
+            localStorage.setItem(
+                "threadlyUser",
+                JSON.stringify({
+
+                    name: name,
+
+                    email: email,
+
+                    phone: phone,
+
+                    username: username
+
+                })
+            );
+
+            // =========================================
+            // CHECK WHETHER SUPABASE CREATED A SESSION
+            // =========================================
+
+            if (data.session) {
+
+                localStorage.setItem(
+                    "threadlyLoggedIn",
+                    "true"
+                );
+
+                const params =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+                const redirect =
+                    params.get("redirect");
+
+                if (redirect) {
+
+                    window.location.href =
+                        decodeURIComponent(redirect);
+
+                } else {
+
+                    window.location.href =
+                        "index.html";
+
+                }
+
+                return;
+            }
+
+            // =========================================
+            // EMAIL CONFIRMATION REQUIRED
+            // =========================================
+
+            localStorage.removeItem(
+                "threadlyLoggedIn"
+            );
 
             signupMessage.textContent =
-                "Your password must be at least 8 characters long.";
-
-            return;
-        }
-
-        // Check for capital letter
-        if (!/[A-Z]/.test(password)) {
-
-            signupMessage.textContent =
-                "Your password must contain at least one capital letter (A-Z).";
-
-            return;
-        }
-
-        // Check password confirmation
-        if (password !== confirmPassword) {
-
-            signupMessage.textContent =
-                "The passwords do not match. Please enter the same password in both fields.";
-
-            return;
-        }
-
-        // =========================================
-        // ONLY CREATE ACCOUNT IF EVERYTHING IS VALID
-        // =========================================
-
-        const user = {
-            name: name,
-            email: email,
-            password: password
-        };
-
-        localStorage.setItem(
-            "threadlyUser",
-            JSON.stringify(user)
-        );
-
-        localStorage.setItem(
-            "threadlyLoggedIn",
-            "true"
-        );
-
-        // Redirect after successful account creation
-        const params =
-            new URLSearchParams(window.location.search);
-
-        const redirect = params.get("redirect");
-
-        if (redirect) {
-
-            window.location.href =
-                decodeURIComponent(redirect);
-
-        } else {
-
-            window.location.href = "index.html";
+                "Account created. Check your email to confirm your account, then log in.";
 
         }
-
-    });
+    );
 
 })();
+
 // =========================================
 // SECTION 5: LOGIN
 // =========================================
@@ -879,89 +1035,157 @@ const products = {
     const loginMessage =
         document.getElementById("loginMessage");
 
-    loginForm.addEventListener("submit", function (event) {
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const email =
-            loginEmail.value.trim().toLowerCase();
+            const email =
+                loginEmail?.value.trim().toLowerCase() || "";
 
-        const password =
-            loginPassword.value;
+            const password =
+                loginPassword?.value || "";
 
-        loginMessage.textContent = "";
+            loginMessage.textContent = "";
 
-        // Get saved account
-        const savedUser =
-            JSON.parse(
-                localStorage.getItem("threadlyUser")
+            // =========================================
+            // CHECK FIELDS
+            // =========================================
+
+            if (!email || !password) {
+
+                loginMessage.textContent =
+                    "Please enter your email and password.";
+
+                return;
+            }
+
+            // =========================================
+            // CHECK SUPABASE
+            // =========================================
+
+            const supabase =
+                window.threadlySupabase;
+
+            if (!supabase) {
+
+                loginMessage.textContent =
+                    "Authentication service is unavailable.";
+
+                console.error(
+                    "THREADLY Supabase client was not found."
+                );
+
+                return;
+            }
+
+            loginMessage.textContent =
+                "Signing you in...";
+
+            // =========================================
+            // SUPABASE LOGIN
+            // =========================================
+
+            const { data, error } =
+                await supabase.auth.signInWithPassword({
+
+                    email: email,
+
+                    password: password
+
+                });
+
+            // =========================================
+            // HANDLE ERROR
+            // =========================================
+
+            if (error) {
+
+                console.error(
+                    "THREADLY login error:",
+                    error
+                );
+
+                loginMessage.textContent =
+                    "Incorrect email or password.";
+
+                return;
+            }
+
+            // =========================================
+            // CHECK SESSION
+            // =========================================
+
+            if (!data.session || !data.user) {
+
+                loginMessage.textContent =
+                    "Login could not be completed.";
+
+                return;
+            }
+
+            // =========================================
+            // SAVE NON-SENSITIVE USER INFORMATION
+            // =========================================
+
+            const metadata =
+                data.user.user_metadata || {};
+
+            localStorage.setItem(
+                "threadlyUser",
+                JSON.stringify({
+
+                    name:
+                        metadata.full_name || "",
+
+                    email:
+                        data.user.email || email,
+
+                    phone:
+                        metadata.phone || "",
+
+                    username:
+                        metadata.username || ""
+
+                })
             );
 
-        if (!savedUser) {
-
-            loginMessage.textContent =
-                "No THREADLY account was found. Please create an account first.";
-
-            return;
-        }
-
-        // Check email
-        if (
-            email !==
-            String(savedUser.email).trim().toLowerCase()
-        ) {
-
-            loginMessage.textContent =
-                "Incorrect email or password.";
-
-            return;
-        }
-
-        // Check password
-        if (
-            password !==
-            String(savedUser.password)
-        ) {
-
-            loginMessage.textContent =
-                "Incorrect email or password.";
-
-            return;
-        }
-
-        // =========================================
-        // LOGIN SUCCESSFUL
-        // =========================================
-
-        localStorage.setItem(
-            "threadlyLoggedIn",
-            "true"
-        );
-
-        // Return user to the page they originally requested
-        const params =
-            new URLSearchParams(
-                window.location.search
+            localStorage.setItem(
+                "threadlyLoggedIn",
+                "true"
             );
 
-        const redirect =
-            params.get("redirect");
+            // =========================================
+            // RETURN TO ORIGINAL PAGE
+            // =========================================
 
-        if (redirect) {
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
 
-            window.location.href =
-                decodeURIComponent(redirect);
+            const redirect =
+                params.get("redirect");
 
-        } else {
+            if (redirect) {
 
-            window.location.href =
-                "index.html";
+                window.location.href =
+                    decodeURIComponent(redirect);
+
+            } else {
+
+                window.location.href =
+                    "index.html";
+
+            }
 
         }
-
-    });
+    );
 
 })();
+
+
 // =========================================
 // SECTION 6: HOME SEARCH
 // =========================================
