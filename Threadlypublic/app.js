@@ -4,28 +4,41 @@
 
 (function () {
 
-    const LOGIN_PAGE = "login.html";
-    const SIGNUP_PAGE = "signup.html";
+    const LOGIN_PAGE =
+        "login.html";
 
-    function isLoggedIn() {
-        return (
-            localStorage.getItem("threadlyLoggedIn") === "true" &&
-            !!localStorage.getItem("threadlyUser")
-        );
-    }
+    const SIGNUP_PAGE =
+        "signup.html";
+
+
+    // =========================================
+    // PROTECTED PAGES
+    // =========================================
 
     const protectedPages = [
+
         "cart.html",
+
         "checkout.html",
+
         "account.html",
+
         "orders.html",
+
         "saved.html",
+
         "settings.html",
+
         "payment-method.html",
+
         "transfer.html",
+
         "receipt.html",
+
         "order-details.html"
+
     ];
+
 
     const currentPage =
         window.location.pathname
@@ -33,43 +46,353 @@
             .pop()
             .toLowerCase();
 
+
+    // =========================================
+    // LOAD A SCRIPT
+    // =========================================
+
+    function loadScript(src) {
+
+        return new Promise(
+            function (resolve, reject) {
+
+                const existingScript =
+                    document.querySelector(
+                        `script[src="${src}"]`
+                    );
+
+                if (existingScript) {
+
+                    // Give an already-loaded script
+                    // a moment to finish before continuing.
+
+                    if (
+                        existingScript.dataset.loaded ===
+                        "true"
+                    ) {
+
+                        resolve();
+
+                        return;
+
+                    }
+
+                    existingScript.addEventListener(
+                        "load",
+                        resolve,
+                        {
+                            once: true
+                        }
+                    );
+
+                    existingScript.addEventListener(
+                        "error",
+                        reject,
+                        {
+                            once: true
+                        }
+                    );
+
+                    return;
+                }
+
+
+                const script =
+                    document.createElement(
+                        "script"
+                    );
+
+
+                script.src =
+                    src;
+
+
+                script.dataset.loaded =
+                    "false";
+
+
+                script.addEventListener(
+                    "load",
+                    function () {
+
+                        script.dataset.loaded =
+                            "true";
+
+                        resolve();
+
+                    },
+                    {
+                        once: true
+                    }
+                );
+
+
+                script.addEventListener(
+                    "error",
+                    function () {
+
+                        reject(
+                            new Error(
+                                "Failed to load " +
+                                src
+                            )
+                        );
+
+                    },
+                    {
+                        once: true
+                    }
+                );
+
+
+                document.head.appendChild(
+                    script
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================
+    // MAKE SURE SUPABASE IS AVAILABLE
+    // =========================================
+
+    async function getSupabaseClient() {
+
+        // Already available
+        if (
+            window.threadlySupabase
+        ) {
+
+            return window.threadlySupabase;
+
+        }
+
+
+        // Load the Supabase library
+        if (
+            !window.supabase
+        ) {
+
+            await loadScript(
+                "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+            );
+
+        }
+
+
+        // Load THREADLY Supabase configuration
+        if (
+            !window.threadlySupabase
+        ) {
+
+            await loadScript(
+                "supabase-client.js"
+            );
+
+        }
+
+
+        if (
+            !window.threadlySupabase
+        ) {
+
+            throw new Error(
+                "THREADLY Supabase client could not be created."
+            );
+
+        }
+
+
+        return window.threadlySupabase;
+
+    }
+
+
+    // =========================================
+    // AUTHENTICATION INITIALIZATION
+    // =========================================
+
+    let supabase =
+        null;
+
+    let currentUser =
+        null;
+
+
+    const authReady =
+        (async function () {
+
+            try {
+
+                supabase =
+                    await getSupabaseClient();
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabase.auth.getUser();
+
+
+                if (error) {
+
+                    console.error(
+                        "THREADLY authentication check failed:",
+                        error
+                    );
+
+                    currentUser =
+                        null;
+
+                    return null;
+
+                }
+
+
+                currentUser =
+                    data.user || null;
+
+
+                return currentUser;
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY authentication initialization failed:",
+                    error
+                );
+
+                currentUser =
+                    null;
+
+                return null;
+
+            }
+
+        })();
+
+
+    // =========================================
+    // KEEP AUTH STATE UPDATED
+    // =========================================
+
+    authReady.then(
+        function () {
+
+            if (!supabase) {
+
+                return;
+
+            }
+
+
+            supabase.auth.onAuthStateChange(
+                function (
+                    event,
+                    session
+                ) {
+
+                    currentUser =
+                        session?.user || null;
+
+
+                    // Compatibility only.
+                    // This is NOT used to grant access.
+
+                    if (currentUser) {
+
+                        localStorage.setItem(
+                            "threadlyLoggedIn",
+                            "true"
+                        );
+
+                    } else {
+
+                        localStorage.removeItem(
+                            "threadlyLoggedIn"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    // =========================================
+    // CHECK LOGIN STATUS
+    // =========================================
+
+    async function isLoggedIn() {
+
+        await authReady;
+
+        return !!currentUser;
+
+    }
+
+
     // =========================================
     // PROTECT PAGE ACCESS
     // =========================================
 
-    function protectPage() {
+    async function protectPage() {
 
-        if (!protectedPages.includes(currentPage)) {
+        if (
+            !protectedPages.includes(
+                currentPage
+            )
+        ) {
+
             return;
+
         }
 
-        if (!isLoggedIn()) {
+
+        const loggedIn =
+            await isLoggedIn();
+
+
+        if (!loggedIn) {
 
             const requestedPage =
                 currentPage +
                 window.location.search;
 
+
             window.location.replace(
+
                 LOGIN_PAGE +
                 "?redirect=" +
                 encodeURIComponent(
                     requestedPage
                 )
+
             );
 
+
             return;
+
         }
 
-        // Replace current history state
-        // so protected pages are harder to restore
+
         window.history.replaceState(
             null,
             "",
             window.location.href
         );
+
     }
 
+
     protectPage();
+
 
     // =========================================
     // PROTECT BROWSER BACK/FORWARD
@@ -77,30 +400,47 @@
 
     window.addEventListener(
         "pageshow",
-        function (event) {
+        async function (event) {
 
             if (
-                event.persisted ||
+                !event.persisted &&
                 performance.getEntriesByType(
                     "navigation"
-                )[0]?.type === "back_forward"
+                )[0]?.type !==
+                "back_forward"
             ) {
 
-                if (
-                    protectedPages.includes(
-                        currentPage
-                    ) &&
-                    !isLoggedIn()
-                ) {
+                return;
 
-                    window.location.replace(
-                        LOGIN_PAGE
-                    );
-                }
+            }
+
+
+            if (
+                !protectedPages.includes(
+                    currentPage
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const loggedIn =
+                await isLoggedIn();
+
+
+            if (!loggedIn) {
+
+                window.location.replace(
+                    LOGIN_PAGE
+                );
+
             }
 
         }
     );
+
 
     // =========================================
     // PROTECT CUSTOMER LINKS
@@ -108,21 +448,29 @@
 
     document.addEventListener(
         "click",
-        function (event) {
+        async function (event) {
 
             const link =
                 event.target.closest("a");
 
+
             if (!link) {
+
                 return;
+
             }
+
 
             const href =
                 link.getAttribute("href");
 
+
             if (!href) {
+
                 return;
+
             }
+
 
             if (
                 href.startsWith("#") ||
@@ -131,10 +479,15 @@
                 href.startsWith("tel:") ||
                 href.startsWith("javascript:")
             ) {
+
                 return;
+
             }
 
-            let targetPage = "";
+
+            let targetPage =
+                "";
+
 
             try {
 
@@ -143,6 +496,7 @@
                         href,
                         window.location.href
                     );
+
 
                 targetPage =
                     url.pathname
@@ -156,45 +510,66 @@
 
             }
 
+
             if (
-                protectedPages.includes(
+                !protectedPages.includes(
                     targetPage
-                ) &&
-                !isLoggedIn()
+                )
             ) {
 
-                event.preventDefault();
+                return;
 
-                const requestedPage =
-                    targetPage +
-                    (
-                        href.includes("?")
-                            ? href.substring(
-                                href.indexOf("?")
-                            )
-                            : ""
-                    );
-
-                // If already on login page,
-                // don't create another login redirect
-                if (
-                    currentPage ===
-                    LOGIN_PAGE
-                ) {
-                    return;
-                }
-
-                window.location.replace(
-                    LOGIN_PAGE +
-                    "?redirect=" +
-                    encodeURIComponent(
-                        requestedPage
-                    )
-                );
             }
+
+
+            const loggedIn =
+                await isLoggedIn();
+
+
+            if (loggedIn) {
+
+                return;
+
+            }
+
+
+            event.preventDefault();
+
+
+            const requestedPage =
+                targetPage +
+                (
+                    href.includes("?")
+                        ? href.substring(
+                            href.indexOf("?")
+                        )
+                        : ""
+                );
+
+
+            if (
+                currentPage ===
+                LOGIN_PAGE
+            ) {
+
+                return;
+
+            }
+
+
+            window.location.replace(
+
+                LOGIN_PAGE +
+                "?redirect=" +
+                encodeURIComponent(
+                    requestedPage
+                )
+
+            );
 
         }
     );
+
 
     // =========================================
     // PREVENT CACHED PROTECTED PAGES
@@ -211,46 +586,59 @@
                 "meta"
             );
 
+
         metaCache.httpEquiv =
             "Cache-Control";
+
 
         metaCache.content =
             "no-store, no-cache, must-revalidate, max-age=0";
 
+
         document.head.appendChild(
             metaCache
         );
+
 
         const metaPragma =
             document.createElement(
                 "meta"
             );
 
+
         metaPragma.httpEquiv =
             "Pragma";
+
 
         metaPragma.content =
             "no-cache";
 
+
         document.head.appendChild(
             metaPragma
         );
+
 
         const metaExpires =
             document.createElement(
                 "meta"
             );
 
+
         metaExpires.httpEquiv =
             "Expires";
+
 
         metaExpires.content =
             "0";
 
+
         document.head.appendChild(
             metaExpires
         );
+
     }
+
 
     // =========================================
     // MAKE AUTH FUNCTIONS AVAILABLE
@@ -259,29 +647,57 @@
     window.threadlyIsLoggedIn =
         isLoggedIn;
 
-    window.threadlyRequireLogin =
-        function () {
 
-            if (isLoggedIn()) {
+    window.threadlyRequireLogin =
+        async function () {
+
+            const loggedIn =
+                await isLoggedIn();
+
+
+            if (loggedIn) {
+
                 return true;
+
             }
+
 
             const requestedPage =
                 currentPage +
                 window.location.search;
 
+
             window.location.replace(
+
                 LOGIN_PAGE +
                 "?redirect=" +
                 encodeURIComponent(
                     requestedPage
                 )
+
             );
 
+
             return false;
+
+        };
+
+
+    // =========================================
+    // SUPABASE CLIENT ACCESS
+    // =========================================
+
+    window.threadlyGetSupabase =
+        async function () {
+
+            await authReady;
+
+            return supabase;
+
         };
 
 })();
+
 // =========================================
 // THEME SYSTEM
 // =========================================
@@ -786,11 +1202,13 @@ const products = {
     const signupMessage =
         document.getElementById("signupMessage");
 
+
     signupForm.addEventListener(
         "submit",
         async function (event) {
 
             event.preventDefault();
+
 
             const name =
                 signupName?.value.trim() || "";
@@ -810,7 +1228,9 @@ const products = {
             const confirmPassword =
                 signupConfirmPassword?.value || "";
 
+
             signupMessage.textContent = "";
+
 
             // =========================================
             // CHECK ALL FIELDS
@@ -831,6 +1251,7 @@ const products = {
                 return;
             }
 
+
             // =========================================
             // CHECK PASSWORD LENGTH
             // =========================================
@@ -842,6 +1263,7 @@ const products = {
 
                 return;
             }
+
 
             // =========================================
             // CHECK CAPITAL LETTER
@@ -855,6 +1277,7 @@ const products = {
                 return;
             }
 
+
             // =========================================
             // CHECK PASSWORD CONFIRMATION
             // =========================================
@@ -867,8 +1290,9 @@ const products = {
                 return;
             }
 
+
             // =========================================
-            // CHECK SUPABASE
+            // CHECK SUPABASE CONNECTION
             // =========================================
 
             const supabase =
@@ -886,11 +1310,13 @@ const products = {
                 return;
             }
 
+
             signupMessage.textContent =
                 "Creating your account...";
 
+
             // =========================================
-            // CREATE SUPABASE ACCOUNT
+            // CREATE ACCOUNT
             // =========================================
 
             const { data, error } =
@@ -900,25 +1326,29 @@ const products = {
 
                     password: password,
 
-                   options: {
+                    options: {
 
-    data: {
+                        data: {
 
-        full_name: name,
-        phone: phone,
-        username: username
+                            full_name: name,
 
-    },
+                            phone: phone,
 
-    emailRedirectTo:
-        window.location.origin + "/login.html"
+                            username: username
 
-}
+                        },
+
+                        emailRedirectTo:
+                            window.location.origin +
+                            "/login.html"
+
+                    }
 
                 });
 
+
             // =========================================
-            // HANDLE ERROR
+            // HANDLE SUPABASE ERROR
             // =========================================
 
             if (error) {
@@ -934,6 +1364,7 @@ const products = {
                 return;
             }
 
+
             // =========================================
             // CHECK USER
             // =========================================
@@ -945,6 +1376,7 @@ const products = {
 
                 return;
             }
+
 
             // =========================================
             // SAVE NON-SENSITIVE USER INFORMATION
@@ -965,55 +1397,38 @@ const products = {
                 })
             );
 
-            // =========================================
-            // CHECK WHETHER SUPABASE CREATED A SESSION
-            // =========================================
-
-            if (data.session) {
-
-                localStorage.setItem(
-                    "threadlyLoggedIn",
-                    "true"
-                );
-
-                const params =
-                    new URLSearchParams(
-                        window.location.search
-                    );
-
-                const redirect =
-                    params.get("redirect");
-
-                if (redirect) {
-
-                    window.location.href =
-                        decodeURIComponent(redirect);
-
-                } else {
-
-                    window.location.href =
-                        "index.html";
-
-                }
-
-                return;
-            }
 
             // =========================================
-            // EMAIL CONFIRMATION REQUIRED
+            // SIGN OUT IMMEDIATELY
             // =========================================
+
+            await supabase.auth.signOut();
 
             localStorage.removeItem(
                 "threadlyLoggedIn"
             );
 
+
+            // =========================================
+            // SEND CUSTOMER TO LOGIN
+            // =========================================
+
             signupMessage.textContent =
-                "Account created. Check your email to confirm your account, then log in.";
+                "Account created successfully. Redirecting to login...";
+
+
+            setTimeout(function () {
+
+                window.location.href =
+                    "login.html";
+
+            }, 700);
 
         }
     );
 
 })();
+
 
 // =========================================
 // SECTION 5: LOGIN
@@ -3638,38 +4053,98 @@ updateQuantity();
     const mobileLogout =
         document.getElementById("mobileLogout");
 
-    function logoutUser(event) {
+
+    async function logoutUser(event) {
 
         if (event) {
             event.preventDefault();
         }
 
-        // Remove login session
+
+        const supabase =
+            window.threadlySupabase;
+
+
+        // =========================================
+        // SIGN OUT FROM SUPABASE
+        // =========================================
+
+        if (supabase) {
+
+            try {
+
+                const {
+                    error
+                } =
+                    await supabase.auth.signOut();
+
+
+                if (error) {
+
+                    console.error(
+                        "THREADLY logout error:",
+                        error
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY logout failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        // =========================================
+        // REMOVE OLD COMPATIBILITY DATA
+        // =========================================
+
         localStorage.removeItem(
             "threadlyLoggedIn"
         );
 
-        // Replace the current history entry
+        localStorage.removeItem(
+            "threadlyUser"
+        );
+
+
+        // =========================================
+        // RETURN TO LOGIN
+        // =========================================
+
         window.location.replace(
             "login.html"
         );
+
     }
 
+
     if (logoutButton) {
+
         logoutButton.addEventListener(
             "click",
             logoutUser
         );
+
     }
 
+
     if (mobileLogout) {
+
         mobileLogout.addEventListener(
             "click",
             logoutUser
         );
+
     }
 
 })();
+
 /* =========================================================
    SECTION 13: MOBILE MENU
 ========================================================= */
