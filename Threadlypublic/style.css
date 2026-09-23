@@ -57,15 +57,26 @@ body.dark-mode {
 
 
 /* =========================================================
-   GLOBAL THEME TRANSITION
+   GLOBAL RESET & THEME TRANSITION
    ========================================================= */
 
 html {
     scroll-behavior: smooth;
     background: var(--bg);
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
 }
 
 body {
+    margin: 0;
+
+    width: 100%;
+
     font-family: Arial, Helvetica, sans-serif;
     background: var(--bg);
     color: var(--text);
