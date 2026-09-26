@@ -1,4 +1,3 @@
-
 // =========================================
 // THREADLY AUTHENTICATION SYSTEM
 // =========================================
@@ -63,9 +62,6 @@
                     );
 
                 if (existingScript) {
-
-                    // Give an already-loaded script
-                    // a moment to finish before continuing.
 
                     if (
                         existingScript.dataset.loaded ===
@@ -162,7 +158,6 @@
 
     async function getSupabaseClient() {
 
-        // Already available
         if (
             window.threadlySupabase
         ) {
@@ -172,7 +167,6 @@
         }
 
 
-        // Load the Supabase library
         if (
             !window.supabase
         ) {
@@ -184,7 +178,6 @@
         }
 
 
-        // Load THREADLY Supabase configuration
         if (
             !window.threadlySupabase
         ) {
@@ -300,9 +293,6 @@
                     currentUser =
                         session?.user || null;
 
-
-                    // Compatibility only.
-                    // This is NOT used to grant access.
 
                     if (currentUser) {
 
@@ -523,12 +513,6 @@
             }
 
 
-            /*
-            Stop navigation first so the browser
-            does not leave the current page before
-            authentication is checked.
-            */
-
             event.preventDefault();
 
 
@@ -708,6 +692,7 @@
 
 })();
 
+
 // =========================================
 // THEME SYSTEM
 // =========================================
@@ -716,10 +701,6 @@
 
     const THEME_KEY = "threadlyTheme";
 
-
-    // -----------------------------------------
-    // GET SYSTEM THEME
-    // -----------------------------------------
 
     function getSystemTheme() {
 
@@ -733,10 +714,6 @@
         return "light";
     }
 
-
-    // -----------------------------------------
-    // GET SAVED THEME
-    // -----------------------------------------
 
     function getSavedTheme() {
 
@@ -754,10 +731,6 @@
         return "system";
     }
 
-
-    // -----------------------------------------
-    // UPDATE THEME CONTROLS
-    // -----------------------------------------
 
     function updateThemeControls(selectedTheme) {
 
@@ -836,10 +809,6 @@
     }
 
 
-    // -----------------------------------------
-    // APPLY THEME
-    // -----------------------------------------
-
     function applyTheme(theme) {
 
         let selectedTheme = theme;
@@ -859,9 +828,6 @@
                 ? getSystemTheme()
                 : selectedTheme;
 
-
-        // Keep both THREADLY theme classes
-        // working with the existing CSS.
 
         if (actualTheme === "dark") {
 
@@ -894,15 +860,11 @@
         }
 
 
-        // Save selected theme
-
         localStorage.setItem(
             THEME_KEY,
             selectedTheme
         );
 
-
-        // Update settings controls
 
         updateThemeControls(
             selectedTheme
@@ -910,10 +872,6 @@
 
     }
 
-
-    // -----------------------------------------
-    // GLOBAL THREADLY THEME FUNCTIONS
-    // -----------------------------------------
 
     window.threadlyApplyTheme =
         function (theme) {
@@ -930,10 +888,6 @@
 
         };
 
-
-    // -----------------------------------------
-    // INITIALIZE THEME
-    // -----------------------------------------
 
     function initializeTheme() {
 
@@ -962,10 +916,6 @@
 
     }
 
-
-    // -----------------------------------------
-    // DATA-THEME BUTTONS
-    // -----------------------------------------
 
     document.addEventListener(
         "click",
@@ -1002,10 +952,6 @@
         }
     );
 
-
-    // -----------------------------------------
-    // SETTINGS THEME BUTTONS
-    // -----------------------------------------
 
     function connectThemeButton(
         id,
@@ -1050,10 +996,6 @@
         "system"
     );
 
-
-    // -----------------------------------------
-    // SYSTEM THEME CHANGE
-    // -----------------------------------------
 
     if (window.matchMedia) {
 
@@ -1100,6 +1042,8 @@
     }
 
 })();
+
+
 // =========================================
 // PRODUCT DATABASE
 // =========================================
@@ -1180,6 +1124,7 @@ const products = {
 
 };
 
+
 // =========================================
 // SECTION 4: SIGNUP
 // =========================================
@@ -1190,6 +1135,7 @@ const products = {
         document.getElementById("signupForm");
 
     if (!signupForm) return;
+
 
     const signupName =
         document.getElementById("signupName");
@@ -1242,10 +1188,6 @@ const products = {
             signupMessage.textContent = "";
 
 
-            // =========================================
-            // CHECK ALL FIELDS
-            // =========================================
-
             if (
                 !name ||
                 !email ||
@@ -1262,10 +1204,6 @@ const products = {
             }
 
 
-            // =========================================
-            // CHECK PASSWORD LENGTH
-            // =========================================
-
             if (password.length < 8) {
 
                 signupMessage.textContent =
@@ -1274,10 +1212,6 @@ const products = {
                 return;
             }
 
-
-            // =========================================
-            // CHECK CAPITAL LETTER
-            // =========================================
 
             if (!/[A-Z]/.test(password)) {
 
@@ -1288,10 +1222,6 @@ const products = {
             }
 
 
-            // =========================================
-            // CHECK PASSWORD CONFIRMATION
-            // =========================================
-
             if (password !== confirmPassword) {
 
                 signupMessage.textContent =
@@ -1301,33 +1231,41 @@ const products = {
             }
 
 
-            // =========================================
-            // CHECK SUPABASE CONNECTION
-            // =========================================
+            let supabase;
 
-            const supabase =
-                window.threadlySupabase;
+            try {
+
+                supabase =
+                    await window.threadlyGetSupabase();
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY Supabase client was not found:",
+                    error
+                );
+
+                signupMessage.textContent =
+                    "Authentication service is unavailable.";
+
+                return;
+
+            }
+
 
             if (!supabase) {
 
                 signupMessage.textContent =
                     "Authentication service is unavailable.";
 
-                console.error(
-                    "THREADLY Supabase client was not found."
-                );
-
                 return;
+
             }
 
 
             signupMessage.textContent =
                 "Creating your account...";
 
-
-            // =========================================
-            // CREATE ACCOUNT
-            // =========================================
 
             const { data, error } =
                 await supabase.auth.signUp({
@@ -1357,10 +1295,6 @@ const products = {
                 });
 
 
-            // =========================================
-            // HANDLE SUPABASE ERROR
-            // =========================================
-
             if (error) {
 
                 console.error(
@@ -1375,10 +1309,6 @@ const products = {
             }
 
 
-            // =========================================
-            // CHECK USER
-            // =========================================
-
             if (!data.user) {
 
                 signupMessage.textContent =
@@ -1387,10 +1317,6 @@ const products = {
                 return;
             }
 
-
-            // =========================================
-            // SAVE NON-SENSITIVE USER INFORMATION
-            // =========================================
 
             localStorage.setItem(
                 "threadlyUser",
@@ -1408,20 +1334,13 @@ const products = {
             );
 
 
-            // =========================================
-            // SIGN OUT IMMEDIATELY
-            // =========================================
-
             await supabase.auth.signOut();
+
 
             localStorage.removeItem(
                 "threadlyLoggedIn"
             );
 
-
-            // =========================================
-            // SEND CUSTOMER TO LOGIN
-            // =========================================
 
             signupMessage.textContent =
                 "Account created successfully. Redirecting to login...";
@@ -1451,6 +1370,7 @@ const products = {
 
     if (!loginForm) return;
 
+
     const loginEmail =
         document.getElementById("loginEmail");
 
@@ -1460,11 +1380,13 @@ const products = {
     const loginMessage =
         document.getElementById("loginMessage");
 
+
     loginForm.addEventListener(
         "submit",
         async function (event) {
 
             event.preventDefault();
+
 
             const email =
                 loginEmail?.value.trim().toLowerCase() || "";
@@ -1472,11 +1394,9 @@ const products = {
             const password =
                 loginPassword?.value || "";
 
+
             loginMessage.textContent = "";
 
-            // =========================================
-            // CHECK FIELDS
-            // =========================================
 
             if (!email || !password) {
 
@@ -1486,31 +1406,42 @@ const products = {
                 return;
             }
 
-            // =========================================
-            // CHECK SUPABASE
-            // =========================================
 
-            const supabase =
-                window.threadlySupabase;
+            let supabase;
+
+            try {
+
+                supabase =
+                    await window.threadlyGetSupabase();
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY Supabase client was not found:",
+                    error
+                );
+
+                loginMessage.textContent =
+                    "Authentication service is unavailable.";
+
+                return;
+
+            }
+
 
             if (!supabase) {
 
                 loginMessage.textContent =
                     "Authentication service is unavailable.";
 
-                console.error(
-                    "THREADLY Supabase client was not found."
-                );
-
                 return;
+
             }
+
 
             loginMessage.textContent =
                 "Signing you in...";
 
-            // =========================================
-            // SUPABASE LOGIN
-            // =========================================
 
             const { data, error } =
                 await supabase.auth.signInWithPassword({
@@ -1521,9 +1452,6 @@ const products = {
 
                 });
 
-            // =========================================
-            // HANDLE ERROR
-            // =========================================
 
             if (error) {
 
@@ -1538,9 +1466,6 @@ const products = {
                 return;
             }
 
-            // =========================================
-            // CHECK SESSION
-            // =========================================
 
             if (!data.session || !data.user) {
 
@@ -1550,12 +1475,10 @@ const products = {
                 return;
             }
 
-            // =========================================
-            // SAVE NON-SENSITIVE USER INFORMATION
-            // =========================================
 
             const metadata =
                 data.user.user_metadata || {};
+
 
             localStorage.setItem(
                 "threadlyUser",
@@ -1576,22 +1499,22 @@ const products = {
                 })
             );
 
+
             localStorage.setItem(
                 "threadlyLoggedIn",
                 "true"
             );
 
-            // =========================================
-            // RETURN TO ORIGINAL PAGE
-            // =========================================
 
             const params =
                 new URLSearchParams(
                     window.location.search
                 );
 
+
             const redirect =
                 params.get("redirect");
+
 
             if (redirect) {
 
@@ -1623,19 +1546,25 @@ const products = {
     const searchButton =
         document.getElementById("homeSearchButton");
 
+
     if (!searchInput || !searchButton) return;
+
 
     function performHomeSearch() {
 
         const search =
             searchInput.value.trim();
 
+
         if (!search) {
 
-            window.location.href = "shop.html";
+            window.location.href =
+                "shop.html";
 
             return;
+
         }
+
 
         window.location.href =
             "shop.html?search=" +
@@ -1643,10 +1572,12 @@ const products = {
 
     }
 
+
     searchButton.addEventListener(
         "click",
         performHomeSearch
     );
+
 
     searchInput.addEventListener(
         "keydown",
@@ -1664,6 +1595,8 @@ const products = {
     );
 
 })();
+
+
 // =========================================
 // SECTION 7: SHOP
 // =========================================
@@ -1671,81 +1604,416 @@ const products = {
 (function () {
 
     const shopPage =
-        document.querySelector(".shop-page");
+        document.querySelector(
+            ".shop-page"
+        );
+
 
     if (!shopPage) return;
 
-    const productCards =
+
+    // =========================================
+    // SUPABASE PRODUCT DATABASE
+    // =========================================
+
+    async function loadProductsFromSupabase() {
+
+        try {
+
+            if (
+                !window.threadlyGetSupabase
+            ) {
+
+                console.warn(
+                    "THREADLY Supabase helper is not available."
+                );
+
+                return;
+
+            }
+
+
+            const supabase =
+                await window.threadlyGetSupabase();
+
+
+            if (!supabase) {
+
+                return;
+
+            }
+
+
+            const {
+                data,
+                error
+            } =
+                await supabase
+                    .from("products")
+                    .select(
+                        `
+                        id,
+                        name,
+                        category,
+                        filter_category,
+                        price,
+                        image,
+                        in_stock,
+                        quantity,
+                        description,
+                        sizes
+                        `
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: true
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "THREADLY product database error:",
+                    error
+                );
+
+                return;
+
+            }
+
+
+            if (!Array.isArray(data)) {
+
+                return;
+
+            }
+
+
+            Object.keys(
+                products
+            ).forEach(
+                function (id) {
+
+                    delete products[id];
+
+                }
+            );
+
+
+            data.forEach(
+                function (item) {
+
+                    products[item.id] = {
+
+                        id:
+                            item.id,
+
+                        name:
+                            item.name,
+
+                        category:
+                            item.category,
+
+                        filterCategory:
+                            item.filter_category,
+
+                        price:
+                            Number(
+                                item.price
+                            ),
+
+                        image:
+                            item.image,
+
+                        inStock:
+                            item.in_stock === true,
+
+                        quantity:
+                            Number(
+                                item.quantity
+                            ) || 0,
+
+                        description:
+                            item.description ||
+                            "",
+
+                        sizes:
+                            Array.isArray(
+                                item.sizes
+                            )
+                                ? item.sizes
+                                : []
+
+                    };
+
+                }
+            );
+
+
+            renderShopProducts();
+
+            applyShopFilters();
+
+
+            console.log(
+                "THREADLY products loaded from Supabase."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "THREADLY product loading failed:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // =========================================
+    // SHOP ELEMENTS
+    // =========================================
+
+    let productCards =
         document.querySelectorAll(
             ".shop-products .shop-product-card"
         );
 
+
     const searchInput =
-        document.getElementById("shopSearch");
+        document.getElementById(
+            "shopSearch"
+        );
+
 
     const searchButton =
-        document.getElementById("shopSearchButton");
+        document.getElementById(
+            "shopSearchButton"
+        );
+
 
     const filterButtons =
         document.querySelectorAll(
             ".shop-controls .filters button[data-filter]"
         );
 
+
     const filterToggle =
-        document.getElementById("filterToggle");
+        document.getElementById(
+            "filterToggle"
+        );
+
 
     const filterPanel =
-        document.getElementById("filterPanel");
+        document.getElementById(
+            "filterPanel"
+        );
+
 
     const filterClose =
-        document.getElementById("filterClose");
+        document.getElementById(
+            "filterClose"
+        );
+
 
     const applyFiltersButton =
-        document.getElementById("applyFilters");
+        document.getElementById(
+            "applyFilters"
+        );
+
 
     const clearFiltersButton =
-        document.getElementById("clearFilters");
+        document.getElementById(
+            "clearFilters"
+        );
+
 
     const minPrice =
-        document.getElementById("minPrice");
+        document.getElementById(
+            "filterMinPrice"
+        );
+
 
     const maxPrice =
-        document.getElementById("maxPrice");
+        document.getElementById(
+            "filterMaxPrice"
+        );
+
 
     const minPriceValue =
-        document.getElementById("minPriceValue");
+        document.getElementById(
+            "filterMinPriceValue"
+        );
+
 
     const maxPriceValue =
-        document.getElementById("maxPriceValue");
+        document.getElementById(
+            "filterMaxPriceValue"
+        );
+
 
     const sortSelect =
-        document.getElementById("sortProducts");
+        document.getElementById(
+            "filterSort"
+        );
 
-    const stockSelect =
-        document.getElementById("stockFilter");
 
-    let activeCategory = "all";
-    let activeSearch = "";
+    const stockCheckbox =
+        document.getElementById(
+            "filterInStock"
+        );
 
-    // -----------------------------------------
+
+    let activeCategory =
+        "all";
+
+
+    let activeSearch =
+        "";
+
+
+    // =========================================
+    // RENDER SHOP PRODUCTS
+    // =========================================
+
+    function renderShopProducts() {
+
+        const grid =
+            document.querySelector(
+                ".shop-product-grid"
+            );
+
+
+        if (!grid) {
+
+            return;
+
+        }
+
+
+        grid.innerHTML =
+            "";
+
+
+        Object.entries(
+            products
+        ).forEach(
+            function ([id, product]) {
+
+                const card =
+                    document.createElement(
+                        "article"
+                    );
+
+
+                card.className =
+                    "shop-product-card product-link";
+
+
+                card.dataset.category =
+                    product.filterCategory ||
+                    "";
+
+
+                card.dataset.name =
+                    product.name ||
+                    "";
+
+
+                card.innerHTML = `
+
+                    <a
+                        href="product.html?id=${id}"
+                        class="shop-product-image"
+                    >
+
+                        <img
+                            src="${product.image}"
+                            alt="${product.name}"
+                        >
+
+                    </a>
+
+
+                    <div class="shop-product-info">
+
+                        <p class="product-category">
+                            ${product.category}
+                        </p>
+
+                        <h2>
+                            ${product.name}
+                        </h2>
+
+                        <p class="product-price">
+                            ₦${Number(
+                                product.price
+                            ).toLocaleString("en-NG")}
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                grid.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+        productCards =
+            document.querySelectorAll(
+                ".shop-products .shop-product-card"
+            );
+
+    }
+
+
+    // =========================================
     // GET PRODUCT ID FROM CARD
-    // -----------------------------------------
+    // =========================================
 
     function getShopProductId(card) {
 
-        if (!card) return null;
+        if (!card) {
+
+            return null;
+
+        }
+
 
         const link =
             card.querySelector(
                 'a[href*="product.html?id="]'
             );
 
-        if (!link) return null;
+
+        if (!link) {
+
+            return null;
+
+        }
+
 
         const href =
-            link.getAttribute("href");
+            link.getAttribute(
+                "href"
+            );
 
-        if (!href) return null;
+
+        if (!href) {
+
+            return null;
+
+        }
+
 
         try {
 
@@ -1755,7 +2023,10 @@ const products = {
                     window.location.href
                 );
 
-            return url.searchParams.get("id");
+
+            return url.searchParams.get(
+                "id"
+            );
 
         } catch (error) {
 
@@ -1765,45 +2036,59 @@ const products = {
 
     }
 
-    // -----------------------------------------
-    // GET PRICE FROM PRODUCT
-    // -----------------------------------------
+
+    // =========================================
+    // GET PRICE
+    // =========================================
 
     function getProductPrice(product) {
 
-        return Number(product.price || 0);
+        return Number(
+            product?.price || 0
+        );
 
     }
 
-    // -----------------------------------------
-    // NO RESULTS MESSAGE
-    // -----------------------------------------
 
-    function updateShopNoResults(visibleCards) {
+    // =========================================
+    // NO RESULTS MESSAGE
+    // =========================================
+
+    function updateShopNoResults(
+        visibleCards
+    ) {
 
         let noResults =
             document.getElementById(
                 "shopNoResults"
             );
 
+
         if (!noResults) {
 
             noResults =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             noResults.id =
                 "shopNoResults";
 
+
             noResults.className =
                 "shop-no-results";
 
+
             noResults.textContent =
                 "No products found.";
+
 
             const productsContainer =
                 document.querySelector(
                     ".shop-products"
                 );
+
 
             if (productsContainer) {
 
@@ -1815,6 +2100,7 @@ const products = {
 
         }
 
+
         noResults.style.display =
             visibleCards === 0
                 ? "block"
@@ -1822,159 +2108,323 @@ const products = {
 
     }
 
-    // -----------------------------------------
+
+    // =========================================
     // APPLY SHOP FILTERS
-    // -----------------------------------------
+    // =========================================
 
     function applyShopFilters() {
 
         const search =
             activeSearch.toLowerCase();
 
+
         const min =
             minPrice
-                ? Number(minPrice.value || 0)
+                ? Number(
+                    minPrice.value || 0
+                )
                 : 0;
+
 
         const max =
             maxPrice
-                ? Number(maxPrice.value || Infinity)
-                : Infinity;
+                ? Number(
+                    maxPrice.value ||
+                    100000
+                )
+                : 100000;
 
-        const stock =
-            stockSelect
-                ? stockSelect.value
-                : "all";
 
-        let visibleCards = [];
+        const stockOnly =
+            stockCheckbox
+                ? stockCheckbox.checked
+                : false;
 
-        productCards.forEach(function (card) {
 
-            const productId =
-                getShopProductId(card);
+        const selectedClothingSizes =
+            Array.from(
+                document.querySelectorAll(
+                    'input[name="clothingSize"]:checked'
+                )
+            ).map(
+                function (input) {
 
-            const product =
-                products[productId];
+                    return input.value;
 
-            if (!product) {
+                }
+            );
 
-                card.style.display = "none";
 
-                return;
+        const selectedShoeSizes =
+            Array.from(
+                document.querySelectorAll(
+                    'input[name="shoeSize"]:checked'
+                )
+            ).map(
+                function (input) {
+
+                    return input.value;
+
+                }
+            );
+
+
+        const selectedSizes = [
+            ...selectedClothingSizes,
+            ...selectedShoeSizes
+        ];
+
+
+        const selectedCategories =
+            Array.from(
+                document.querySelectorAll(
+                    'input[name="filterCategory"]:checked'
+                )
+            ).map(
+                function (input) {
+
+                    return input.value.toLowerCase();
+
+                }
+            );
+
+
+        let visibleCards =
+            [];
+
+
+        productCards.forEach(
+            function (card) {
+
+                const productId =
+                    getShopProductId(
+                        card
+                    );
+
+
+                const product =
+                    products[
+                        productId
+                    ];
+
+
+                if (!product) {
+
+                    card.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                const productCategory =
+                    (
+                        product.filterCategory ||
+                        ""
+                    ).toLowerCase();
+
+
+                let matchesCategory =
+                    activeCategory ===
+                    "all";
+
+
+                if (
+                    activeCategory !==
+                    "all"
+                ) {
+
+                    matchesCategory =
+                        productCategory ===
+                        activeCategory;
+
+                }
+
+
+                if (
+                    selectedCategories.length
+                    > 0
+                ) {
+
+                    matchesCategory =
+                        selectedCategories.includes(
+                            productCategory
+                        );
+
+                }
+
+
+                const searchableText =
+                    (
+                        product.name +
+                        " " +
+                        product.category +
+                        " " +
+                        product.filterCategory +
+                        " " +
+                        product.description
+                    ).toLowerCase();
+
+
+                const matchesSearch =
+                    !search ||
+                    searchableText.includes(
+                        search
+                    );
+
+
+                const matchesPrice =
+                    getProductPrice(
+                        product
+                    ) >= min &&
+                    getProductPrice(
+                        product
+                    ) <= max;
+
+
+                let matchesSize =
+                    true;
+
+
+                if (
+                    selectedSizes.length
+                    > 0
+                ) {
+
+                    matchesSize =
+                        Array.isArray(
+                            product.sizes
+                        ) &&
+                        product.sizes.some(
+                            function (size) {
+
+                                return selectedSizes.includes(
+                                    String(size)
+                                );
+
+                            }
+                        );
+
+                }
+
+
+                const matchesStock =
+                    !stockOnly ||
+                    product.inStock === true;
+
+
+                const shouldShow =
+                    matchesCategory &&
+                    matchesSearch &&
+                    matchesPrice &&
+                    matchesSize &&
+                    matchesStock;
+
+
+                card.style.display =
+                    shouldShow
+                        ? ""
+                        : "none";
+
+
+                if (
+                    shouldShow
+                ) {
+
+                    visibleCards.push({
+                        card:
+                            card,
+
+                        product:
+                            product
+                    });
+
+                }
 
             }
+        );
 
-            const matchesCategory =
-                activeCategory === "all" ||
-                product.filterCategory === activeCategory;
 
-            const searchableText =
-                (
-                    product.name +
-                    " " +
-                    product.category +
-                    " " +
-                    product.filterCategory
-                ).toLowerCase();
-
-            const matchesSearch =
-                !search ||
-                searchableText.includes(search);
-
-            const matchesPrice =
-                getProductPrice(product) >= min &&
-                getProductPrice(product) <= max;
-
-            const matchesStock =
-                stock === "all" ||
-                (
-                    stock === "in-stock" &&
-                    product.inStock
-                ) ||
-                (
-                    stock === "out-of-stock" &&
-                    !product.inStock
-                );
-
-            const shouldShow =
-                matchesCategory &&
-                matchesSearch &&
-                matchesPrice &&
-                matchesStock;
-
-            card.style.display =
-                shouldShow ? "" : "none";
-
-            if (shouldShow) {
-
-                visibleCards.push({
-                    card: card,
-                    product: product
-                });
-
-            }
-
-        });
-
-        // -----------------------------------------
+        // =========================================
         // SORT
-        // -----------------------------------------
+        // =========================================
 
-        if (sortSelect && visibleCards.length) {
+        if (
+            sortSelect &&
+            visibleCards.length
+        ) {
 
             const sort =
                 sortSelect.value;
 
-            visibleCards.sort(function (a, b) {
 
-                if (sort === "price-low") {
+            visibleCards.sort(
+                function (a, b) {
 
-                    return (
-                        getProductPrice(a.product) -
-                        getProductPrice(b.product)
-                    );
+                    if (
+                        sort ===
+                        "price-low"
+                    ) {
+
+                        return (
+                            getProductPrice(
+                                a.product
+                            ) -
+                            getProductPrice(
+                                b.product
+                            )
+                        );
+
+                    }
+
+
+                    if (
+                        sort ===
+                        "price-high"
+                    ) {
+
+                        return (
+                            getProductPrice(
+                                b.product
+                            ) -
+                            getProductPrice(
+                                a.product
+                            )
+                        );
+
+                    }
+
+
+                    return 0;
 
                 }
+            );
 
-                if (sort === "price-high") {
 
-                    return (
-                        getProductPrice(b.product) -
-                        getProductPrice(a.product)
-                    );
-
-                }
-
-                if (sort === "name") {
-
-                    return a.product.name.localeCompare(
-                        b.product.name
-                    );
-
-                }
-
-                return 0;
-
-            });
-
-            const container =
+            const grid =
                 document.querySelector(
-                    ".shop-products"
+                    ".shop-product-grid"
                 );
 
-            if (container) {
 
-                visibleCards.forEach(function (item) {
+            if (grid) {
 
-                    container.appendChild(
-                        item.card
-                    );
+                visibleCards.forEach(
+                    function (item) {
 
-                });
+                        grid.appendChild(
+                            item.card
+                        );
+
+                    }
+                );
 
             }
 
         }
+
 
         updateShopNoResults(
             visibleCards.length
@@ -1982,42 +2432,53 @@ const products = {
 
     }
 
-    // -----------------------------------------
+
+    // =========================================
     // CATEGORY BUTTONS
-    // -----------------------------------------
+    // =========================================
 
-    filterButtons.forEach(function (button) {
+    filterButtons.forEach(
+        function (button) {
 
-        button.addEventListener(
-            "click",
-            function () {
+            button.addEventListener(
+                "click",
+                function () {
 
-                filterButtons.forEach(
-                    function (item) {
+                    filterButtons.forEach(
+                        function (item) {
 
-                        item.classList.remove(
-                            "active"
-                        );
+                            item.classList.remove(
+                                "active"
+                            );
 
-                    }
-                );
+                        }
+                    );
 
-                button.classList.add("active");
 
-                activeCategory =
-                    button.dataset.filter ||
-                    "all";
+                    button.classList.add(
+                        "active"
+                    );
 
-                applyShopFilters();
 
-            }
-        );
+                    activeCategory =
+                        (
+                            button.dataset.filter ||
+                            "all"
+                        ).toLowerCase();
 
-    });
 
-    // -----------------------------------------
+                    applyShopFilters();
+
+                }
+            );
+
+        }
+    );
+
+
+    // =========================================
     // SEARCH
-    // -----------------------------------------
+    // =========================================
 
     function performShopSearch() {
 
@@ -2026,9 +2487,11 @@ const products = {
                 ? searchInput.value.trim()
                 : "";
 
+
         applyShopFilters();
 
     }
+
 
     if (searchButton) {
 
@@ -2039,13 +2502,17 @@ const products = {
 
     }
 
+
     if (searchInput) {
 
         searchInput.addEventListener(
             "keydown",
             function (event) {
 
-                if (event.key === "Enter") {
+                if (
+                    event.key ===
+                    "Enter"
+                ) {
 
                     event.preventDefault();
 
@@ -2056,12 +2523,14 @@ const products = {
             }
         );
 
+
         searchInput.addEventListener(
             "input",
             function () {
 
                 activeSearch =
                     searchInput.value.trim();
+
 
                 applyShopFilters();
 
@@ -2070,11 +2539,15 @@ const products = {
 
     }
 
-    // -----------------------------------------
-    // FILTER PANEL
-    // -----------------------------------------
 
-    if (filterToggle && filterPanel) {
+    // =========================================
+    // FILTER PANEL
+    // =========================================
+
+    if (
+        filterToggle &&
+        filterPanel
+    ) {
 
         filterToggle.addEventListener(
             "click",
@@ -2089,7 +2562,11 @@ const products = {
 
     }
 
-    if (filterClose && filterPanel) {
+
+    if (
+        filterClose &&
+        filterPanel
+    ) {
 
         filterClose.addEventListener(
             "click",
@@ -2104,13 +2581,17 @@ const products = {
 
     }
 
-    // -----------------------------------------
+
+    // =========================================
     // PRICE DISPLAY
-    // -----------------------------------------
+    // =========================================
 
     function updatePriceLabels() {
 
-        if (minPriceValue && minPrice) {
+        if (
+            minPriceValue &&
+            minPrice
+        ) {
 
             minPriceValue.textContent =
                 "₦" +
@@ -2120,7 +2601,11 @@ const products = {
 
         }
 
-        if (maxPriceValue && maxPrice) {
+
+        if (
+            maxPriceValue &&
+            maxPrice
+        ) {
 
             maxPriceValue.textContent =
                 "₦" +
@@ -2132,35 +2617,89 @@ const products = {
 
     }
 
+
     if (minPrice) {
 
         minPrice.addEventListener(
             "input",
-            updatePriceLabels
+            function () {
+
+                if (
+                    Number(
+                        minPrice.value
+                    ) >
+                    Number(
+                        maxPrice?.value ||
+                        100000
+                    )
+                ) {
+
+                    if (maxPrice) {
+
+                        minPrice.value =
+                            maxPrice.value;
+
+                    }
+
+                }
+
+
+                updatePriceLabels();
+
+            }
         );
 
     }
+
 
     if (maxPrice) {
 
         maxPrice.addEventListener(
             "input",
-            updatePriceLabels
+            function () {
+
+                if (
+                    Number(
+                        maxPrice.value
+                    ) <
+                    Number(
+                        minPrice?.value ||
+                        0
+                    )
+                ) {
+
+                    if (minPrice) {
+
+                        maxPrice.value =
+                            minPrice.value;
+
+                    }
+
+                }
+
+
+                updatePriceLabels();
+
+            }
         );
 
     }
 
-    // -----------------------------------------
-    // APPLY FILTER BUTTON
-    // -----------------------------------------
 
-    if (applyFiltersButton) {
+    // =========================================
+    // APPLY FILTER BUTTON
+    // =========================================
+
+    if (
+        applyFiltersButton
+    ) {
 
         applyFiltersButton.addEventListener(
             "click",
             function () {
 
                 applyShopFilters();
+
 
                 if (filterPanel) {
 
@@ -2175,40 +2714,82 @@ const products = {
 
     }
 
-    // -----------------------------------------
-    // CLEAR FILTERS
-    // -----------------------------------------
 
-    if (clearFiltersButton) {
+    // =========================================
+    // CLEAR FILTERS
+    // =========================================
+
+    if (
+        clearFiltersButton
+    ) {
 
         clearFiltersButton.addEventListener(
             "click",
             function () {
 
-                activeCategory = "all";
-                activeSearch = "";
+                activeCategory =
+                    "all";
+
+
+                activeSearch =
+                    "";
+
 
                 if (searchInput) {
-                    searchInput.value = "";
+
+                    searchInput.value =
+                        "";
+
                 }
+
 
                 if (minPrice) {
+
                     minPrice.value =
-                        minPrice.min || 0;
+                        minPrice.min ||
+                        0;
+
                 }
+
 
                 if (maxPrice) {
+
                     maxPrice.value =
-                        maxPrice.max || 100000;
+                        maxPrice.max ||
+                        100000;
+
                 }
 
-                if (stockSelect) {
-                    stockSelect.value = "all";
+
+                if (stockCheckbox) {
+
+                    stockCheckbox.checked =
+                        false;
+
                 }
+
+
+                document
+                    .querySelectorAll(
+                        'input[name="filterCategory"], input[name="clothingSize"], input[name="shoeSize"]'
+                    )
+                    .forEach(
+                        function (input) {
+
+                            input.checked =
+                                false;
+
+                        }
+                    );
+
 
                 if (sortSelect) {
-                    sortSelect.value = "default";
+
+                    sortSelect.value =
+                        "default";
+
                 }
+
 
                 filterButtons.forEach(
                     function (button) {
@@ -2231,13 +2812,16 @@ const products = {
                     }
                 );
 
+
                 updatePriceLabels();
+
                 applyShopFilters();
 
             }
         );
 
     }
+
 
     if (sortSelect) {
 
@@ -2248,53 +2832,80 @@ const products = {
 
     }
 
-    if (stockSelect) {
 
-        stockSelect.addEventListener(
+    if (stockCheckbox) {
+
+        stockCheckbox.addEventListener(
             "change",
             applyShopFilters
         );
 
     }
 
-    // -----------------------------------------
-    // READ SEARCH FROM HOMEPAGE URL
-    // -----------------------------------------
+
+    // =========================================
+    // READ SEARCH / CATEGORY FROM URL
+    // =========================================
 
     const params =
         new URLSearchParams(
             window.location.search
         );
 
+
     const urlSearch =
-        params.get("search");
+        params.get(
+            "search"
+        );
+
 
     const urlCategory =
-        params.get("category");
+        params.get(
+            "category"
+        );
+
 
     if (urlSearch) {
 
         activeSearch =
             urlSearch.trim();
 
+
         if (searchInput) {
+
             searchInput.value =
                 activeSearch;
+
         }
 
     }
 
-    if (urlCategory) {
+
+    if (
+        urlCategory &&
+        [
+            "all",
+            "men",
+            "women",
+            "shoes"
+        ].includes(
+            urlCategory.toLowerCase()
+        )
+    ) {
 
         activeCategory =
             urlCategory.toLowerCase();
+
 
         filterButtons.forEach(
             function (button) {
 
                 button.classList.toggle(
                     "active",
-                    button.dataset.filter ===
+                    (
+                        button.dataset.filter ||
+                        ""
+                    ).toLowerCase() ===
                     activeCategory
                 );
 
@@ -2303,47 +2914,206 @@ const products = {
 
     }
 
+
+    // =========================================
+    // INITIAL SHOP RENDER
+    // =========================================
+
+    renderShopProducts();
+
     updatePriceLabels();
+
     applyShopFilters();
 
+
+    // =========================================
+    // LOAD REAL PRODUCTS
+    // =========================================
+
+    loadProductsFromSupabase();
+
 })();
+
+
 // =========================================
 // SECTION 8: PRODUCT PAGE
 // =========================================
 
-(function () {
+(async function () {
 
     const productPage =
         document.querySelector(".product-page");
 
     if (!productPage) return;
 
-    // -----------------------------------------
-    // GET PRODUCT ID FROM URL
-    // -----------------------------------------
 
     const params =
         new URLSearchParams(
             window.location.search
         );
 
+
     const productId =
         params.get("id");
 
-    const product =
+
+    if (!productId) {
+        return;
+    }
+
+
+    // =========================================
+    // LOAD LATEST PRODUCT DATA
+    // =========================================
+
+    let product =
         products[productId];
 
-    // -----------------------------------------
+
+    try {
+
+        if (
+            typeof window.threadlyGetSupabase ===
+            "function"
+        ) {
+
+            const supabase =
+                await window.threadlyGetSupabase();
+
+
+            if (supabase) {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabase
+                        .from("products")
+                        .select(
+                            `
+                            id,
+                            name,
+                            category,
+                            filter_category,
+                            price,
+                            image,
+                            in_stock,
+                            quantity,
+                            description,
+                            sizes
+                            `
+                        )
+                        .order(
+                            "created_at",
+                            {
+                                ascending: true
+                            }
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "THREADLY product page database error:",
+                        error
+                    );
+
+                } else if (
+                    Array.isArray(data)
+                ) {
+
+                    Object.keys(
+                        products
+                    ).forEach(
+                        function (id) {
+
+                            delete products[id];
+
+                        }
+                    );
+
+
+                    data.forEach(
+                        function (item) {
+
+                            products[item.id] = {
+
+                                id:
+                                    item.id,
+
+                                name:
+                                    item.name,
+
+                                category:
+                                    item.category,
+
+                                filterCategory:
+                                    item.filter_category,
+
+                                price:
+                                    Number(
+                                        item.price
+                                    ),
+
+                                image:
+                                    item.image,
+
+                                inStock:
+                                    item.in_stock === true,
+
+                                quantity:
+                                    Number(
+                                        item.quantity
+                                    ) || 0,
+
+                                description:
+                                    item.description ||
+                                    "",
+
+                                sizes:
+                                    Array.isArray(
+                                        item.sizes
+                                    )
+                                        ? item.sizes
+                                        : []
+
+                            };
+
+                        }
+                    );
+
+
+                    product =
+                        products[productId];
+
+                }
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "THREADLY product page loading failed:",
+            error
+        );
+
+    }
+
+
+    // =========================================
     // CHECK PRODUCT
-    // -----------------------------------------
+    // =========================================
 
     if (!product) {
         return;
     }
 
-    // -----------------------------------------
+
+    // =========================================
     // PRODUCT ELEMENTS
-    // -----------------------------------------
+    // =========================================
 
     const productImage =
         document.getElementById("productImage");
@@ -2387,35 +3157,48 @@ const products = {
     const thumbnails =
         document.getElementById("productThumbnails");
 
-    // -----------------------------------------
+
+    // =========================================
     // PRODUCT INFORMATION
-    // -----------------------------------------
+    // =========================================
 
     if (productName) {
+
         productName.textContent =
             product.name;
+
     }
+
 
     if (productCategory) {
+
         productCategory.textContent =
             product.category;
+
     }
 
+
     if (productPrice) {
+
         productPrice.textContent =
             "₦" +
             Number(product.price)
                 .toLocaleString("en-NG");
+
     }
+
 
     if (productDescription) {
+
         productDescription.textContent =
             product.description;
+
     }
 
-    // -----------------------------------------
+
+    // =========================================
     // PRODUCT IMAGE
-    // -----------------------------------------
+    // =========================================
 
     if (productImage) {
 
@@ -2428,26 +3211,34 @@ const products = {
         productImage.onerror =
             function () {
 
-                this.style.display = "none";
+                this.style.display =
+                    "none";
 
             };
 
     }
 
-    // -----------------------------------------
+
+    // =========================================
     // THUMBNAIL
-    // -----------------------------------------
+    // =========================================
 
     if (thumbnails && productImage) {
 
         thumbnails.innerHTML = "";
 
+
         const thumbnail =
             document.createElement("button");
 
-        thumbnail.type = "button";
+
+        thumbnail.type =
+            "button";
+
+
         thumbnail.className =
             "product-thumbnail active";
+
 
         thumbnail.innerHTML = `
             <img
@@ -2456,12 +3247,14 @@ const products = {
             >
         `;
 
+
         thumbnail.addEventListener(
             "click",
             function () {
 
                 productImage.src =
                     product.image;
+
 
                 thumbnails
                     .querySelectorAll(
@@ -2475,6 +3268,7 @@ const products = {
 
                     });
 
+
                 thumbnail.classList.add(
                     "active"
                 );
@@ -2482,152 +3276,179 @@ const products = {
             }
         );
 
+
         thumbnails.appendChild(
             thumbnail
         );
 
     }
 
-// -----------------------------------------
-// SIZE SELECTION
-// -----------------------------------------
 
-let currentSize = "";
+    // =========================================
+    // SIZE SELECTION
+    // =========================================
 
-if (
-    sizeOptions &&
-    product.sizes &&
-    product.sizes.length
-) {
+    let currentSize = "";
 
-    sizeOptions.innerHTML = "";
 
-    product.sizes.forEach(
-        function (size) {
+    if (
+        sizeOptions &&
+        product.sizes &&
+        product.sizes.length
+    ) {
 
-            const button =
-                document.createElement("button");
+        sizeOptions.innerHTML = "";
 
-            button.type = "button";
 
-            button.className =
-                "size-button";
+        product.sizes.forEach(
+            function (size) {
 
-            button.textContent =
-                size;
+                const button =
+                    document.createElement("button");
 
-            button.addEventListener(
-                "click",
-                function () {
 
-                    currentSize =
-                        String(size);
+                button.type =
+                    "button";
 
-                    sizeOptions
-                        .querySelectorAll(
-                            ".size-button"
-                        )
-                        .forEach(
-                            function (item) {
 
-                                item.classList.remove(
-                                    "active"
-                                );
+                button.className =
+                    "size-button";
 
-                            }
+
+                button.textContent =
+                    size;
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        currentSize =
+                            String(size);
+
+
+                        sizeOptions
+                            .querySelectorAll(
+                                ".size-button"
+                            )
+                            .forEach(
+                                function (item) {
+
+                                    item.classList.remove(
+                                        "active"
+                                    );
+
+                                }
+                            );
+
+
+                        button.classList.add(
+                            "active"
                         );
 
-                    button.classList.add(
-                        "active"
-                    );
 
-                    if (selectedSize) {
+                        if (selectedSize) {
 
-                        selectedSize.textContent =
-                            currentSize;
+                            selectedSize.textContent =
+                                currentSize;
+
+                        }
 
                     }
+                );
 
-                }
-            );
 
-            sizeOptions.appendChild(
-                button
-            );
+                sizeOptions.appendChild(
+                    button
+                );
 
-        }
-    );
+            }
+        );
 
-} else {
+    } else {
 
-    currentSize = "One size";
+        currentSize =
+            "One size";
 
-    if (sizeSection) {
-        sizeSection.style.display =
-            "none";
-    }
 
-}
-    // -----------------------------------------
-// QUANTITY
-// -----------------------------------------
+        if (sizeSection) {
 
-let quantity = 1;
-
-function updateQuantity() {
-
-    if (quantity < 1) {
-        quantity = 1;
-    }
-
-    if (quantityDisplay) {
-
-        quantityDisplay.textContent =
-            quantity;
-
-    }
-
-}
-
-if (increaseQuantity) {
-
-    increaseQuantity.addEventListener(
-        "click",
-        function () {
-
-            quantity++;
-
-            updateQuantity();
+            sizeSection.style.display =
+                "none";
 
         }
-    );
 
-}
+    }
 
-if (decreaseQuantity) {
 
-    decreaseQuantity.addEventListener(
-        "click",
-        function () {
+    // =========================================
+    // QUANTITY
+    // =========================================
 
-            if (quantity > 1) {
+    let quantity = 1;
 
-                quantity--;
+
+    function updateQuantity() {
+
+        if (quantity < 1) {
+
+            quantity = 1;
+
+        }
+
+
+        if (quantityDisplay) {
+
+            quantityDisplay.textContent =
+                quantity;
+
+        }
+
+    }
+
+
+    if (increaseQuantity) {
+
+        increaseQuantity.addEventListener(
+            "click",
+            function () {
+
+                quantity++;
 
                 updateQuantity();
 
             }
+        );
 
-        }
-    );
+    }
 
-}
 
-updateQuantity();
+    if (decreaseQuantity) {
 
-    // -----------------------------------------
+        decreaseQuantity.addEventListener(
+            "click",
+            function () {
+
+                if (quantity > 1) {
+
+                    quantity--;
+
+                    updateQuantity();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    updateQuantity();
+
+
+    // =========================================
     // CART STORAGE
-    // -----------------------------------------
+    // =========================================
 
     function getCart() {
 
@@ -2639,6 +3460,7 @@ updateQuantity();
                         "threadlyCart"
                     )
                 );
+
 
             return Array.isArray(cart)
                 ? cart
@@ -2652,6 +3474,7 @@ updateQuantity();
 
     }
 
+
     function saveCart(cart) {
 
         localStorage.setItem(
@@ -2661,22 +3484,34 @@ updateQuantity();
 
     }
 
-    // -----------------------------------------
+
+    // =========================================
     // ADD TO CART
-    // -----------------------------------------
+    // =========================================
 
     if (addToCartButton) {
 
         addToCartButton.addEventListener(
             "click",
-            function () {
+            async function () {
+
                 if (
-                 typeof window.threadlyRequireLogin ===
-                 "function" &&
-                 !window.threadlyRequireLogin()
+                    typeof window.threadlyRequireLogin ===
+                    "function"
                 ) {
-                 return;
+
+                    const loggedIn =
+                        await window.threadlyRequireLogin();
+
+
+                    if (!loggedIn) {
+
+                        return;
+
+                    }
+
                 }
+
 
                 if (
                     product.sizes &&
@@ -2699,6 +3534,7 @@ updateQuantity();
                 const cart =
                     getCart();
 
+
                 const existingItem =
                     cart.find(function (item) {
 
@@ -2710,6 +3546,7 @@ updateQuantity();
 
                     });
 
+
                 if (existingItem) {
 
                     existingItem.quantity +=
@@ -2719,39 +3556,51 @@ updateQuantity();
 
                     cart.push({
 
-                        id: productId,
+                        id:
+                            productId,
 
-                        name: product.name,
+                        name:
+                            product.name,
 
-                        price: product.price,
+                        price:
+                            product.price,
 
-                        image: product.image,
+                        image:
+                            product.image,
 
-                        size: currentSize ||
+                        size:
+                            currentSize ||
                             "One size",
 
-                        quantity: quantity
+                        quantity:
+                            quantity
 
                     });
 
                 }
 
+
                 saveCart(cart);
+
 
                 const originalText =
                     addToCartButton.textContent;
 
+
                 addToCartButton.textContent =
                     "ADDED TO CART";
 
+
                 addToCartButton.disabled =
                     true;
+
 
                 setTimeout(
                     function () {
 
                         addToCartButton.textContent =
                             originalText;
+
 
                         addToCartButton.disabled =
                             false;
@@ -2765,9 +3614,10 @@ updateQuantity();
 
     }
 
-    // -----------------------------------------
+
+    // =========================================
     // SAVED ITEMS
-    // -----------------------------------------
+    // =========================================
 
     function getSavedItems() {
 
@@ -2780,9 +3630,13 @@ updateQuantity();
                     )
                 );
 
+
             if (!Array.isArray(saved)) {
+
                 return [];
+
             }
+
 
             return saved.map(
                 function (item) {
@@ -2791,8 +3645,11 @@ updateQuantity();
                         typeof item ===
                         "string"
                     ) {
+
                         return item;
+
                     }
+
 
                     return item &&
                         item.id
@@ -2810,6 +3667,7 @@ updateQuantity();
 
     }
 
+
     function saveSavedItems(items) {
 
         localStorage.setItem(
@@ -2819,22 +3677,27 @@ updateQuantity();
 
     }
 
+
     function updateSaveButton() {
 
         if (!saveProductButton) return;
 
+
         const savedItems =
             getSavedItems();
+
 
         const isSaved =
             savedItems.includes(
                 productId
             );
 
+
         saveProductButton.textContent =
             isSaved
                 ? "SAVED"
                 : "SAVE ITEM";
+
 
         saveProductButton.classList.toggle(
             "active",
@@ -2842,6 +3705,7 @@ updateQuantity();
         );
 
     }
+
 
     if (saveProductButton) {
 
@@ -2852,10 +3716,12 @@ updateQuantity();
                 let savedItems =
                     getSavedItems();
 
+
                 const index =
                     savedItems.indexOf(
                         productId
                     );
+
 
                 if (index === -1) {
 
@@ -2872,9 +3738,11 @@ updateQuantity();
 
                 }
 
+
                 saveSavedItems(
                     savedItems
                 );
+
 
                 updateSaveButton();
 
@@ -2883,20 +3751,24 @@ updateQuantity();
 
     }
 
+
     updateSaveButton();
 
-    // -----------------------------------------
+
+    // =========================================
     // RELATED PRODUCTS
-    // -----------------------------------------
+    // =========================================
 
     const relatedProducts =
         document.getElementById(
             "relatedProducts"
         );
 
+
     if (relatedProducts) {
 
         relatedProducts.innerHTML = "";
+
 
         Object.entries(products)
             .filter(function ([id, item]) {
@@ -2914,12 +3786,15 @@ updateQuantity();
                 const card =
                     document.createElement("a");
 
+
                 card.href =
                     "product.html?id=" +
                     encodeURIComponent(id);
 
+
                 card.className =
                     "related-product-card";
+
 
                 card.innerHTML = `
                     <div class="related-product-image">
@@ -2938,6 +3813,7 @@ updateQuantity();
                     </div>
                 `;
 
+
                 relatedProducts.appendChild(
                     card
                 );
@@ -2947,6 +3823,8 @@ updateQuantity();
     }
 
 })();
+
+
 // =========================================
 // SECTION 9: CART
 // =========================================
@@ -2957,6 +3835,7 @@ updateQuantity();
         document.querySelector(".cart-page");
 
     if (!cartPage) return;
+
 
     const cartContainer =
         document.getElementById("cartItems");
@@ -2976,11 +3855,9 @@ updateQuantity();
     const checkoutButton =
         document.getElementById("checkoutButton");
 
-    const STANDARD_DELIVERY = 2500;
+    const STANDARD_DELIVERY =
+        2500;
 
-    // -----------------------------------------
-    // GET CART
-    // -----------------------------------------
 
     function getCart() {
 
@@ -2992,6 +3869,7 @@ updateQuantity();
                         "threadlyCart"
                     )
                 );
+
 
             return Array.isArray(cart)
                 ? cart
@@ -3005,9 +3883,6 @@ updateQuantity();
 
     }
 
-    // -----------------------------------------
-    // SAVE CART
-    // -----------------------------------------
 
     function saveCart(cart) {
 
@@ -3018,9 +3893,6 @@ updateQuantity();
 
     }
 
-    // -----------------------------------------
-    // FORMAT PRICE
-    // -----------------------------------------
 
     function formatPrice(price) {
 
@@ -3030,69 +3902,98 @@ updateQuantity();
 
     }
 
-    // -----------------------------------------
-    // RENDER CART
-    // -----------------------------------------
 
     function renderCart() {
 
-        const cart = getCart();
+        const cart =
+            getCart();
+
 
         if (!cartContainer) return;
 
+
         cartContainer.innerHTML = "";
+
 
         if (!cart.length) {
 
             if (cartEmpty) {
-                cartEmpty.style.display = "block";
+
+                cartEmpty.style.display =
+                    "block";
+
             }
+
 
             if (subtotalElement) {
+
                 subtotalElement.textContent =
                     formatPrice(0);
+
             }
+
 
             if (deliveryElement) {
+
                 deliveryElement.textContent =
                     formatPrice(0);
+
             }
+
 
             if (totalElement) {
+
                 totalElement.textContent =
                     formatPrice(0);
+
             }
 
+
             if (checkoutButton) {
-                checkoutButton.disabled = true;
+
+                checkoutButton.disabled =
+                    true;
+
             }
+
 
             return;
 
         }
 
+
         if (cartEmpty) {
-            cartEmpty.style.display = "none";
+
+            cartEmpty.style.display =
+                "none";
+
         }
 
+
         let subtotal = 0;
+
 
         cart.forEach(function (item, index) {
 
             const quantity =
                 Number(item.quantity || 1);
 
+
             const price =
                 Number(item.price || 0);
+
 
             subtotal +=
                 price * quantity;
 
+
             const cartItem =
                 document.createElement("article");
 
+
             cartItem.className =
                 "cart-item";
+
 
             cartItem.innerHTML = `
                 <div class="cart-item-image">
@@ -3155,15 +4056,13 @@ updateQuantity();
                 </div>
             `;
 
+
             cartContainer.appendChild(
                 cartItem
             );
 
         });
 
-        // -----------------------------------------
-        // QUANTITY BUTTONS
-        // -----------------------------------------
 
         cartContainer
             .querySelectorAll(
@@ -3180,8 +4079,10 @@ updateQuantity();
                                 button.dataset.index
                             );
 
+
                         const updatedCart =
                             getCart();
+
 
                         if (
                             updatedCart[index] &&
@@ -3194,9 +4095,11 @@ updateQuantity();
                             updatedCart[index]
                                 .quantity--;
 
+
                             saveCart(
                                 updatedCart
                             );
+
 
                             renderCart();
 
@@ -3206,6 +4109,7 @@ updateQuantity();
                 );
 
             });
+
 
         cartContainer
             .querySelectorAll(
@@ -3222,17 +4126,21 @@ updateQuantity();
                                 button.dataset.index
                             );
 
+
                         const updatedCart =
                             getCart();
+
 
                         if (updatedCart[index]) {
 
                             updatedCart[index]
                                 .quantity++;
 
+
                             saveCart(
                                 updatedCart
                             );
+
 
                             renderCart();
 
@@ -3243,9 +4151,6 @@ updateQuantity();
 
             });
 
-        // -----------------------------------------
-        // REMOVE BUTTONS
-        // -----------------------------------------
 
         cartContainer
             .querySelectorAll(
@@ -3262,17 +4167,21 @@ updateQuantity();
                                 button.dataset.index
                             );
 
+
                         const updatedCart =
                             getCart();
+
 
                         updatedCart.splice(
                             index,
                             1
                         );
 
+
                         saveCart(
                             updatedCart
                         );
+
 
                         renderCart();
 
@@ -3281,15 +4190,14 @@ updateQuantity();
 
             });
 
-        // -----------------------------------------
-        // TOTALS
-        // -----------------------------------------
 
         const delivery =
             STANDARD_DELIVERY;
 
+
         const total =
             subtotal + delivery;
+
 
         if (subtotalElement) {
 
@@ -3298,12 +4206,14 @@ updateQuantity();
 
         }
 
+
         if (deliveryElement) {
 
             deliveryElement.textContent =
                 formatPrice(delivery);
 
         }
+
 
         if (totalElement) {
 
@@ -3312,17 +4222,16 @@ updateQuantity();
 
         }
 
+
         if (checkoutButton) {
 
-            checkoutButton.disabled = false;
+            checkoutButton.disabled =
+                false;
 
         }
 
     }
 
-    // -----------------------------------------
-    // CHECKOUT BUTTON
-    // -----------------------------------------
 
     if (checkoutButton) {
 
@@ -3330,9 +4239,12 @@ updateQuantity();
             "click",
             function () {
 
-                const cart = getCart();
+                const cart =
+                    getCart();
+
 
                 if (!cart.length) return;
+
 
                 window.location.href =
                     "checkout.html";
@@ -3341,6 +4253,7 @@ updateQuantity();
         );
 
     }
+
 
     renderCart();
 
@@ -3355,6 +4268,7 @@ updateQuantity();
         document.querySelector(".checkout-page");
 
     if (!checkoutPage) return;
+
 
     const checkoutItems =
         document.getElementById("checkoutItems");
@@ -3376,13 +4290,12 @@ updateQuantity();
             'input[name="deliveryMethod"]'
         );
 
-    const STANDARD_DELIVERY = 2500;
-    const EXPRESS_DELIVERY = 4500;
+    const STANDARD_DELIVERY =
+        2500;
 
+    const EXPRESS_DELIVERY =
+        4500;
 
-    // -----------------------------------------
-    // GET CART
-    // -----------------------------------------
 
     function getCart() {
 
@@ -3394,6 +4307,7 @@ updateQuantity();
                         "threadlyCart"
                     )
                 );
+
 
             return Array.isArray(cart)
                 ? cart
@@ -3408,10 +4322,6 @@ updateQuantity();
     }
 
 
-    // -----------------------------------------
-    // FORMAT PRICE
-    // -----------------------------------------
-
     function formatPrice(price) {
 
         return "₦" +
@@ -3421,16 +4331,13 @@ updateQuantity();
     }
 
 
-    // -----------------------------------------
-    // GET SELECTED DELIVERY
-    // -----------------------------------------
-
     function getSelectedDelivery() {
 
         const selected =
             document.querySelector(
                 'input[name="deliveryMethod"]:checked'
             );
+
 
         return selected
             ? selected.value
@@ -3439,35 +4346,23 @@ updateQuantity();
     }
 
 
-    // -----------------------------------------
-    // GET DELIVERY FEE
-    // -----------------------------------------
-
     function getDeliveryFee() {
 
-        const delivery =
-            getSelectedDelivery();
-
-        if (delivery === "express") {
-
-            return EXPRESS_DELIVERY;
-
-        }
-
-        return STANDARD_DELIVERY;
+        return getSelectedDelivery() === "express"
+            ? EXPRESS_DELIVERY
+            : STANDARD_DELIVERY;
 
     }
 
 
-    // -----------------------------------------
-    // UPDATE TOTALS
-    // -----------------------------------------
-
     function updateCheckoutTotal() {
 
-        const cart = getCart();
+        const cart =
+            getCart();
+
 
         let subtotal = 0;
+
 
         cart.forEach(function (item) {
 
@@ -3477,8 +4372,10 @@ updateQuantity();
 
         });
 
+
         const delivery =
             getDeliveryFee();
+
 
         const total =
             subtotal + delivery;
@@ -3510,15 +4407,14 @@ updateQuantity();
     }
 
 
-    // -----------------------------------------
-    // RENDER CHECKOUT ITEMS
-    // -----------------------------------------
-
     function renderCheckoutItems() {
 
-        const cart = getCart();
+        const cart =
+            getCart();
+
 
         if (!checkoutItems) return;
+
 
         checkoutItems.innerHTML = "";
 
@@ -3541,6 +4437,7 @@ updateQuantity();
             const element =
                 document.createElement("div");
 
+
             element.className =
                 "checkout-item";
 
@@ -3554,7 +4451,6 @@ updateQuantity();
                     >
 
                 </div>
-
 
                 <div class="checkout-item-info">
 
@@ -3574,7 +4470,6 @@ updateQuantity();
 
                 </div>
 
-
                 <strong>
                     ${formatPrice(
                         Number(item.price || 0) *
@@ -3593,10 +4488,6 @@ updateQuantity();
     }
 
 
-    // -----------------------------------------
-    // DELIVERY CHANGE
-    // -----------------------------------------
-
     deliveryOptions.forEach(function (option) {
 
         option.addEventListener(
@@ -3607,27 +4498,89 @@ updateQuantity();
     });
 
 
-    // -----------------------------------------
-    // CHECKOUT SUBMIT
-    // -----------------------------------------
-
     if (checkoutForm) {
 
         checkoutForm.addEventListener(
             "submit",
-            function (event) {
+            async function (event) {
 
                 event.preventDefault();
 
 
-                const cart = getCart();
+                const cart =
+                    getCart();
 
 
                 if (!cart.length) {
 
+                    alert(
+                        "Your cart is empty."
+                    );
+
                     return;
 
                 }
+
+
+                const loggedIn =
+                    await window.threadlyRequireLogin();
+
+
+                if (!loggedIn) {
+
+                    return;
+
+                }
+
+
+                const supabase =
+                    await window.threadlyGetSupabase();
+
+
+                if (!supabase) {
+
+                    console.error(
+                        "THREADLY: Supabase is not available."
+                    );
+
+                    alert(
+                        "Unable to connect to the database. Please try again."
+                    );
+
+                    return;
+
+                }
+
+
+                const {
+                    data: userData,
+                    error: userError
+                } =
+                    await supabase.auth.getUser();
+
+
+                if (
+                    userError ||
+                    !userData ||
+                    !userData.user
+                ) {
+
+                    console.error(
+                        "THREADLY user error:",
+                        userError
+                    );
+
+                    alert(
+                        "Please log in before placing your order."
+                    );
+
+                    return;
+
+                }
+
+
+                const user =
+                    userData.user;
 
 
                 const formData =
@@ -3660,10 +4613,6 @@ updateQuantity();
                     subtotal + deliveryFee;
 
 
-                // ---------------------------------
-                // CUSTOMER INFORMATION
-                // ---------------------------------
-
                 const customer = {
 
                     name:
@@ -3693,9 +4642,190 @@ updateQuantity();
                 };
 
 
-                // ---------------------------------
-                // SAVE CHECKOUT INFORMATION
-                // ---------------------------------
+                const orderNumber =
+                    "THR-" +
+                    Date.now()
+                        .toString()
+                        .slice(-6);
+
+
+                const orderItems =
+                    cart.map(function (item) {
+
+                        return {
+
+                            id:
+                                item.id,
+
+                            name:
+                                item.name,
+
+                            price:
+                                Number(
+                                    item.price || 0
+                                ),
+
+                            image:
+                                item.image || "",
+
+                            size:
+                                item.size ||
+                                "One size",
+
+                            quantity:
+                                Number(
+                                    item.quantity || 1
+                                )
+
+                        };
+
+                    });
+
+
+                const now =
+                    new Date()
+                        .toISOString();
+
+
+                const {
+                    error: orderError
+                } =
+                    await supabase
+                        .from("orders")
+                        .insert({
+
+                            id:
+                                orderNumber,
+
+                            order_number:
+                                orderNumber,
+
+                            customer_full_name:
+                                customer.name,
+
+                            customer_email:
+                                customer.email,
+
+                            customer_phone:
+                                customer.phone,
+
+                            customer_address:
+                                customer.address,
+
+                            customer_state:
+                                customer.state,
+
+                            customer_city:
+                                customer.city,
+
+                            items:
+                                orderItems,
+
+                            subtotal:
+                                subtotal,
+
+                            delivery:
+                                deliveryFee,
+
+                            delivery_method:
+                                delivery,
+
+                            total:
+                                total,
+
+                            payment_status:
+                                "pending-verification",
+
+                            payment_method:
+                                "",
+
+                            delivery_status:
+                                "processing",
+
+                            receipt_url:
+                                "",
+
+                            estimated_delivery:
+                                delivery === "express"
+                                    ? "1-3 days"
+                                    : "3-7 days",
+
+                            created_at:
+                                now,
+
+                            updated_at:
+                                now,
+
+                            user_id:
+                                user.id
+
+                        });
+
+
+                if (orderError) {
+
+                    console.error(
+                        "THREADLY order database error:",
+                        orderError
+                    );
+
+                    alert(
+                        "Your order could not be saved. Please try again."
+                    );
+
+                    return;
+
+                }
+
+
+                const pendingOrder = {
+
+                    id:
+                        orderNumber,
+
+                    orderNumber:
+                        "#" + orderNumber,
+
+                    date:
+                        new Date()
+                            .toLocaleDateString(
+                                "en-GB",
+                                {
+                                    day: "numeric",
+                                    month: "long",
+                                    year: "numeric"
+                                }
+                            ),
+
+                    items:
+                        orderItems,
+
+                    subtotal:
+                        subtotal,
+
+                    deliveryFee:
+                        deliveryFee,
+
+                    deliveryMethod:
+                        delivery,
+
+                    total:
+                        total,
+
+                    customer:
+                        customer,
+
+                    paymentStatus:
+                        "pending-verification",
+
+                    paymentMethod:
+                        "",
+
+                    deliveryStatus:
+                        "processing"
+
+                };
+
 
                 localStorage.setItem(
                     "threadlyCheckout",
@@ -3727,100 +4857,6 @@ updateQuantity();
                 );
 
 
-                // ---------------------------------
-                // CREATE ORDER NUMBER
-                // ---------------------------------
-
-                const orderNumber =
-                    "THR-" +
-                    Date.now()
-                        .toString()
-                        .slice(-6);
-
-
-                // ---------------------------------
-                // CREATE PENDING ORDER
-                // ---------------------------------
-
-                const pendingOrder = {
-
-                    id: orderNumber,
-
-                    orderNumber:
-                        "#" + orderNumber,
-
-                    date:
-                        new Date()
-                            .toLocaleDateString(
-                                "en-GB",
-                                {
-                                    day: "numeric",
-                                    month: "long",
-                                    year: "numeric"
-                                }
-                            ),
-
-                    items:
-                        cart.map(function (item) {
-
-                            return {
-
-                                id: item.id,
-
-                                name: item.name,
-
-                                price:
-                                    Number(
-                                        item.price || 0
-                                    ),
-
-                                image:
-                                    item.image || "",
-
-                                size:
-                                    item.size ||
-                                    "One size",
-
-                                quantity:
-                                    Number(
-                                        item.quantity || 1
-                                    )
-
-                            };
-
-                        }),
-
-                    subtotal:
-                        subtotal,
-
-                    deliveryFee:
-                        deliveryFee,
-
-                    deliveryMethod:
-                        delivery,
-
-                    total:
-                        total,
-
-                    customer:
-                        customer,
-
-                    paymentStatus:
-                        "pending-verification",
-
-                    paymentMethod:
-                        "",
-
-                    deliveryStatus:
-                        "processing"
-
-                };
-
-
-                // ---------------------------------
-                // SAVE PENDING ORDER
-                // ---------------------------------
-
                 localStorage.setItem(
                     "threadlyPendingOrder",
                     JSON.stringify(
@@ -3828,10 +4864,6 @@ updateQuantity();
                     )
                 );
 
-
-                // ---------------------------------
-                // SAVE ORDER
-                // ---------------------------------
 
                 let orders = [];
 
@@ -3877,10 +4909,6 @@ updateQuantity();
                 );
 
 
-                // ---------------------------------
-                // CONTINUE TO PAYMENT
-                // ---------------------------------
-
                 window.location.href =
                     "payment-method.html";
 
@@ -3890,15 +4918,12 @@ updateQuantity();
     }
 
 
-    // -----------------------------------------
-    // INITIAL LOAD
-    // -----------------------------------------
-
     renderCheckoutItems();
 
     updateCheckoutTotal();
 
 })();
+
 // =========================================
 // ACCOUNT PAGE
 // =========================================
@@ -3923,10 +4948,6 @@ updateQuantity();
         );
 
 
-    // These are optional.
-    // They will work automatically if the
-    // Account page has these IDs.
-
     const accountPhone =
         document.getElementById(
             "accountPhone"
@@ -3947,10 +4968,6 @@ updateQuantity();
 
     try {
 
-        // =========================================
-        // GET SUPABASE CLIENT
-        // =========================================
-
         const supabase =
             await window.threadlyGetSupabase();
 
@@ -3965,10 +4982,6 @@ updateQuantity();
 
         }
 
-
-        // =========================================
-        // GET CURRENT AUTH USER
-        // =========================================
 
         const {
             data: userData,
@@ -3995,10 +5008,6 @@ updateQuantity();
         const user =
             userData.user;
 
-
-        // =========================================
-        // GET PROFILE
-        // =========================================
 
         const {
             data: profile,
@@ -4028,10 +5037,6 @@ updateQuantity();
         }
 
 
-        // =========================================
-        // PROFILE VALUES
-        // =========================================
-
         const fullName =
             profile?.full_name ||
             user.user_metadata?.full_name ||
@@ -4059,10 +5064,6 @@ updateQuantity();
             user.email ||
             "";
 
-
-        // =========================================
-        // DISPLAY ACCOUNT INFORMATION
-        // =========================================
 
         if (accountName) {
 
@@ -4112,11 +5113,6 @@ updateQuantity();
         }
 
 
-        // =========================================
-        // SAVE NON-SENSITIVE USER DATA
-        // FOR EXISTING THREADLY FEATURES
-        // =========================================
-
         localStorage.setItem(
             "threadlyUser",
             JSON.stringify({
@@ -4148,33 +5144,37 @@ updateQuantity();
 
 })();
 
-/* =========================================================
-   SECTION 12: LOGOUT
-========================================================= */
+
+// =========================================
+// SECTION 12: LOGOUT
+// =========================================
 
 (function () {
 
     const logoutButton =
-        document.getElementById("logoutButton");
+        document.getElementById(
+            "logoutButton"
+        );
+
 
     const mobileLogout =
-        document.getElementById("mobileLogout");
+        document.getElementById(
+            "mobileLogout"
+        );
 
 
     async function logoutUser(event) {
 
         if (event) {
+
             event.preventDefault();
+
         }
 
 
         const supabase =
             window.threadlySupabase;
 
-
-        // =========================================
-        // SIGN OUT FROM SUPABASE
-        // =========================================
 
         if (supabase) {
 
@@ -4207,22 +5207,15 @@ updateQuantity();
         }
 
 
-        // =========================================
-        // REMOVE OLD COMPATIBILITY DATA
-        // =========================================
-
         localStorage.removeItem(
             "threadlyLoggedIn"
         );
+
 
         localStorage.removeItem(
             "threadlyUser"
         );
 
-
-        // =========================================
-        // RETURN TO LOGIN
-        // =========================================
 
         window.location.replace(
             "login.html"
@@ -4252,52 +5245,84 @@ updateQuantity();
 
 })();
 
-/* =========================================================
-   SECTION 13: MOBILE MENU
-========================================================= */
+
+// =========================================
+// SECTION 13: MOBILE MENU
+// =========================================
 
 (function () {
 
     const menuButton =
-        document.getElementById("menuButton");
+        document.getElementById(
+            "menuButton"
+        );
+
 
     const closeMenu =
-        document.getElementById("closeMenu");
+        document.getElementById(
+            "closeMenu"
+        );
+
 
     const mobileMenu =
-        document.getElementById("mobileMenu");
+        document.getElementById(
+            "mobileMenu"
+        );
+
 
     const menuOverlay =
-        document.getElementById("menuOverlay");
+        document.getElementById(
+            "menuOverlay"
+        );
 
 
     if (!menuButton || !mobileMenu) {
+
         return;
+
     }
 
 
     function openMenu() {
 
-        mobileMenu.classList.add("active");
+        mobileMenu.classList.add(
+            "active"
+        );
+
 
         if (menuOverlay) {
-            menuOverlay.classList.add("active");
+
+            menuOverlay.classList.add(
+                "active"
+            );
+
         }
 
-        document.body.style.overflow = "hidden";
+
+        document.body.style.overflow =
+            "hidden";
 
     }
 
 
     function closeMobileMenu() {
 
-        mobileMenu.classList.remove("active");
+        mobileMenu.classList.remove(
+            "active"
+        );
+
 
         if (menuOverlay) {
-            menuOverlay.classList.remove("active");
+
+            menuOverlay.classList.remove(
+                "active"
+            );
+
         }
 
-        document.body.style.overflow = "";
+
+        document.body.style.overflow =
+            "";
 
     }
 
@@ -4343,6 +5368,7 @@ updateQuantity();
     const mobileLinks =
         mobileMenu.querySelectorAll("a");
 
+
     mobileLinks.forEach(function (link) {
 
         link.addEventListener(
@@ -4358,38 +5384,54 @@ updateQuantity();
         function (event) {
 
             if (event.key === "Escape") {
+
                 closeMobileMenu();
+
             }
 
         }
     );
 
 })();
-/* =========================================================
-   SECTION 14: SAVED ITEMS
-========================================================= */
+
+
+// =========================================
+// SECTION 14: SAVED ITEMS
+// =========================================
 
 (function () {
 
     const savedContainer =
-        document.getElementById("savedItems");
+        document.getElementById(
+            "savedItems"
+        );
+
 
     if (!savedContainer) {
+
         return;
+
     }
 
 
     let savedItems = [];
 
+
     try {
 
         const saved =
             JSON.parse(
-                localStorage.getItem("threadlySaved")
+                localStorage.getItem(
+                    "threadlySaved"
+                )
             );
 
+
         if (Array.isArray(saved)) {
-            savedItems = saved;
+
+            savedItems =
+                saved;
+
         }
 
     } catch (error) {
@@ -4402,20 +5444,136 @@ updateQuantity();
     function getProductId(item) {
 
         if (typeof item === "string") {
+
             return item;
+
         }
+
 
         if (item && item.id) {
+
             return item.id;
+
         }
 
+
         return null;
+
     }
 
 
-    function renderSavedItems() {
+    async function loadSavedProducts() {
 
-        savedContainer.innerHTML = "";
+        if (savedItems.length === 0) {
+
+            renderSavedItems([]);
+
+            return;
+
+        }
+
+
+        try {
+
+            if (
+                typeof window.threadlyGetSupabase !==
+                "function"
+            ) {
+
+                renderSavedItems([]);
+
+                return;
+
+            }
+
+
+            const supabase =
+                await window.threadlyGetSupabase();
+
+
+            if (!supabase) {
+
+                renderSavedItems([]);
+
+                return;
+
+            }
+
+
+            const productIds =
+                savedItems
+                    .map(function (item) {
+
+                        return getProductId(item);
+
+                    })
+                    .filter(Boolean);
+
+
+            const {
+                data,
+                error
+            } =
+                await supabase
+                    .from("products")
+                    .select(`
+                        id,
+                        name,
+                        category,
+                        filter_category,
+                        price,
+                        image,
+                        in_stock,
+                        quantity,
+                        description,
+                        sizes
+                    `)
+                    .in("id", productIds);
+
+
+            if (error) {
+
+                console.error(
+                    "THREADLY saved items database error:",
+                    error
+                );
+
+                renderSavedItems([]);
+
+                return;
+
+            }
+
+
+            if (!Array.isArray(data)) {
+
+                renderSavedItems([]);
+
+                return;
+
+            }
+
+
+            renderSavedItems(data);
+
+        } catch (error) {
+
+            console.error(
+                "THREADLY saved items loading failed:",
+                error
+            );
+
+            renderSavedItems([]);
+
+        }
+
+    }
+
+
+    function renderSavedItems(databaseProducts) {
+
+        savedContainer.innerHTML =
+            "";
 
 
         if (savedItems.length === 0) {
@@ -4433,6 +5591,7 @@ updateQuantity();
             `;
 
             return;
+
         }
 
 
@@ -4441,16 +5600,32 @@ updateQuantity();
             const productId =
                 getProductId(item);
 
+
             const product =
-                products[productId];
+                databaseProducts.find(
+                    function (databaseProduct) {
+
+                        return (
+                            databaseProduct.id ===
+                            productId
+                        );
+
+                    }
+                );
+
 
             if (!product) {
+
                 return;
+
             }
 
 
             const card =
-                document.createElement("article");
+                document.createElement(
+                    "article"
+                );
+
 
             card.className =
                 "shop-product-card product-link";
@@ -4477,7 +5652,9 @@ updateQuantity();
                         </h3>
 
                         <p class="product-price">
-                            ₦${product.price.toLocaleString()}
+                            ₦${Number(
+                                product.price
+                            ).toLocaleString("en-NG")}
                         </p>
 
                     </div>
@@ -4494,7 +5671,9 @@ updateQuantity();
             `;
 
 
-            savedContainer.appendChild(card);
+            savedContainer.appendChild(
+                card
+            );
 
         });
 
@@ -4514,61 +5693,103 @@ updateQuantity();
                     const productId =
                         button.dataset.productId;
 
+
                     savedItems =
                         savedItems.filter(
                             function (item) {
+
                                 return (
                                     getProductId(item) !==
                                     productId
                                 );
+
                             }
                         );
 
 
                     localStorage.setItem(
                         "threadlySaved",
-                        JSON.stringify(savedItems)
+                        JSON.stringify(
+                            savedItems
+                        )
                     );
 
 
-                    renderSavedItems();
+                    loadSavedProducts();
 
                 }
             );
 
         });
 
+
+        const savedCount =
+            document.getElementById(
+                "savedItemCount"
+            );
+
+
+        if (savedCount) {
+
+            const visibleItems =
+                savedContainer.querySelectorAll(
+                    ".shop-product-card"
+                ).length;
+
+
+            savedCount.textContent =
+                visibleItems === 1
+                    ? "1 item"
+                    : `${visibleItems} items`;
+
+        }
+
     }
 
 
-    renderSavedItems();
+    loadSavedProducts();
 
 })();
-/* =========================================================
-   SECTION 15: PAYMENT METHOD
-========================================================= */
+
+// =========================================
+// SECTION 15: PAYMENT METHOD
+// =========================================
 
 (function () {
 
     const paymentPage =
-        document.querySelector(".payment-method-page");
+        document.querySelector(
+            ".payment-method-page"
+        );
+
 
     if (!paymentPage) {
+
         return;
+
     }
 
 
     const orderSummary =
-        document.getElementById("paymentOrderSummary");
+        document.getElementById(
+            "paymentOrderSummary"
+        );
+
 
     const paymentAmount =
-        document.getElementById("paymentAmount");
+        document.getElementById(
+            "paymentAmount"
+        );
+
 
     const paymentMessage =
-        document.getElementById("paymentMessage");
+        document.getElementById(
+            "paymentMessage"
+        );
 
 
     let pendingOrder = null;
+
 
     try {
 
@@ -4589,11 +5810,14 @@ updateQuantity();
     if (!pendingOrder) {
 
         if (paymentMessage) {
+
             paymentMessage.textContent =
                 "No pending order was found.";
+
         }
 
         return;
+
     }
 
 
@@ -4675,7 +5899,10 @@ updateQuantity();
                 function () {
 
                     if (paymentMessage) {
-                        paymentMessage.textContent = "";
+
+                        paymentMessage.textContent =
+                            "";
+
                     }
 
                 }
@@ -4706,11 +5933,14 @@ updateQuantity();
                 if (!selected) {
 
                     if (paymentMessage) {
+
                         paymentMessage.textContent =
                             "Please select a payment method.";
+
                     }
 
                     return;
+
                 }
 
 
@@ -4745,6 +5975,7 @@ updateQuantity();
                         "transfer.html";
 
                     return;
+
                 }
 
 
@@ -4757,12 +5988,15 @@ updateQuantity();
                         "waiting.html";
 
                     return;
+
                 }
 
 
                 if (paymentMessage) {
+
                     paymentMessage.textContent =
                         "Please select a valid payment method.";
+
                 }
 
             }
@@ -4771,37 +6005,50 @@ updateQuantity();
     }
 
 })();
-/* =========================================================
-   SECTION 16: BANK TRANSFER
-========================================================= */
+
+
+// =========================================
+// SECTION 16: BANK TRANSFER
+// =========================================
 
 (function () {
 
     const transferPage =
-        document.querySelector(".transfer-page");
+        document.querySelector(
+            ".transfer-page"
+        );
+
 
     if (!transferPage) {
+
         return;
+
     }
 
 
     const transferAmount =
-        document.getElementById("transferAmount");
+        document.getElementById(
+            "transferAmount"
+        );
+
 
     const transferAccountNumber =
         document.getElementById(
             "transferAccountNumber"
         );
 
+
     const copyAccountNumber =
         document.getElementById(
             "copyAccountNumber"
         );
 
+
     const transferDoneButton =
         document.getElementById(
             "transferDoneButton"
         );
+
 
     const copyMessage =
         document.getElementById(
@@ -4838,6 +6085,7 @@ updateQuantity();
         }
 
         return;
+
     }
 
 
@@ -4850,8 +6098,6 @@ updateQuantity();
     }
 
 
-    /* SHOW ORDER AMOUNT */
-
     if (transferAmount) {
 
         transferAmount.textContent =
@@ -4862,8 +6108,6 @@ updateQuantity();
     }
 
 
-    /* COPY ACCOUNT NUMBER */
-
     if (copyAccountNumber) {
 
         copyAccountNumber.addEventListener(
@@ -4871,7 +6115,9 @@ updateQuantity();
             async function () {
 
                 if (!transferAccountNumber) {
+
                     return;
+
                 }
 
 
@@ -4911,8 +6157,6 @@ updateQuantity();
 
     }
 
-
-    /* TRANSFER COMPLETED */
 
     if (transferDoneButton) {
 
@@ -4965,704 +6209,57 @@ updateQuantity();
     }
 
 })();
-/* =========================================================
-   SECTION 17: RECEIPT UPLOAD
-========================================================= */
 
-(function () {
 
-    const receiptPage =
-        document.querySelector(".receipt-page");
-
-    if (!receiptPage) {
-        return;
-    }
-
-
-    const receiptForm =
-        document.getElementById("receiptForm");
-
-    const receiptFile =
-        document.getElementById("receiptFile");
-
-    const receiptPreview =
-        document.getElementById("receiptPreview");
-
-    const receiptPreviewContainer =
-        document.getElementById("receiptPreviewContainer");
-
-    const receiptFileName =
-        document.getElementById("receiptFileName");
-
-    const removeReceipt =
-        document.getElementById("removeReceipt");
-
-    const receiptAmount =
-        document.getElementById("receiptAmount");
-
-    const receiptOrderReference =
-        document.getElementById("receiptOrderReference");
-
-    const receiptMessage =
-        document.getElementById("receiptMessage");
-
-    const submitReceiptButton =
-        document.getElementById("submitReceiptButton");
-
-
-    let pendingOrder = null;
-
-
-    /* =====================================================
-       LOAD PENDING ORDER
-    ===================================================== */
-
-    try {
-
-        const savedOrder =
-            localStorage.getItem(
-                "threadlyPendingOrder"
-            );
-
-        if (savedOrder) {
-
-            pendingOrder =
-                JSON.parse(savedOrder);
-
-        }
-
-    } catch (error) {
-
-        pendingOrder = null;
-
-    }
-
-
-    /* =====================================================
-       SHOW ORDER INFORMATION
-    ===================================================== */
-
-    if (pendingOrder) {
-
-        const orderReference =
-            pendingOrder.orderId ||
-            pendingOrder.id ||
-            pendingOrder.orderReference ||
-            "THR-000000";
-
-
-        const amount =
-            Number(
-                pendingOrder.total ||
-                pendingOrder.amount ||
-                pendingOrder.grandTotal ||
-                0
-            );
-
-
-        if (receiptOrderReference) {
-
-            receiptOrderReference.textContent =
-                orderReference;
-
-        }
-
-
-        if (receiptAmount) {
-
-            receiptAmount.textContent =
-                "₦" +
-                amount.toLocaleString();
-
-        }
-
-    } else {
-
-        if (receiptOrderReference) {
-
-            receiptOrderReference.textContent =
-                "THR-000000";
-
-        }
-
-
-        if (receiptAmount) {
-
-            receiptAmount.textContent =
-                "₦0";
-
-        }
-
-
-        if (receiptMessage) {
-
-            receiptMessage.textContent =
-                "No pending order was found.";
-
-        }
-
-
-        if (submitReceiptButton) {
-
-            submitReceiptButton.disabled =
-                true;
-
-        }
-
-    }
-
-
-    /* =====================================================
-       SELECT RECEIPT
-    ===================================================== */
-
-    if (receiptFile) {
-
-        receiptFile.addEventListener(
-            "change",
-            function () {
-
-                const file =
-                    this.files[0];
-
-
-                if (!file) {
-                    return;
-                }
-
-
-                /* SHOW FILE NAME */
-
-                if (receiptFileName) {
-
-                    receiptFileName.textContent =
-                        file.name;
-
-                }
-
-
-                /* CLEAR MESSAGE */
-
-                if (receiptMessage) {
-
-                    receiptMessage.textContent =
-                        "";
-
-                }
-
-
-                /* SHOW PREVIEW */
-
-                if (receiptPreviewContainer) {
-
-                    receiptPreviewContainer.classList.add(
-                        "active"
-                    );
-
-                }
-
-
-                /* =================================================
-                   IMAGE RECEIPT
-                ================================================= */
-
-                if (
-                    file.type &&
-                    file.type.startsWith("image/")
-                ) {
-
-                    const imageURL =
-                        URL.createObjectURL(file);
-
-
-                    if (receiptPreview) {
-
-                     receiptPreview.src = imageURL;
-
-                     receiptPreview.alt = "Receipt preview";
-
-                     receiptPreview.removeAttribute("hidden");
-
-                     receiptPreview.style.display = "block";
-
-                     receiptPreview.style.visibility = "visible";
-
-                     receiptPreview.style.opacity = "1";
-
-}
-
-                    if (receiptPreview) {
-
-                        receiptPreview.onload =
-                            function () {
-
-                                URL.revokeObjectURL(
-                                    imageURL
-                                );
-
-                            };
-
-                    }
-
-                }
-
-
-                /* =================================================
-                   PDF RECEIPT
-                ================================================= */
-
-                else if (
-                    file.type ===
-                    "application/pdf"
-                ) {
-
-                    if (receiptPreview) {
-
-                        receiptPreview.removeAttribute(
-                            "src"
-                        );
-
-                        receiptPreview.alt =
-                            "PDF receipt selected";
-
-                        receiptPreview.style.display =
-                            "none";
-
-                    }
-
-                }
-
-
-                /* =================================================
-                   OTHER FILE
-                ================================================= */
-
-                else {
-
-                    if (receiptPreview) {
-
-                        receiptPreview.removeAttribute(
-                            "src"
-                        );
-
-                        receiptPreview.style.display =
-                            "none";
-
-                    }
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       REMOVE RECEIPT
-    ===================================================== */
-
-    if (removeReceipt) {
-
-        removeReceipt.addEventListener(
-            "click",
-            function () {
-
-                if (receiptFile) {
-
-                    receiptFile.value =
-                        "";
-
-                }
-
-
-                if (receiptPreview) {
-
-                    receiptPreview.removeAttribute(
-                        "src"
-                    );
-
-                    receiptPreview.alt =
-                        "Receipt preview";
-
-                    receiptPreview.style.display =
-                        "";
-
-                }
-
-
-                if (receiptPreviewContainer) {
-
-                    receiptPreviewContainer.classList.remove(
-                        "active"
-                    );
-
-                }
-
-
-                if (receiptFileName) {
-
-                    receiptFileName.textContent =
-                        "Receipt";
-
-                }
-
-
-                if (receiptMessage) {
-
-                    receiptMessage.textContent =
-                        "";
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       SUBMIT RECEIPT
-    ===================================================== */
-
-    if (receiptForm) {
-
-        receiptForm.addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
-
-
-                if (!pendingOrder) {
-
-                    if (receiptMessage) {
-
-                        receiptMessage.textContent =
-                            "No pending order was found.";
-
-                    }
-
-                    return;
-
-                }
-
-
-                if (
-                    !receiptFile ||
-                    !receiptFile.files ||
-                    receiptFile.files.length === 0
-                ) {
-
-                    if (receiptMessage) {
-
-                        receiptMessage.textContent =
-                            "Please choose your transfer receipt.";
-
-                    }
-
-                    return;
-
-                }
-
-
-                const file =
-                    receiptFile.files[0];
-
-
-                /* =================================================
-                   SAVE RECEIPT
-                ================================================= */
-
-                function saveReceipt(receiptData) {
-
-                    pendingOrder.receiptSubmitted =
-                        true;
-
-
-                    pendingOrder.receiptFileName =
-                        file.name;
-
-
-                    pendingOrder.receiptType =
-                        file.type;
-
-
-                    pendingOrder.receiptData =
-                        receiptData || "";
-
-
-                    pendingOrder.paymentMethod =
-                        "transfer";
-
-
-                    pendingOrder.paymentStatus =
-                        "awaiting-verification";
-
-
-                    pendingOrder.status =
-                        "processing";
-
-
-                    /* SAVE PENDING ORDER */
-
-                    localStorage.setItem(
-                        "threadlyPendingOrder",
-                        JSON.stringify(
-                            pendingOrder
-                        )
-                    );
-
-
-                    /* SAVE LAST ORDER */
-
-                    localStorage.setItem(
-                        "threadlyLastOrder",
-                        JSON.stringify(
-                            pendingOrder
-                        )
-                    );
-
-
-                    /* SAVE PAYMENT STATUS */
-
-                    localStorage.setItem(
-                        "threadlyPaymentStatus",
-                        "awaiting-verification"
-                    );
-
-
-                    /* =================================================
-                       UPDATE ORDERS
-                    ================================================= */
-
-                    let orders = [];
-
-
-                    try {
-
-                        const savedOrders =
-                            JSON.parse(
-                                localStorage.getItem(
-                                    "threadlyOrders"
-                                )
-                            );
-
-
-                        if (
-                            Array.isArray(
-                                savedOrders
-                            )
-                        ) {
-
-                            orders =
-                                savedOrders;
-
-                        }
-
-                    } catch (error) {
-
-                        orders = [];
-
-                    }
-
-
-                    const orderId =
-                        pendingOrder.orderId ||
-                        pendingOrder.id ||
-                        pendingOrder.orderReference;
-
-
-                    const existingIndex =
-                        orders.findIndex(
-                            function (order) {
-
-                                const existingId =
-                                    order.orderId ||
-                                    order.id ||
-                                    order.orderReference;
-
-
-                                return (
-                                    existingId ===
-                                    orderId
-                                );
-
-                            }
-                        );
-
-
-                    if (
-                        existingIndex !== -1
-                    ) {
-
-                        orders[existingIndex] =
-                            pendingOrder;
-
-                    } else {
-
-                        orders.unshift(
-                            pendingOrder
-                        );
-
-                    }
-
-
-                    localStorage.setItem(
-                        "threadlyOrders",
-                        JSON.stringify(
-                            orders
-                        )
-                    );
-
-
-                    /* =================================================
-                       SUCCESS
-                    ================================================= */
-
-                    if (receiptMessage) {
-
-                        receiptMessage.textContent =
-                            "Receipt submitted successfully.";
-
-                    }
-
-
-                    if (submitReceiptButton) {
-
-                        submitReceiptButton.disabled =
-                            true;
-
-                        submitReceiptButton.textContent =
-                            "RECEIPT SUBMITTED";
-
-                    }
-
-
-                    setTimeout(
-                        function () {
-
-                            window.location.href =
-                                "orders.html";
-
-                        },
-                        700
-                    );
-
-                }
-
-
-                /* =================================================
-                   READ IMAGE RECEIPT
-                ================================================= */
-
-                if (
-                    file.type &&
-                    file.type.startsWith("image/")
-                ) {
-
-                    const reader =
-                        new FileReader();
-
-
-                    reader.onload =
-                        function (event) {
-
-                            saveReceipt(
-                                event.target.result
-                            );
-
-                        };
-
-
-                    reader.onerror =
-                        function () {
-
-                            if (receiptMessage) {
-
-                                receiptMessage.textContent =
-                                    "The receipt could not be read. Please select it again.";
-
-                            }
-
-                        };
-
-
-                    reader.readAsDataURL(
-                        file
-                    );
-
-                }
-
-
-                /* =================================================
-                   PDF RECEIPT
-                ================================================= */
-
-                else {
-
-                    saveReceipt("");
-
-                }
-
-            }
-        );
-
-    }
-
-})();
-/* =========================================================
-   THREADLY - DYNAMIC ORDER DETAILS
-========================================================= */
+// =========================================
+// THREADLY - DYNAMIC ORDER DETAILS
+// =========================================
 
 (function () {
 
     const orderNumberElement =
-        document.getElementById("detailsOrderNumber");
+        document.getElementById(
+            "detailsOrderNumber"
+        );
+
 
     if (!orderNumberElement) {
+
         return;
+
     }
 
-    /*
-        Get selected order number from the URL.
 
-        Example:
-        order-details.html?order=THR-1024
-    */
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-    const params = new URLSearchParams(window.location.search);
 
     const orderNumber =
         params.get("order");
 
-    /*
-        Get saved orders
-    */
 
     const orders =
         JSON.parse(
-            localStorage.getItem("threadlyOrders") || "[]"
+            localStorage.getItem(
+                "threadlyOrders"
+            ) || "[]"
         );
 
-    /*
-        Find the selected order
-    */
 
     const order =
         orders.find(function (item) {
 
             return (
-                item.orderNumber === orderNumber ||
-                item.id === orderNumber
+                item.orderNumber ===
+                    orderNumber ||
+                item.id ===
+                    orderNumber
             );
 
         });
 
-    /*
-        If no order was found,
-        keep the page from breaking.
-    */
 
     if (!order) {
 
@@ -5676,19 +6273,17 @@ updateQuantity();
     }
 
 
-    /* =====================================================
-       ORDER INFORMATION
-    ===================================================== */
-
     const orderNumberDisplay =
         document.getElementById(
             "detailsOrderNumber"
         );
 
+
     const orderDate =
         document.getElementById(
             "detailsOrderDate"
         );
+
 
     const placedDate =
         document.getElementById(
@@ -5732,50 +6327,41 @@ updateQuantity();
     }
 
 
-    /* =====================================================
-       PRODUCT INFORMATION
-    ===================================================== */
-
     const productImage =
         document.getElementById(
             "detailsProductImage"
         );
+
 
     const productName =
         document.getElementById(
             "detailsProductName"
         );
 
+
     const productCategory =
         document.getElementById(
             "detailsProductCategory"
         );
+
 
     const productSize =
         document.getElementById(
             "detailsProductSize"
         );
 
+
     const productQuantity =
         document.getElementById(
             "detailsProductQuantity"
         );
+
 
     const productPrice =
         document.getElementById(
             "detailsProductPrice"
         );
 
-
-    /*
-        Support both:
-
-        order.product
-
-        and
-
-        order.item
-    */
 
     const product =
         order.product ||
@@ -5829,9 +6415,11 @@ updateQuantity();
             product.image ||
             product.imageUrl;
 
+
         if (image) {
 
-            productImage.src = image;
+            productImage.src =
+                image;
 
         }
 
@@ -5849,10 +6437,6 @@ updateQuantity();
 
     }
 
-
-    /* =====================================================
-       ORDER TOTAL
-    ===================================================== */
 
     const orderTotal =
         document.getElementById(
@@ -5873,10 +6457,6 @@ updateQuantity();
     }
 
 
-    /* =====================================================
-       DELIVERY STATUS
-    ===================================================== */
-
     const deliveryStatus =
         order.status ||
         order.deliveryStatus ||
@@ -5888,14 +6468,11 @@ updateQuantity();
     );
 
 
-    /* =====================================================
-       DELIVERY INFORMATION
-    ===================================================== */
-
     const deliveryInformation =
         document.getElementById(
             "detailsDeliveryInformation"
         );
+
 
     if (deliveryInformation) {
 
@@ -5907,14 +6484,11 @@ updateQuantity();
     }
 
 
-    /* =====================================================
-       ESTIMATED DELIVERY
-    ===================================================== */
-
     const estimatedDelivery =
         document.getElementById(
             "detailsEstimatedDelivery"
         );
+
 
     if (estimatedDelivery) {
 
@@ -5927,10 +6501,6 @@ updateQuantity();
 
     }
 
-
-    /* =====================================================
-       HELPERS
-    ===================================================== */
 
     function formatMoney(amount) {
 
@@ -5952,14 +6522,17 @@ updateQuantity();
 
         }
 
+
         const date =
             new Date(dateValue);
+
 
         if (isNaN(date.getTime())) {
 
             return dateValue;
 
         }
+
 
         return date.toLocaleDateString(
             "en-GB",
@@ -5980,7 +6553,9 @@ updateQuantity();
             .replace(
                 /\b\w/g,
                 function (letter) {
+
                     return letter.toUpperCase();
+
                 }
             );
 
@@ -5993,6 +6568,7 @@ updateQuantity();
             document.getElementById(
                 "detailsDeliveryStatus"
             );
+
 
         const trackingMessage =
             document.getElementById(
@@ -6009,6 +6585,7 @@ updateQuantity();
 
             statusElement.textContent =
                 cleanStatus.toUpperCase();
+
 
             statusElement.className =
                 "delivery-status " +
@@ -6034,6 +6611,7 @@ updateQuantity();
                     "This order has been cancelled"
 
             };
+
 
             trackingMessage.textContent =
                 messages[cleanStatus] ||
@@ -6078,6 +6656,7 @@ updateQuantity();
         const date =
             new Date(dateValue);
 
+
         if (isNaN(date.getTime())) {
 
             return "To be confirmed";
@@ -6085,13 +6664,9 @@ updateQuantity();
         }
 
 
-        /*
-            Standard delivery:
-            approximately 3-7 days
-        */
-
         const start =
             new Date(date);
+
 
         start.setDate(
             start.getDate() + 3
@@ -6100,6 +6675,7 @@ updateQuantity();
 
         const end =
             new Date(date);
+
 
         end.setDate(
             end.getDate() + 7

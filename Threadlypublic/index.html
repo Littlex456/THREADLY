@@ -769,6 +769,189 @@
 
     <script src="app.js"></script>
 
+    <script>
+
+    (async function () {
+
+        try {
+
+            if (
+                typeof window.threadlyGetSupabase !==
+                "function"
+            ) {
+                return;
+            }
+
+
+            const supabase =
+                await window.threadlyGetSupabase();
+
+
+            if (!supabase) {
+                return;
+            }
+
+
+            const {
+                data,
+                error
+            } =
+                await supabase
+                    .from("products")
+                    .select(`
+                        id,
+                        name,
+                        category,
+                        price,
+                        image
+                    `);
+
+
+            if (error) {
+
+                console.error(
+                    "THREADLY homepage database error:",
+                    error
+                );
+
+                return;
+            }
+
+
+            if (!Array.isArray(data)) {
+                return;
+            }
+
+
+            const homeCards =
+                document.querySelectorAll(
+                    ".home-product-card"
+                );
+
+
+            homeCards.forEach(function (card) {
+
+                const link =
+                    card.querySelector(
+                        ".home-product-image"
+                    );
+
+
+                if (!link) {
+                    return;
+                }
+
+
+                const href =
+                    link.getAttribute("href");
+
+
+                if (!href) {
+                    return;
+                }
+
+
+                const url =
+                    new URL(
+                        href,
+                        window.location.href
+                    );
+
+
+                const productId =
+                    url.searchParams.get("id");
+
+
+                const product =
+                    data.find(function (item) {
+
+                        return item.id === productId;
+
+                    });
+
+
+                if (!product) {
+                    return;
+                }
+
+
+                const image =
+                    card.querySelector(
+                        ".home-product-image img"
+                    );
+
+
+                const category =
+                    card.querySelector(
+                        ".product-category"
+                    );
+
+
+                const name =
+                    card.querySelector(
+                        ".home-product-info h3"
+                    );
+
+
+                const price =
+                    card.querySelector(
+                        ".product-price"
+                    );
+
+
+                if (image) {
+
+                    image.src =
+                        product.image;
+
+                    image.alt =
+                        product.name;
+
+                }
+
+
+                if (category) {
+
+                    category.textContent =
+                        product.category;
+
+                }
+
+
+                if (name) {
+
+                    name.textContent =
+                        product.name;
+
+                }
+
+
+                if (price) {
+
+                    price.textContent =
+                        "₦" +
+                        Number(
+                            product.price
+                        ).toLocaleString("en-NG");
+
+                }
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "THREADLY homepage product loading failed:",
+                error
+            );
+
+        }
+
+    })();
+
+    </script>
+
 </body>
 
 </html>

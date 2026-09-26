@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -11,19 +12,22 @@
 
     <title>Upload Receipt | THREADLY</title>
 
-    <!-- THEME -->
+
     <script>
+
         (function () {
 
             const savedTheme =
                 localStorage.getItem("threadlyTheme") ||
                 "system";
 
+
             const prefersDark =
                 window.matchMedia &&
                 window.matchMedia(
                     "(prefers-color-scheme: dark)"
                 ).matches;
+
 
             const shouldUseDark =
                 savedTheme === "dark" ||
@@ -32,25 +36,38 @@
                     prefersDark
                 );
 
+
             if (shouldUseDark) {
+
                 document.documentElement.classList.add(
                     "threadly-dark"
                 );
+
             }
 
         })();
+
     </script>
 
-    <link rel="stylesheet" href="style.css">
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
 
 <body>
 
+
 <header class="site-header">
 
-    <a href="index.html" class="logo">
+
+    <a
+        href="index.html"
+        class="logo"
+    >
         THREADLY
     </a>
 
@@ -86,23 +103,23 @@
 
     <div class="header-actions">
 
-        
-
-
         <button
             id="menuButton"
             class="menu-button"
             type="button"
             aria-label="Open menu"
         >
+
             <span></span>
             <span></span>
             <span></span>
+
         </button>
 
     </div>
 
 </header>
+
 
 
 <div
@@ -111,16 +128,19 @@
 ></div>
 
 
+
 <aside
     id="mobileMenu"
     class="mobile-menu"
 >
+
 
     <div class="mobile-menu-header">
 
         <span>
             MENU
         </span>
+
 
         <button
             id="closeMenu"
@@ -134,68 +154,87 @@
     </div>
 
 
+
     <nav class="mobile-nav">
+
 
         <a href="index.html">
             Home
         </a>
 
+
         <a href="shop.html">
             Shop
         </a>
+
 
         <a href="shop.html?category=men">
             Men
         </a>
 
+
         <a href="shop.html?category=women">
             Women
         </a>
+
 
         <a href="shop.html?category=shoes">
             Shoes
         </a>
 
 
+
         <div class="mobile-menu-divider"></div>
+
 
 
         <a href="account.html">
             My Account
         </a>
 
+
         <a href="cart.html">
             My Cart
         </a>
+
 
         <a href="saved.html">
             Saved Items
         </a>
 
+
         <a href="orders.html">
             My Orders
         </a>
+
 
         <a href="settings.html">
             Settings
         </a>
 
+
         <a href="help.html">
             Help &amp; Support
         </a>
+
 
         <a href="about.html">
             About THREADLY
         </a>
 
+
     </nav>
+
 
 </aside>
 
 
+
 <main class="receipt-page">
 
+
     <div class="receipt-top">
+
 
         <a
             href="transfer.html"
@@ -205,43 +244,54 @@
         </a>
 
 
+
         <div class="receipt-heading">
+
 
             <p class="section-label">
                 PAYMENT VERIFICATION
             </p>
 
+
             <h1>
                 Upload your receipt.
             </h1>
+
 
             <p>
                 Submit your transfer receipt so THREADLY can verify your payment.
             </p>
 
+
         </div>
 
+
     </div>
+
 
 
     <section class="receipt-layout">
 
 
-        <!-- ================= RECEIPT FORM ================= -->
 
         <div class="receipt-card">
 
+
             <div class="receipt-card-heading">
+
 
                 <p class="section-label">
                     PAYMENT RECEIPT
                 </p>
 
+
                 <h2>
                     Upload transfer proof
                 </h2>
 
+
             </div>
+
 
 
             <form
@@ -250,15 +300,16 @@
             >
 
 
-                <!-- ================= ORDER INFO ================= -->
 
                 <div class="receipt-order-info">
+
 
                     <div>
 
                         <span>
                             Order Reference
                         </span>
+
 
                         <strong id="receiptOrderReference">
                             THR-000000
@@ -267,11 +318,13 @@
                     </div>
 
 
+
                     <div>
 
                         <span>
                             Amount
                         </span>
+
 
                         <strong id="receiptAmount">
                             ₦0
@@ -279,12 +332,13 @@
 
                     </div>
 
+
                 </div>
 
 
-                <!-- ================= FILE UPLOAD ================= -->
 
                 <div class="receipt-upload-area">
+
 
                     <input
                         type="file"
@@ -302,6 +356,7 @@
                         id="receiptUploadBox"
                     >
 
+
                         <div class="receipt-upload-icon">
                             +
                         </div>
@@ -316,17 +371,19 @@
                             JPG, PNG or PDF
                         </span>
 
+
                     </label>
+
 
                 </div>
 
 
-                <!-- ================= PREVIEW ================= -->
 
                 <div
                     id="receiptPreviewContainer"
                     class="receipt-preview-container"
                 >
+
 
                     <img
                         id="receiptPreview"
@@ -335,11 +392,14 @@
                         alt="Receipt preview"
                     >
 
+
                     <div class="receipt-preview-info">
+
 
                         <strong id="receiptFileName">
                             Receipt
                         </strong>
+
 
                         <button
                             type="button"
@@ -349,24 +409,29 @@
                             REMOVE
                         </button>
 
+
                     </div>
+
 
                 </div>
 
 
-                <!-- ================= NOTE ================= -->
 
                 <div class="receipt-note">
+
 
                     <strong>
                         Before submitting
                     </strong>
 
+
                     <p>
                         Make sure the receipt clearly shows the transfer amount, date and transaction reference where available.
                     </p>
 
+
                 </div>
+
 
 
                 <button
@@ -378,36 +443,44 @@
                 </button>
 
 
+
                 <p
                     id="receiptMessage"
                     class="receipt-message"
                 ></p>
 
+
             </form>
+
 
         </div>
 
 
-        <!-- ================= STATUS CARD ================= -->
 
         <aside class="receipt-status-card">
+
 
             <p class="section-label">
                 WHAT HAPPENS NEXT
             </p>
+
 
             <h2>
                 Your payment will be verified.
             </h2>
 
 
+
             <div class="receipt-status-steps">
 
+
                 <div class="receipt-status-step active">
+
 
                     <span>
                         01
                     </span>
+
 
                     <div>
 
@@ -415,20 +488,25 @@
                             Receipt submitted
                         </strong>
 
+
                         <p>
                             Your transfer receipt is sent for verification.
                         </p>
 
                     </div>
 
+
                 </div>
+
 
 
                 <div class="receipt-status-step">
 
+
                     <span>
                         02
                     </span>
+
 
                     <div>
 
@@ -436,20 +514,25 @@
                             Payment verification
                         </strong>
 
+
                         <p>
                             THREADLY checks your transfer before confirming payment.
                         </p>
 
                     </div>
 
+
                 </div>
+
 
 
                 <div class="receipt-status-step">
 
+
                     <span>
                         03
                     </span>
+
 
                     <div>
 
@@ -457,105 +540,757 @@
                             Order confirmed
                         </strong>
 
+
                         <p>
                             Once verified, your order moves into processing.
                         </p>
 
                     </div>
 
+
                 </div>
+
 
             </div>
 
+
         </aside>
 
+
     </section>
+
 
 </main>
 
 
+
 <footer class="site-footer">
 
+
     <div class="footer-brand">
+
 
         <h2>
             THREADLY
         </h2>
 
+
         <p>
             Wear your thread.
         </p>
 
+
     </div>
+
 
 
     <div class="footer-links">
 
+
         <div>
+
 
             <h3>
                 SHOP
             </h3>
 
+
             <a href="shop.html">
                 All Products
             </a>
+
 
             <a href="shop.html?category=men">
                 Men
             </a>
 
+
             <a href="shop.html?category=women">
                 Women
             </a>
+
 
             <a href="shop.html?category=shoes">
                 Shoes
             </a>
 
+
         </div>
 
 
+
         <div>
+
 
             <h3>
                 HELP
             </h3>
 
+
             <a href="help.html">
                 Contact
             </a>
+
 
             <a href="delivery.html">
                 Delivery
             </a>
 
+
             <a href="returns.html">
                 Returns
             </a>
+
 
             <a href="help.html#faq">
                 FAQ
             </a>
 
+
         </div>
+
 
     </div>
 
 
+
     <div class="footer-bottom">
+
 
         <p>
             © 2026 THREADLY. All rights reserved to the AWOJIDE AND FATUSA Family.
         </p>
 
+
     </div>
+
 
 </footer>
 
 
-<!-- MAIN JAVASCRIPT -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-client.js"></script>
+
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const form =
+            document.getElementById(
+                "receiptForm"
+            );
+
+
+        const fileInput =
+            document.getElementById(
+                "receiptFile"
+            );
+
+
+        const previewContainer =
+            document.getElementById(
+                "receiptPreviewContainer"
+            );
+
+
+        const preview =
+            document.getElementById(
+                "receiptPreview"
+            );
+
+
+        const fileName =
+            document.getElementById(
+                "receiptFileName"
+            );
+
+
+        const removeButton =
+            document.getElementById(
+                "removeReceipt"
+            );
+
+
+        const submitButton =
+            document.getElementById(
+                "submitReceiptButton"
+            );
+
+
+        const message =
+            document.getElementById(
+                "receiptMessage"
+            );
+
+
+        const orderReference =
+            document.getElementById(
+                "receiptOrderReference"
+            );
+
+
+        const amountElement =
+            document.getElementById(
+                "receiptAmount"
+            );
+
+
+
+        let pendingOrder = null;
+
+
+
+        try {
+
+            pendingOrder =
+                JSON.parse(
+                    localStorage.getItem(
+                        "threadlyPendingOrder"
+                    )
+                );
+
+        } catch (error) {
+
+            pendingOrder = null;
+
+        }
+
+
+
+        if (!pendingOrder) {
+
+            if (message) {
+
+                message.textContent =
+                    "No active order found.";
+
+            }
+
+            if (submitButton) {
+
+                submitButton.disabled =
+                    true;
+
+            }
+
+            return;
+
+        }
+
+
+
+        const orderId =
+            pendingOrder.orderId || "";
+
+
+
+        const total =
+            Number(
+                pendingOrder.total || 0
+            );
+
+
+
+        if (orderReference) {
+
+            orderReference.textContent =
+                orderId ||
+                "THR-000000";
+
+        }
+
+
+
+        if (amountElement) {
+
+            amountElement.textContent =
+                "₦" +
+                total.toLocaleString(
+                    "en-NG"
+                );
+
+        }
+
+
+
+        if (fileInput) {
+
+            fileInput.addEventListener(
+                "change",
+                function () {
+
+
+                    const file =
+                        fileInput.files[0];
+
+
+                    if (!file) {
+
+                        return;
+
+                    }
+
+
+
+                    fileName.textContent =
+                        file.name;
+
+
+
+                    previewContainer.style.display =
+                        "block";
+
+
+
+                    if (
+                        file.type.startsWith(
+                            "image/"
+                        )
+                    ) {
+
+                        preview.style.display =
+                            "block";
+
+
+                        preview.src =
+                            URL.createObjectURL(
+                                file
+                            );
+
+                    } else {
+
+                        preview.style.display =
+                            "none";
+
+
+                        preview.removeAttribute(
+                            "src"
+                        );
+
+                    }
+
+
+                }
+            );
+
+        }
+
+
+
+        if (removeButton) {
+
+            removeButton.addEventListener(
+                "click",
+                function () {
+
+
+                    fileInput.value =
+                        "";
+
+
+                    preview.src =
+                        "";
+
+
+                    preview.style.display =
+                        "none";
+
+
+                    previewContainer.style.display =
+                        "none";
+
+
+                    fileName.textContent =
+                        "Receipt";
+
+
+                }
+            );
+
+        }
+
+
+
+        if (form) {
+
+            form.addEventListener(
+                "submit",
+                async function (event) {
+
+
+                    event.preventDefault();
+
+
+
+                    const file =
+                        fileInput.files[0];
+
+
+
+                    if (!file) {
+
+                        message.textContent =
+                            "Please choose your receipt.";
+
+                        return;
+
+                    }
+
+
+
+                    if (!orderId) {
+
+                        message.textContent =
+                            "Order reference is missing.";
+
+                        return;
+
+                    }
+
+
+
+                    submitButton.disabled =
+                        true;
+
+
+                    submitButton.textContent =
+                        "UPLOADING...";
+
+
+                    message.textContent =
+                        "";
+
+
+
+                    try {
+
+
+                        const supabase =
+                            window.threadlySupabase;
+
+
+
+                        if (!supabase) {
+
+                            throw new Error(
+                                "Supabase is not connected."
+                            );
+
+                        }
+
+
+
+                        const {
+                            data:
+                                sessionData,
+                            error:
+                                sessionError
+                        } =
+                            await supabase.auth.getSession();
+
+
+
+                        if (sessionError) {
+
+                            throw sessionError;
+
+                        }
+
+
+
+                        const session =
+                            sessionData.session;
+
+
+
+                        if (
+                            !session ||
+                            !session.user
+                        ) {
+
+                            window.location.href =
+                                "login.html?redirect=receipt.html";
+
+                            return;
+
+                        }
+
+
+
+                        const user =
+                            session.user;
+
+
+
+                        const {
+                            data:
+                                existingOrder,
+                            error:
+                                orderLookupError
+                        } =
+                            await supabase
+                                .from("orders")
+                                .select(
+                                    "id, order_number, user_id, payment_status, receipt_url"
+                                )
+                                .eq(
+                                    "order_number",
+                                    orderId
+                                )
+                                .eq(
+                                    "user_id",
+                                    user.id
+                                )
+                                .maybeSingle();
+
+
+
+                        if (orderLookupError) {
+
+                            throw orderLookupError;
+
+                        }
+
+
+
+                        if (!existingOrder) {
+
+                            throw new Error(
+                                "THREADLY could not find this order in Supabase. Order reference: " +
+                                orderId
+                            );
+
+                        }
+
+
+
+                        const fileExtension =
+                            file.name
+                                .split(".")
+                                .pop()
+                                .toLowerCase();
+
+
+
+                        const filePath =
+                            user.id +
+                            "/" +
+                            existingOrder.order_number +
+                            "-" +
+                            Date.now() +
+                            "." +
+                            fileExtension;
+
+
+
+                        const {
+                            error:
+                                uploadError
+                        } =
+                            await supabase
+                                .storage
+                                .from("receipts")
+                                .upload(
+                                    filePath,
+                                    file,
+                                    {
+                                        upsert: false,
+                                        contentType:
+                                            file.type
+                                    }
+                                );
+
+
+
+                        if (uploadError) {
+
+                            throw uploadError;
+
+                        }
+
+
+
+                        const {
+                            data:
+                                publicData
+                        } =
+                            supabase
+                                .storage
+                                .from("receipts")
+                                .getPublicUrl(
+                                    filePath
+                                );
+
+
+
+                        const receiptUrl =
+                            publicData.publicUrl;
+
+
+
+                        const {
+                            data:
+                                updatedOrder,
+                            error:
+                                updateError
+                        } =
+                            await supabase
+                                .from("orders")
+                                .update({
+
+                                    receipt_url:
+                                        receiptUrl,
+
+                                    payment_status:
+                                        "receipt-submitted",
+
+                                    updated_at:
+                                        new Date()
+                                            .toISOString()
+
+                                })
+                                .eq(
+                                    "id",
+                                    existingOrder.id
+                                )
+                                .eq(
+                                    "user_id",
+                                    user.id
+                                )
+                                .select(
+                                    "id, order_number, payment_status, receipt_url"
+                                );
+
+
+
+                        console.log(
+                            "UPDATED ORDER FROM SUPABASE:",
+                            updatedOrder
+                        );
+
+
+
+                        if (updateError) {
+
+                            throw updateError;
+
+                        }
+
+
+
+                        if (
+                            !updatedOrder ||
+                            updatedOrder.length === 0
+                        ) {
+
+                            throw new Error(
+                                "The receipt uploaded, but THREADLY could not update the order."
+                            );
+
+                        }
+
+
+
+                        pendingOrder.paymentStatus =
+                            "receipt-submitted";
+
+
+                        pendingOrder.receiptUrl =
+                            receiptUrl;
+
+
+
+                        localStorage.setItem(
+                            "threadlyPendingOrder",
+                            JSON.stringify(
+                                pendingOrder
+                            )
+                        );
+
+
+
+                        localStorage.setItem(
+                            "threadlyLastOrder",
+                            JSON.stringify(
+                                pendingOrder
+                            )
+                        );
+
+
+
+                        message.textContent =
+                            "Receipt submitted successfully.";
+
+
+
+                        submitButton.textContent =
+                            "RECEIPT SUBMITTED";
+
+
+                        submitButton.disabled =
+                            true;
+
+
+
+                        setTimeout(
+                            function () {
+
+                                window.location.href =
+                                    "orders.html";
+
+                            },
+                            1200
+                        );
+
+
+
+                    } catch (error) {
+
+
+                        console.error(
+                            "Receipt upload error:",
+                            error
+                        );
+
+
+                        message.textContent =
+                            error.message ||
+                            "Something went wrong while uploading your receipt.";
+
+
+                        submitButton.disabled =
+                            false;
+
+
+                        submitButton.textContent =
+                            "SUBMIT RECEIPT";
+
+
+                    }
+
+
+                }
+            );
+
+        }
+
+
+    }
+);
+
+</script>
+
+
+
 <script src="app.js"></script>
+
 
 </body>
 

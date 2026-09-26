@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -11,18 +12,22 @@
 
     <title>Checkout | THREADLY</title>
 
+
     <script>
+
         (function () {
 
             const savedTheme =
                 localStorage.getItem("threadlyTheme") ||
                 "system";
 
+
             const prefersDark =
                 window.matchMedia &&
                 window.matchMedia(
                     "(prefers-color-scheme: dark)"
                 ).matches;
+
 
             const shouldUseDark =
                 savedTheme === "dark" ||
@@ -31,14 +36,19 @@
                     prefersDark
                 );
 
+
             if (shouldUseDark) {
+
                 document.documentElement.classList.add(
                     "threadly-dark"
                 );
+
             }
 
         })();
+
     </script>
+
 
     <link
         rel="stylesheet"
@@ -50,7 +60,9 @@
 
 <body>
 
+
 <header class="site-header">
+
 
     <a
         href="index.html"
@@ -91,23 +103,24 @@
 
     <div class="header-actions">
 
-
-
-
         <button
             id="menuButton"
             class="menu-button"
             type="button"
             aria-label="Open menu"
         >
+
             <span></span>
             <span></span>
             <span></span>
+
         </button>
 
     </div>
 
+
 </header>
+
 
 
 <div
@@ -116,16 +129,19 @@
 ></div>
 
 
+
 <aside
     id="mobileMenu"
     class="mobile-menu"
 >
+
 
     <div class="mobile-menu-header">
 
         <span>
             MENU
         </span>
+
 
         <button
             id="closeMenu"
@@ -139,68 +155,87 @@
     </div>
 
 
+
     <nav class="mobile-nav">
+
 
         <a href="index.html">
             Home
         </a>
 
+
         <a href="shop.html">
             Shop
         </a>
+
 
         <a href="shop.html?category=men">
             Men
         </a>
 
+
         <a href="shop.html?category=women">
             Women
         </a>
+
 
         <a href="shop.html?category=shoes">
             Shoes
         </a>
 
 
+
         <div class="mobile-menu-divider"></div>
+
 
 
         <a href="account.html">
             My Account
         </a>
 
+
         <a href="cart.html">
             My Cart
         </a>
+
 
         <a href="saved.html">
             Saved Items
         </a>
 
+
         <a href="orders.html">
             My Orders
         </a>
+
 
         <a href="settings.html">
             Settings
         </a>
 
+
         <a href="help.html">
             Help &amp; Support
         </a>
+
 
         <a href="about.html">
             About THREADLY
         </a>
 
+
     </nav>
+
 
 </aside>
 
 
+
 <main class="checkout-page">
 
+
     <div class="checkout-top">
+
 
         <a
             href="cart.html"
@@ -210,45 +245,57 @@
         </a>
 
 
+
         <div class="checkout-heading">
+
 
             <p class="section-label">
                 THREADLY CHECKOUT
             </p>
 
+
             <h1>
                 Complete your order.
             </h1>
+
 
             <p>
                 Enter your delivery details and choose your preferred delivery option.
             </p>
 
+
         </div>
 
+
     </div>
+
 
 
     <section class="checkout-layout">
 
 
-        <!-- CUSTOMER DETAILS -->
 
         <div class="checkout-details">
 
+
             <div class="checkout-card">
 
+
                 <div class="checkout-card-heading">
+
 
                     <p class="section-label">
                         01
                     </p>
 
+
                     <h2>
                         Delivery Details
                     </h2>
 
+
                 </div>
+
 
 
                 <form
@@ -256,13 +303,17 @@
                     class="checkout-form"
                 >
 
+
                     <div class="checkout-form-row">
 
+
                         <div class="checkout-field">
+
 
                             <label for="checkoutFullName">
                                 Full Name
                             </label>
+
 
                             <input
                                 type="text"
@@ -272,14 +323,18 @@
                                 required
                             >
 
+
                         </div>
+
 
 
                         <div class="checkout-field">
 
+
                             <label for="checkoutPhone">
                                 Phone Number
                             </label>
+
 
                             <input
                                 type="tel"
@@ -289,16 +344,21 @@
                                 required
                             >
 
+
                         </div>
+
 
                     </div>
 
 
+
                     <div class="checkout-field">
+
 
                         <label for="checkoutEmail">
                             Email Address
                         </label>
+
 
                         <input
                             type="email"
@@ -308,14 +368,18 @@
                             required
                         >
 
+
                     </div>
+
 
 
                     <div class="checkout-field">
 
+
                         <label for="checkoutAddress">
                             Delivery Address
                         </label>
+
 
                         <textarea
                             id="checkoutAddress"
@@ -325,16 +389,21 @@
                             required
                         ></textarea>
 
+
                     </div>
+
 
 
                     <div class="checkout-form-row">
 
+
                         <div class="checkout-field">
+
 
                             <label for="checkoutState">
                                 State
                             </label>
+
 
                             <input
                                 type="text"
@@ -344,14 +413,18 @@
                                 required
                             >
 
+
                         </div>
+
 
 
                         <div class="checkout-field">
 
+
                             <label for="checkoutCity">
                                 City
                             </label>
+
 
                             <input
                                 type="text"
@@ -361,31 +434,39 @@
                                 required
                             >
 
+
                         </div>
+
 
                     </div>
 
 
-                    <!-- DELIVERY OPTION -->
 
                     <div class="checkout-section">
 
+
                         <div class="checkout-card-heading">
+
 
                             <p class="section-label">
                                 02
                             </p>
 
+
                             <h2>
                                 Delivery Option
                             </h2>
 
+
                         </div>
+
 
 
                         <div class="delivery-options">
 
+
                             <label class="delivery-option">
+
 
                                 <input
                                     type="radio"
@@ -394,30 +475,40 @@
                                     checked
                                 >
 
+
                                 <span class="delivery-option-content">
 
+
                                     <span>
+
 
                                         <strong>
                                             Standard Delivery
                                         </strong>
 
+
                                         <small>
                                             Delivery within 3–7 business days
                                         </small>
 
+
                                     </span>
+
 
                                     <strong>
                                         ₦2,500
                                     </strong>
 
+
                                 </span>
+
 
                             </label>
 
 
+
                             <label class="delivery-option">
+
 
                                 <input
                                     type="radio"
@@ -425,71 +516,93 @@
                                     value="express"
                                 >
 
+
                                 <span class="delivery-option-content">
 
+
                                     <span>
+
 
                                         <strong>
                                             Express Delivery
                                         </strong>
 
+
                                         <small>
                                             Faster delivery within 1–3 business days
                                         </small>
 
+
                                     </span>
+
 
                                     <strong>
                                         ₦4,500
                                     </strong>
 
+
                                 </span>
+
 
                             </label>
 
+
                         </div>
+
 
                     </div>
 
 
-                    <!-- PAYMENT -->
 
                     <div class="checkout-section">
 
+
                         <div class="checkout-card-heading">
+
 
                             <p class="section-label">
                                 03
                             </p>
 
+
                             <h2>
                                 Payment
                             </h2>
 
+
                         </div>
 
 
+
                         <div class="payment-placeholder">
+
 
                             <div class="payment-placeholder-icon">
                                 ₦
                             </div>
 
+
                             <div>
+
 
                                 <strong>
                                     Bank Transfer
                                 </strong>
 
+
                                 <p>
                                     Continue to the secure bank transfer page to complete your payment.
                                 </p>
 
+
                             </div>
+
 
                         </div>
 
+
                     </div>
+
 
 
                     <button
@@ -501,35 +614,44 @@
                     </button>
 
 
+
                     <p
                         id="checkoutMessage"
                         class="checkout-message"
                     ></p>
 
+
                 </form>
 
+
             </div>
+
 
         </div>
 
 
-        <!-- ORDER SUMMARY -->
 
         <aside class="checkout-summary">
 
+
             <div class="checkout-summary-card">
 
+
                 <div class="checkout-card-heading">
+
 
                     <p class="section-label">
                         YOUR ORDER
                     </p>
 
+
                     <h2>
                         Order Summary
                     </h2>
 
+
                 </div>
+
 
 
                 <div
@@ -538,512 +660,238 @@
                 ></div>
 
 
+
                 <div class="checkout-summary-divider"></div>
 
 
+
                 <div class="checkout-summary-row">
+
 
                     <span>
                         Subtotal
                     </span>
 
+
                     <strong id="checkoutSubtotal">
                         ₦0
                     </strong>
 
+
                 </div>
 
 
+
                 <div class="checkout-summary-row">
+
 
                     <span>
                         Delivery
                     </span>
 
+
                     <strong id="checkoutDelivery">
                         ₦2,500
                     </strong>
 
+
                 </div>
 
 
+
                 <div class="checkout-summary-total">
+
 
                     <span>
                         Total
                     </span>
 
+
                     <strong id="checkoutTotal">
                         ₦0
                     </strong>
 
+
                 </div>
 
 
+
                 <div class="checkout-secure-note">
+
 
                     <span>
                         ✓
                     </span>
 
+
                     <p>
                         Your order details are saved securely during checkout.
                     </p>
 
+
                 </div>
+
 
             </div>
 
+
         </aside>
 
+
     </section>
+
 
 </main>
 
 
+
 <footer class="site-footer">
 
+
     <div class="footer-brand">
+
 
         <h2>
             THREADLY
         </h2>
 
+
         <p>
             Wear your thread.
         </p>
 
+
     </div>
+
 
 
     <div class="footer-links">
 
+
         <div>
+
 
             <h3>
                 SHOP
             </h3>
 
+
             <a href="shop.html">
                 All Products
             </a>
+
 
             <a href="shop.html?category=men">
                 Men
             </a>
 
+
             <a href="shop.html?category=women">
                 Women
             </a>
+
 
             <a href="shop.html?category=shoes">
                 Shoes
             </a>
 
+
         </div>
 
 
+
         <div>
+
 
             <h3>
                 HELP
             </h3>
 
+
             <a href="help.html">
                 Contact
             </a>
+
 
             <a href="delivery.html">
                 Delivery
             </a>
 
+
             <a href="returns.html">
                 Returns
             </a>
+
 
             <a href="help.html#faq">
                 FAQ
             </a>
 
+
         </div>
+
 
     </div>
 
 
+
     <div class="footer-bottom">
+
 
         <p>
             © 2026 THREADLY. All rights reserved.
         </p>
 
+
     </div>
+
 
 </footer>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+
+
 <script>
 
-(function () {
-
-    const continueToPayment =
-        document.getElementById("continueToPayment");
-
-    const checkoutMessage =
-        document.getElementById("checkoutMessage");
-
-    const checkoutItems =
-        document.getElementById("checkoutItems");
-
-    const checkoutSubtotal =
-        document.getElementById("checkoutSubtotal");
-
-    const checkoutDelivery =
-        document.getElementById("checkoutDelivery");
-
-    const checkoutTotal =
-        document.getElementById("checkoutTotal");
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-    /* =========================================================
-       LOAD CART
-    ========================================================= */
-
-    let cart = [];
-
-    try {
-
-        const savedCart =
-            localStorage.getItem("threadlyCart");
-
-        if (savedCart) {
-
-            const parsedCart =
-                JSON.parse(savedCart);
-
-            if (Array.isArray(parsedCart)) {
-
-                cart = parsedCart;
-
-            }
-
-        }
-
-    } catch (error) {
-
-        cart = [];
-
-    }
+        const button =
+            document.getElementById(
+                "continueToPayment"
+            );
 
 
-    /* =========================================================
-       NORMALIZE CART ITEMS
-    ========================================================= */
-
-    cart = cart.map(function (item) {
-
-        return {
-
-            id:
-                item.id ||
-                item.productId ||
-                "",
-
-            name:
-                item.name ||
-                item.title ||
-                "THREADLY Product",
-
-            price:
-                Number(
-                    item.price ||
-                    0
-                ),
-
-            image:
-                item.image ||
-                item.img ||
-                "",
-
-            size:
-                item.size ||
-                "",
-
-            quantity:
-                Number(
-                    item.quantity ||
-                    item.qty ||
-                    1
-                )
-
-        };
-
-    });
+        const form =
+            document.getElementById(
+                "checkoutForm"
+            );
 
 
-    /* =========================================================
-       CALCULATE SUBTOTAL
-    ========================================================= */
-
-    function calculateSubtotal() {
-
-        return cart.reduce(
-            function (total, item) {
-
-                return total +
-                    (
-                        Number(item.price) *
-                        Number(item.quantity)
-                    );
-
-            },
-            0
-        );
-
-    }
+        const message =
+            document.getElementById(
+                "checkoutMessage"
+            );
 
 
-    /* =========================================================
-       DISPLAY CART ITEMS
-    ========================================================= */
-
-    function displayCartItems() {
-
-        if (!checkoutItems) {
+        if (!button || !form) {
             return;
         }
 
 
-        checkoutItems.innerHTML = "";
 
-
-        if (cart.length === 0) {
-
-            checkoutItems.innerHTML =
-                "<p>Your cart is empty.</p>";
-
-            if (continueToPayment) {
-
-                continueToPayment.disabled =
-                    true;
-
-            }
-
-            return;
-
-        }
-
-
-        cart.forEach(function (item) {
-
-            const itemElement =
-                document.createElement("div");
-
-            itemElement.className =
-                "checkout-item";
-
-
-            const image =
-                document.createElement("img");
-
-            image.src =
-                item.image ||
-                "images/hoodie-001.jpg";
-
-            image.alt =
-                item.name;
-
-
-            const details =
-                document.createElement("div");
-
-            details.className =
-                "checkout-item-details";
-
-
-            const name =
-                document.createElement("strong");
-
-            name.textContent =
-                item.name;
-
-
-            const quantity =
-                document.createElement("span");
-
-            quantity.textContent =
-                "Qty: " +
-                item.quantity;
-
-
-            if (item.size) {
-
-                const size =
-                    document.createElement("span");
-
-                size.textContent =
-                    "Size: " +
-                    item.size;
-
-                details.appendChild(size);
-
-            }
-
-
-            const price =
-                document.createElement("strong");
-
-            price.textContent =
-                "₦" +
-                (
-                    Number(item.price) *
-                    Number(item.quantity)
-                ).toLocaleString();
-
-
-            details.insertBefore(
-                name,
-                details.firstChild
-            );
-
-            details.appendChild(
-                quantity
-            );
-
-            details.appendChild(
-                price
-            );
-
-
-            itemElement.appendChild(
-                image
-            );
-
-            itemElement.appendChild(
-                details
-            );
-
-
-            checkoutItems.appendChild(
-                itemElement
-            );
-
-        });
-
-    }
-
-
-    /* =========================================================
-       UPDATE TOTALS
-    ========================================================= */
-
-    function updateTotals() {
-
-        const subtotal =
-            calculateSubtotal();
-
-
-        const selectedDelivery =
-            document.querySelector(
-                'input[name="deliveryMethod"]:checked'
-            );
-
-
-        const delivery =
-            selectedDelivery &&
-            selectedDelivery.value === "express"
-                ? 4500
-                : 2500;
-
-
-        const total =
-            subtotal +
-            delivery;
-
-
-        if (checkoutSubtotal) {
-
-            checkoutSubtotal.textContent =
-                "₦" +
-                subtotal.toLocaleString();
-
-        }
-
-
-        if (checkoutDelivery) {
-
-            checkoutDelivery.textContent =
-                "₦" +
-                delivery.toLocaleString();
-
-        }
-
-
-        if (checkoutTotal) {
-
-            checkoutTotal.textContent =
-                "₦" +
-                total.toLocaleString();
-
-        }
-
-
-        return {
-
-            subtotal:
-                subtotal,
-
-            delivery:
-                delivery,
-
-            total:
-                total
-
-        };
-
-    }
-
-
-    /* =========================================================
-       DELIVERY CHANGE
-    ========================================================= */
-
-    document
-        .querySelectorAll(
-            'input[name="deliveryMethod"]'
-        )
-        .forEach(function (radio) {
-
-            radio.addEventListener(
-                "change",
-                updateTotals
-            );
-
-        });
-
-
-    /* =========================================================
-       INITIAL DISPLAY
-    ========================================================= */
-
-    displayCartItems();
-
-    updateTotals();
-
-
-    /* =========================================================
-       CONTINUE TO PAYMENT
-    ========================================================= */
-
-    if (continueToPayment) {
-
-        continueToPayment.addEventListener(
+        button.addEventListener(
             "click",
-            function () {
+            async function () {
 
-                const form =
-                    document.getElementById(
-                        "checkoutForm"
-                    );
+
+                message.textContent = "";
+
 
 
                 if (!form.checkValidity()) {
@@ -1055,221 +903,492 @@
                 }
 
 
-                if (cart.length === 0) {
 
-                    if (checkoutMessage) {
+                let cart = [];
 
-                        checkoutMessage.textContent =
-                            "Your cart is empty.";
 
-                    }
+
+                try {
+
+                    cart =
+                        JSON.parse(
+                            localStorage.getItem(
+                                "threadlyCart"
+                            )
+                        );
+
+                } catch (error) {
+
+                    cart = [];
+
+                }
+
+
+
+                if (
+                    !Array.isArray(cart) ||
+                    cart.length === 0
+                ) {
+
+                    message.textContent =
+                        "Your cart is empty.";
 
                     return;
 
                 }
 
 
-                const selectedDelivery =
-                    document.querySelector(
-                        'input[name="deliveryMethod"]:checked'
+
+                button.disabled = true;
+
+                button.textContent =
+                    "PROCESSING...";
+
+
+
+                try {
+
+
+                    const supabase =
+                        window.threadlySupabase;
+
+
+
+                    if (!supabase) {
+
+                        throw new Error(
+                            "Supabase is not connected. Refresh the page and try again."
+                        );
+
+                    }
+
+
+
+                    const {
+                        data: sessionData,
+                        error: sessionError
+                    } =
+                        await supabase.auth.getSession();
+
+
+
+                    if (sessionError) {
+                        throw sessionError;
+                    }
+
+
+
+                    const session =
+                        sessionData.session;
+
+
+
+                    if (
+                        !session ||
+                        !session.user
+                    ) {
+
+                        window.location.href =
+                            "login.html?redirect=checkout.html";
+
+                        return;
+
+                    }
+
+
+
+                    const user =
+                        session.user;
+
+
+
+                    const fullName =
+                        document
+                            .getElementById(
+                                "checkoutFullName"
+                            )
+                            .value
+                            .trim();
+
+
+
+                    const phone =
+                        document
+                            .getElementById(
+                                "checkoutPhone"
+                            )
+                            .value
+                            .trim();
+
+
+
+                    const email =
+                        document
+                            .getElementById(
+                                "checkoutEmail"
+                            )
+                            .value
+                            .trim();
+
+
+
+                    const address =
+                        document
+                            .getElementById(
+                                "checkoutAddress"
+                            )
+                            .value
+                            .trim();
+
+
+
+                    const state =
+                        document
+                            .getElementById(
+                                "checkoutState"
+                            )
+                            .value
+                            .trim();
+
+
+
+                    const city =
+                        document
+                            .getElementById(
+                                "checkoutCity"
+                            )
+                            .value
+                            .trim();
+
+
+
+                    const deliveryInput =
+                        document.querySelector(
+                            'input[name="deliveryMethod"]:checked'
+                        );
+
+
+
+                    if (!deliveryInput) {
+
+                        throw new Error(
+                            "Please select a delivery method."
+                        );
+
+                    }
+
+
+
+                    const deliveryMethod =
+                        deliveryInput.value;
+
+
+
+                    let subtotal = 0;
+
+
+
+                    const orderItems =
+                        cart.map(
+                            function (item) {
+
+
+                                const quantity =
+                                    Number(
+                                        item.quantity || 1
+                                    );
+
+
+                                const price =
+                                    Number(
+                                        item.price || 0
+                                    );
+
+
+                                subtotal +=
+                                    price * quantity;
+
+
+
+                                return {
+
+                                    id:
+                                        item.id,
+
+                                    name:
+                                        item.name,
+
+                                    price:
+                                        price,
+
+                                    image:
+                                        item.image || "",
+
+                                    size:
+                                        item.size || "",
+
+                                    quantity:
+                                        quantity
+
+                                };
+
+
+                            }
+                        );
+
+
+
+                    const delivery =
+                        deliveryMethod === "express"
+                            ? 4500
+                            : 2500;
+
+
+
+                    const total =
+                        subtotal + delivery;
+
+
+
+                    const orderSize =
+                        orderItems.length === 1
+                            ? orderItems[0].size
+                            : "Multiple";
+
+
+
+                    const orderId =
+                        "THR-" +
+                        Date.now()
+                            .toString()
+                            .slice(-8);
+
+
+
+                    const now =
+                        new Date()
+                            .toISOString();
+
+
+
+                    const orderData = {
+
+                        id:
+                            orderId,
+
+                        order_number:
+                            orderId,
+
+                        customer_full_name:
+                            fullName,
+
+                        customer_email:
+                            email,
+
+                        customer_phone:
+                            phone,
+
+                        customer_address:
+                            address,
+
+                        customer_state:
+                            state,
+
+                        customer_city:
+                            city,
+
+                        items:
+                            orderItems,
+
+                        size:
+                            orderSize,
+
+                        subtotal:
+                            subtotal,
+
+                        delivery:
+                            delivery,
+
+                        delivery_method:
+                            deliveryMethod,
+
+                        total:
+                            total,
+
+                        payment_status:
+                            "awaiting-payment",
+
+                        payment_method:
+                            "transfer",
+
+                        delivery_status:
+                            "processing",
+
+                        receipt_url:
+                            "",
+
+                        estimated_delivery:
+                            deliveryMethod === "express"
+                                ? "1-3 days"
+                                : "3-7 days",
+
+                        created_at:
+                            now,
+
+                        updated_at:
+                            now,
+
+                        user_id:
+                            user.id
+
+                    };
+
+
+
+                    console.log(
+                        "THREADLY ORDER:",
+                        orderData
                     );
 
 
-                const customerDetails = {
 
-                    fullName:
-                        document.getElementById(
-                            "checkoutFullName"
-                        ).value.trim(),
-
-                    phone:
-                        document.getElementById(
-                            "checkoutPhone"
-                        ).value.trim(),
-
-                    email:
-                        document.getElementById(
-                            "checkoutEmail"
-                        ).value.trim(),
-
-                    address:
-                        document.getElementById(
-                            "checkoutAddress"
-                        ).value.trim(),
-
-                    state:
-                        document.getElementById(
-                            "checkoutState"
-                        ).value.trim(),
-
-                    city:
-                        document.getElementById(
-                            "checkoutCity"
-                        ).value.trim(),
-
-                    deliveryMethod:
-                        selectedDelivery
-                            ? selectedDelivery.value
-                            : "standard"
-
-                };
+                    const {
+                        error:
+                            insertError
+                    } =
+                        await supabase
+                            .from("orders")
+                            .insert(
+                                orderData
+                            );
 
 
-                const totals =
-                    updateTotals();
+
+                    if (insertError) {
+
+                        console.error(
+                            "SUPABASE ERROR:",
+                            insertError
+                        );
+
+                        throw new Error(
+                            insertError.message
+                        );
+
+                    }
 
 
-                /* =================================================
-                   CREATE ORDER ID
-                ================================================= */
 
-                const orderId =
-                    "THR-" +
-                    Date.now()
-                        .toString()
-                        .slice(-6);
+                    const pendingOrder = {
 
+                        orderId:
+                            orderId,
 
-                /* =================================================
-                   CREATE COMPLETE PENDING ORDER
-                ================================================= */
+                        items:
+                            orderItems,
 
-                const pendingOrder = {
+                        fullName:
+                            fullName,
 
-                    orderId:
-                        orderId,
+                        phone:
+                            phone,
 
-                    items:
-                        cart.map(function (item) {
+                        email:
+                            email,
 
-                            return {
+                        address:
+                            address,
 
-                                id:
-                                    item.id,
+                        state:
+                            state,
 
-                                name:
-                                    item.name,
+                        city:
+                            city,
 
-                                price:
-                                    Number(
-                                        item.price
-                                    ),
+                        deliveryMethod:
+                            deliveryMethod,
 
-                                image:
-                                    item.image,
+                        subtotal:
+                            subtotal,
 
-                                size:
-                                    item.size,
+                        deliveryFee:
+                            delivery,
 
-                                quantity:
-                                    Number(
-                                        item.quantity
-                                    )
+                        total:
+                            total,
 
-                            };
+                        status:
+                            "processing",
 
-                        }),
+                        paymentMethod:
+                            "transfer",
 
-                    customer:
-                        customerDetails,
+                        paymentStatus:
+                            "awaiting-payment",
 
-                    fullName:
-                        customerDetails.fullName,
+                        createdAt:
+                            now
 
-                    phone:
-                        customerDetails.phone,
-
-                    email:
-                        customerDetails.email,
-
-                    address:
-                        customerDetails.address,
-
-                    state:
-                        customerDetails.state,
-
-                    city:
-                        customerDetails.city,
-
-                    deliveryMethod:
-                        customerDetails.deliveryMethod,
-
-                    subtotal:
-                        totals.subtotal,
-
-                    deliveryFee:
-                        totals.delivery,
-
-                    total:
-                        totals.total,
-
-                    status:
-                        "processing",
-
-                    paymentMethod:
-                        "transfer",
-
-                    paymentStatus:
-                        "awaiting-payment",
-
-                    createdAt:
-                        new Date().toISOString()
-
-                };
+                    };
 
 
-                /* =================================================
-                   SAVE CHECKOUT DETAILS
-                ================================================= */
 
-                localStorage.setItem(
-                    "threadlyCheckoutDetails",
-                    JSON.stringify(
-                        customerDetails
-                    )
-                );
+                    localStorage.setItem(
+                        "threadlyPendingOrder",
+                        JSON.stringify(
+                            pendingOrder
+                        )
+                    );
 
 
-                /* =================================================
-                   SAVE COMPLETE PENDING ORDER
-                ================================================= */
 
-                localStorage.setItem(
-                    "threadlyPendingOrder",
-                    JSON.stringify(
-                        pendingOrder
-                    )
-                );
+                    localStorage.setItem(
+                        "threadlyLastOrder",
+                        JSON.stringify(
+                            pendingOrder
+                        )
+                    );
 
 
-                /* =================================================
-                   SAVE LAST ORDER
-                ================================================= */
 
-                localStorage.setItem(
-                    "threadlyLastOrder",
-                    JSON.stringify(
-                        pendingOrder
-                    )
-                );
+                    window.location.href =
+                        "transfer.html";
 
 
-                /* =================================================
-                   GO TO TRANSFER
-                ================================================= */
+                } catch (error) {
 
-                window.location.href =
-                    "transfer.html";
+
+                    console.error(
+                        "CHECKOUT ERROR:",
+                        error
+                    );
+
+
+                    message.textContent =
+                        error.message ||
+                        "Something went wrong.";
+
+
+                    button.disabled =
+                        false;
+
+
+                    button.textContent =
+                        "CONTINUE TO PAYMENT";
+
+
+                }
+
 
             }
         );
 
-}})();
+
+    }
+);
 
 </script>
 
-
-<script src="app.js"></script>
 
 </body>
 

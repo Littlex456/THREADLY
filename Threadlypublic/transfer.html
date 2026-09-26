@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -10,67 +11,91 @@
     >
 
     <title>Bank Transfer | THREADLY</title>
+
     <script>
-(function () {
 
-    const savedTheme =
-        localStorage.getItem("threadlyTheme") ||
-        "system";
+        (function () {
 
-    const prefersDark =
-        window.matchMedia &&
-        window.matchMedia(
-            "(prefers-color-scheme: dark)"
-        ).matches;
+            const savedTheme =
+                localStorage.getItem("threadlyTheme") ||
+                "system";
 
-    const shouldUseDark =
-        savedTheme === "dark" ||
-        (
-            savedTheme === "system" &&
-            prefersDark
-        );
+            const prefersDark =
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches;
 
-    if (shouldUseDark) {
-        document.documentElement.classList.add(
-            "threadly-dark"
-        );
-    }
+            const shouldUseDark =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    prefersDark
+                );
 
-})();
-</script>
+            if (shouldUseDark) {
 
-<link rel="stylesheet" href="style.css">
+                document.documentElement.classList.add(
+                    "threadly-dark"
+                );
 
-    <link rel="stylesheet" href="style.css">
+            }
+
+        })();
+
+    </script>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
+
 <header class="site-header">
 
-    <a href="index.html" class="logo">
+    <a
+        href="index.html"
+        class="logo"
+    >
         THREADLY
     </a>
 
+
     <nav class="desktop-nav">
 
-        <a href="index.html">Home</a>
+        <a href="index.html">
+            Home
+        </a>
 
-        <a href="shop.html">Shop</a>
+        <a href="shop.html">
+            Shop
+        </a>
 
-        <a href="shop.html?category=men">Men</a>
+        <a href="shop.html?category=men">
+            Men
+        </a>
 
-        <a href="shop.html?category=women">Women</a>
+        <a href="shop.html?category=women">
+            Women
+        </a>
 
-        <a href="shop.html?category=shoes">Shoes</a>
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
 
-        <a href="cart.html">Cart</a>
+        <a href="cart.html">
+            Cart
+        </a>
 
     </nav>
 
-    <div class="header-actions">
 
-        
+    <div class="header-actions">
 
         <button
             id="menuButton"
@@ -78,9 +103,11 @@
             type="button"
             aria-label="Open menu"
         >
+
             <span></span>
             <span></span>
             <span></span>
+
         </button>
 
     </div>
@@ -88,10 +115,12 @@
 </header>
 
 
+
 <div
     id="menuOverlay"
     class="menu-overlay"
 ></div>
+
 
 
 <aside
@@ -101,7 +130,9 @@
 
     <div class="mobile-menu-header">
 
-        <span>MENU</span>
+        <span>
+            MENU
+        </span>
 
         <button
             id="closeMenu"
@@ -114,49 +145,80 @@
 
     </div>
 
+
     <nav class="mobile-nav">
 
-        <a href="index.html">Home</a>
+        <a href="index.html">
+            Home
+        </a>
 
-        <a href="shop.html">Shop</a>
+        <a href="shop.html">
+            Shop
+        </a>
 
-        <a href="shop.html?category=men">Men</a>
+        <a href="shop.html?category=men">
+            Men
+        </a>
 
-        <a href="shop.html?category=women">Women</a>
+        <a href="shop.html?category=women">
+            Women
+        </a>
 
-        <a href="shop.html?category=shoes">Shoes</a>
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
+
 
         <div class="mobile-menu-divider"></div>
 
-        <a href="account.html">My Account</a>
 
-        <a href="cart.html">My Cart</a>
+        <a href="account.html">
+            My Account
+        </a>
 
-        <a href="saved.html">Saved Items</a>
+        <a href="cart.html">
+            My Cart
+        </a>
 
-        <a href="orders.html">My Orders</a>
+        <a href="saved.html">
+            Saved Items
+        </a>
 
-        <a href="settings.html">Settings</a>
+        <a href="orders.html">
+            My Orders
+        </a>
 
-        <a href="help.html">Help &amp; Support</a>
+        <a href="settings.html">
+            Settings
+        </a>
 
-        <a href="about.html">About THREADLY</a>
+        <a href="help.html">
+            Help &amp; Support
+        </a>
+
+        <a href="about.html">
+            About THREADLY
+        </a>
 
     </nav>
 
 </aside>
 
 
+
 <main class="transfer-page">
+
 
     <div class="transfer-top">
 
+
         <a
-            href="payment-method.html"
+            href="checkout.html"
             class="back-to-shop"
         >
-            ← Back to Payment Method
+            ← Back to Checkout
         </a>
+
 
         <div class="transfer-heading">
 
@@ -177,9 +239,12 @@
     </div>
 
 
+
     <section class="transfer-layout">
 
+
         <div class="transfer-card">
+
 
             <div class="transfer-card-heading">
 
@@ -194,7 +259,9 @@
             </div>
 
 
+
             <div class="bank-details">
+
 
                 <div class="bank-detail-row">
 
@@ -207,6 +274,7 @@
                     </strong>
 
                 </div>
+
 
 
                 <div class="bank-detail-row">
@@ -222,17 +290,21 @@
                 </div>
 
 
+
                 <div class="bank-detail-row">
 
                     <span>
                         Account Number
                     </span>
 
+
                     <div class="account-number-wrapper">
+
 
                         <strong id="transferAccountNumber">
                             0000000000
                         </strong>
+
 
                         <button
                             type="button"
@@ -242,11 +314,13 @@
                             COPY
                         </button>
 
+
                     </div>
 
                 </div>
 
             </div>
+
 
 
             <div class="transfer-amount-box">
@@ -262,6 +336,7 @@
             </div>
 
 
+
             <div class="transfer-note">
 
                 <strong>
@@ -275,6 +350,7 @@
             </div>
 
 
+
             <button
                 type="button"
                 id="transferDoneButton"
@@ -282,6 +358,7 @@
             >
                 I'VE MADE THE TRANSFER
             </button>
+
 
 
             <p
@@ -292,17 +369,22 @@
         </div>
 
 
+
         <aside class="transfer-side-card">
+
 
             <div class="transfer-side-number">
                 01
             </div>
 
+
             <h2>
                 How it works
             </h2>
 
+
             <div class="transfer-steps">
+
 
                 <div class="transfer-step">
 
@@ -315,6 +397,7 @@
                     </p>
 
                 </div>
+
 
 
                 <div class="transfer-step">
@@ -330,6 +413,7 @@
                 </div>
 
 
+
                 <div class="transfer-step">
 
                     <span>
@@ -341,6 +425,7 @@
                     </p>
 
                 </div>
+
 
 
                 <div class="transfer-step">
@@ -355,16 +440,21 @@
 
                 </div>
 
+
             </div>
 
         </aside>
 
+
     </section>
+
 
 </main>
 
 
+
 <footer class="site-footer">
+
 
     <div class="footer-brand">
 
@@ -379,7 +469,9 @@
     </div>
 
 
+
     <div class="footer-links">
+
 
         <div>
 
@@ -406,31 +498,34 @@
         </div>
 
 
+
         <div>
 
             <h3>
                 HELP
             </h3>
 
-            <a href="#">
+            <a href="help.html">
                 Contact
             </a>
 
-            <a href="#">
+            <a href="delivery.html">
                 Delivery
             </a>
 
-            <a href="#">
+            <a href="returns.html">
                 Returns
             </a>
 
-            <a href="#">
+            <a href="help.html#faq">
                 FAQ
             </a>
 
         </div>
 
+
     </div>
+
 
 
     <div class="footer-bottom">
@@ -441,10 +536,199 @@
 
     </div>
 
+
 </footer>
 
 
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-client.js"></script>
+
 <script src="app.js"></script>
+
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        let pendingOrder = null;
+
+
+        try {
+
+            pendingOrder =
+                JSON.parse(
+                    localStorage.getItem(
+                        "threadlyPendingOrder"
+                    )
+                );
+
+        } catch (error) {
+
+            pendingOrder = null;
+
+        }
+
+
+
+        const transferAmount =
+            document.getElementById(
+                "transferAmount"
+            );
+
+
+        const doneButton =
+            document.getElementById(
+                "transferDoneButton"
+            );
+
+
+        const copyButton =
+            document.getElementById(
+                "copyAccountNumber"
+            );
+
+
+        const accountNumber =
+            document.getElementById(
+                "transferAccountNumber"
+            );
+
+
+        const copyMessage =
+            document.getElementById(
+                "copyMessage"
+            );
+
+
+
+        if (!pendingOrder) {
+
+            if (transferAmount) {
+
+                transferAmount.textContent =
+                    "₦0";
+
+            }
+
+            if (doneButton) {
+
+                doneButton.disabled = true;
+
+            }
+
+            if (copyMessage) {
+
+                copyMessage.textContent =
+                    "No active order found.";
+
+            }
+
+            return;
+
+        }
+
+
+
+        const total =
+            Number(
+                pendingOrder.total || 0
+            );
+
+
+
+        if (transferAmount) {
+
+            transferAmount.textContent =
+                "₦" +
+                total.toLocaleString(
+                    "en-NG"
+                );
+
+        }
+
+
+
+        if (copyButton && accountNumber) {
+
+            copyButton.addEventListener(
+                "click",
+                async function () {
+
+
+                    try {
+
+                        await navigator.clipboard.writeText(
+                            accountNumber.textContent.trim()
+                        );
+
+
+                        if (copyMessage) {
+
+                            copyMessage.textContent =
+                                "Account number copied.";
+
+                        }
+
+
+                        setTimeout(
+                            function () {
+
+                                if (copyMessage) {
+
+                                    copyMessage.textContent =
+                                        "";
+
+                                }
+
+                            },
+                            2000
+                        );
+
+
+                    } catch (error) {
+
+                        if (copyMessage) {
+
+                            copyMessage.textContent =
+                                "Copy failed. Please copy the number manually.";
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+
+        if (doneButton) {
+
+            doneButton.addEventListener(
+                "click",
+                function () {
+
+                    window.location.href =
+                        "receipt.html";
+
+                }
+            );
+
+        }
+
+
+    }
+);
+
+</script>
+
 
 </body>
 
