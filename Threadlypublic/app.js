@@ -4265,43 +4265,77 @@ const products = {
 (function () {
 
     const checkoutPage =
-        document.querySelector(".checkout-page");
+        document.querySelector(
+            ".checkout-page"
+        );
 
-    if (!checkoutPage) return;
+
+    if (!checkoutPage) {
+
+        return;
+
+    }
 
 
     const checkoutItems =
-        document.getElementById("checkoutItems");
+        document.getElementById(
+            "checkoutItems"
+        );
+
 
     const checkoutSubtotal =
-        document.getElementById("checkoutSubtotal");
+        document.getElementById(
+            "checkoutSubtotal"
+        );
+
 
     const checkoutDelivery =
-        document.getElementById("checkoutDelivery");
+        document.getElementById(
+            "checkoutDelivery"
+        );
+
 
     const checkoutTotal =
-        document.getElementById("checkoutTotal");
+        document.getElementById(
+            "checkoutTotal"
+        );
+
 
     const checkoutForm =
-        document.getElementById("checkoutForm");
+        document.getElementById(
+            "checkoutForm"
+        );
+
+
+    const continueToPayment =
+        document.getElementById(
+            "continueToPayment"
+        );
+
 
     const deliveryOptions =
         document.querySelectorAll(
             'input[name="deliveryMethod"]'
         );
 
+
     const STANDARD_DELIVERY =
         2500;
+
 
     const EXPRESS_DELIVERY =
         4500;
 
 
+    // =========================================
+    // GET CART
+    // =========================================
+
     function getCart() {
 
         try {
 
-            const cart =
+            const savedCart =
                 JSON.parse(
                     localStorage.getItem(
                         "threadlyCart"
@@ -4309,8 +4343,10 @@ const products = {
                 );
 
 
-            return Array.isArray(cart)
-                ? cart
+            return Array.isArray(
+                savedCart
+            )
+                ? savedCart
                 : [];
 
         } catch (error) {
@@ -4322,14 +4358,27 @@ const products = {
     }
 
 
+    // =========================================
+    // FORMAT PRICE
+    // =========================================
+
     function formatPrice(price) {
 
-        return "₦" +
-            Number(price || 0)
-                .toLocaleString("en-NG");
+        return (
+            "₦" +
+            Number(
+                price || 0
+            ).toLocaleString(
+                "en-NG"
+            )
+        );
 
     }
 
+
+    // =========================================
+    // GET DELIVERY METHOD
+    // =========================================
 
     function getSelectedDelivery() {
 
@@ -4346,14 +4395,29 @@ const products = {
     }
 
 
+    // =========================================
+    // GET DELIVERY FEE
+    // =========================================
+
     function getDeliveryFee() {
 
-        return getSelectedDelivery() === "express"
+        const deliveryMethod =
+            getSelectedDelivery();
+
+
+        return deliveryMethod ===
+            "express"
+
             ? EXPRESS_DELIVERY
+
             : STANDARD_DELIVERY;
 
     }
 
+
+    // =========================================
+    // UPDATE TOTALS
+    // =========================================
 
     function updateCheckoutTotal() {
 
@@ -4361,16 +4425,31 @@ const products = {
             getCart();
 
 
-        let subtotal = 0;
+        let subtotal =
+            0;
 
 
-        cart.forEach(function (item) {
+        cart.forEach(
+            function (item) {
 
-            subtotal +=
-                Number(item.price || 0) *
-                Number(item.quantity || 1);
+                const price =
+                    Number(
+                        item.price || 0
+                    );
 
-        });
+
+                const quantity =
+                    Number(
+                        item.quantity || 1
+                    );
+
+
+                subtotal +=
+                    price *
+                    quantity;
+
+            }
+        );
 
 
         const delivery =
@@ -4378,13 +4457,16 @@ const products = {
 
 
         const total =
-            subtotal + delivery;
+            subtotal +
+            delivery;
 
 
         if (checkoutSubtotal) {
 
             checkoutSubtotal.textContent =
-                formatPrice(subtotal);
+                formatPrice(
+                    subtotal
+                );
 
         }
 
@@ -4392,7 +4474,9 @@ const products = {
         if (checkoutDelivery) {
 
             checkoutDelivery.textContent =
-                formatPrice(delivery);
+                formatPrice(
+                    delivery
+                );
 
         }
 
@@ -4400,12 +4484,18 @@ const products = {
         if (checkoutTotal) {
 
             checkoutTotal.textContent =
-                formatPrice(total);
+                formatPrice(
+                    total
+                );
 
         }
 
     }
 
+
+    // =========================================
+    // DISPLAY CHECKOUT ITEMS
+    // =========================================
 
     function renderCheckoutItems() {
 
@@ -4413,96 +4503,150 @@ const products = {
             getCart();
 
 
-        if (!checkoutItems) return;
-
-
-        checkoutItems.innerHTML = "";
-
-
-        if (!cart.length) {
-
-            checkoutItems.innerHTML = `
-                <p class="checkout-empty">
-                    Your cart is empty.
-                </p>
-            `;
+        if (!checkoutItems) {
 
             return;
 
         }
 
 
-        cart.forEach(function (item) {
-
-            const element =
-                document.createElement("div");
+        checkoutItems.innerHTML =
+            "";
 
 
-            element.className =
-                "checkout-item";
+        if (!cart.length) {
 
+            checkoutItems.innerHTML = `
 
-            element.innerHTML = `
-                <div class="checkout-item-image">
+                <p class="checkout-empty">
+                    Your cart is empty.
+                </p>
 
-                    <img
-                        src="${item.image || ""}"
-                        alt="${item.name || "Product"}"
-                    >
-
-                </div>
-
-                <div class="checkout-item-info">
-
-                    <h3>
-                        ${item.name || "Product"}
-                    </h3>
-
-                    <p>
-                        Size:
-                        ${item.size || "One size"}
-                    </p>
-
-                    <p>
-                        Quantity:
-                        ${item.quantity || 1}
-                    </p>
-
-                </div>
-
-                <strong>
-                    ${formatPrice(
-                        Number(item.price || 0) *
-                        Number(item.quantity || 1)
-                    )}
-                </strong>
             `;
 
 
-            checkoutItems.appendChild(
-                element
-            );
+            return;
 
-        });
+        }
+
+
+        cart.forEach(
+            function (item) {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                element.className =
+                    "checkout-item";
+
+
+                const itemPrice =
+                    Number(
+                        item.price || 0
+                    );
+
+
+                const itemQuantity =
+                    Number(
+                        item.quantity || 1
+                    );
+
+
+                const itemTotal =
+                    itemPrice *
+                    itemQuantity;
+
+
+                element.innerHTML = `
+
+                    <div class="checkout-item-image">
+
+                        <img
+                            src="${item.image || ""}"
+                            alt="${item.name || "Product"}"
+                        >
+
+                    </div>
+
+
+                    <div class="checkout-item-info">
+
+                        <h3>
+                            ${item.name || "Product"}
+                        </h3>
+
+
+                        <p>
+                            Size:
+                            ${item.size || "One size"}
+                        </p>
+
+
+                        <p>
+                            Quantity:
+                            ${itemQuantity}
+                        </p>
+
+                    </div>
+
+
+                    <strong>
+                        ${formatPrice(itemTotal)}
+                    </strong>
+
+                `;
+
+
+                checkoutItems.appendChild(
+                    element
+                );
+
+            }
+        );
 
     }
 
 
-    deliveryOptions.forEach(function (option) {
+    // =========================================
+    // DELIVERY CHANGE
+    // =========================================
 
-        option.addEventListener(
-            "change",
-            updateCheckoutTotal
-        );
+    deliveryOptions.forEach(
+        function (option) {
 
-    });
+            option.addEventListener(
+                "change",
+                function () {
 
+                    updateCheckoutTotal();
+
+                }
+            );
+
+        }
+    );
+
+
+    // =========================================
+    // FORM SUBMIT
+    // =========================================
+    /*
+        The actual Supabase order creation
+        is handled by the checkout button
+        in checkout.html.
+
+        This prevents app.js from creating
+        a second order with old database fields.
+    */
 
     if (checkoutForm) {
 
         checkoutForm.addEventListener(
             "submit",
-            async function (event) {
+            function (event) {
 
                 event.preventDefault();
 
@@ -4517,406 +4661,27 @@ const products = {
                         "Your cart is empty."
                     );
 
-                    return;
-
-                }
-
-
-                const loggedIn =
-                    await window.threadlyRequireLogin();
-
-
-                if (!loggedIn) {
 
                     return;
 
                 }
 
 
-                const supabase =
-                    await window.threadlyGetSupabase();
+                if (continueToPayment) {
 
-
-                if (!supabase) {
-
-                    console.error(
-                        "THREADLY: Supabase is not available."
-                    );
-
-                    alert(
-                        "Unable to connect to the database. Please try again."
-                    );
-
-                    return;
+                    continueToPayment.click();
 
                 }
-
-
-                const {
-                    data: userData,
-                    error: userError
-                } =
-                    await supabase.auth.getUser();
-
-
-                if (
-                    userError ||
-                    !userData ||
-                    !userData.user
-                ) {
-
-                    console.error(
-                        "THREADLY user error:",
-                        userError
-                    );
-
-                    alert(
-                        "Please log in before placing your order."
-                    );
-
-                    return;
-
-                }
-
-
-                const user =
-                    userData.user;
-
-
-                const formData =
-                    new FormData(
-                        checkoutForm
-                    );
-
-
-                const delivery =
-                    getSelectedDelivery();
-
-
-                const deliveryFee =
-                    getDeliveryFee();
-
-
-                let subtotal = 0;
-
-
-                cart.forEach(function (item) {
-
-                    subtotal +=
-                        Number(item.price || 0) *
-                        Number(item.quantity || 1);
-
-                });
-
-
-                const total =
-                    subtotal + deliveryFee;
-
-
-                const customer = {
-
-                    name:
-                        formData.get("fullName") ||
-                        "",
-
-                    email:
-                        formData.get("email") ||
-                        "",
-
-                    phone:
-                        formData.get("phone") ||
-                        "",
-
-                    address:
-                        formData.get("address") ||
-                        "",
-
-                    state:
-                        formData.get("state") ||
-                        "",
-
-                    city:
-                        formData.get("city") ||
-                        ""
-
-                };
-
-
-                const orderNumber =
-                    "THR-" +
-                    Date.now()
-                        .toString()
-                        .slice(-6);
-
-
-                const orderItems =
-                    cart.map(function (item) {
-
-                        return {
-
-                            id:
-                                item.id,
-
-                            name:
-                                item.name,
-
-                            price:
-                                Number(
-                                    item.price || 0
-                                ),
-
-                            image:
-                                item.image || "",
-
-                            size:
-                                item.size ||
-                                "One size",
-
-                            quantity:
-                                Number(
-                                    item.quantity || 1
-                                )
-
-                        };
-
-                    });
-
-
-                const now =
-                    new Date()
-                        .toISOString();
-
-
-                const {
-                    error: orderError
-                } =
-                    await supabase
-                        .from("orders")
-                        .insert({
-
-                            id:
-                                orderNumber,
-
-                            order_number:
-                                orderNumber,
-
-                            customer_full_name:
-                                customer.name,
-
-                            customer_email:
-                                customer.email,
-
-                            customer_phone:
-                                customer.phone,
-
-                            customer_address:
-                                customer.address,
-
-                            customer_state:
-                                customer.state,
-
-                            customer_city:
-                                customer.city,
-
-                            items:
-                                orderItems,
-
-                            subtotal:
-                                subtotal,
-
-                            delivery:
-                                deliveryFee,
-
-                            delivery_method:
-                                delivery,
-
-                            total:
-                                total,
-
-                            payment_status:
-                                "pending-verification",
-
-                            payment_method:
-                                "",
-
-                            delivery_status:
-                                "processing",
-
-                            receipt_url:
-                                "",
-
-                            estimated_delivery:
-                                delivery === "express"
-                                    ? "1-3 days"
-                                    : "3-7 days",
-
-                            created_at:
-                                now,
-
-                            updated_at:
-                                now,
-
-                            user_id:
-                                user.id
-
-                        });
-
-
-                if (orderError) {
-
-                    console.error(
-                        "THREADLY order database error:",
-                        orderError
-                    );
-
-                    alert(
-                        "Your order could not be saved. Please try again."
-                    );
-
-                    return;
-
-                }
-
-
-                const pendingOrder = {
-
-                    id:
-                        orderNumber,
-
-                    orderNumber:
-                        "#" + orderNumber,
-
-                    date:
-                        new Date()
-                            .toLocaleDateString(
-                                "en-GB",
-                                {
-                                    day: "numeric",
-                                    month: "long",
-                                    year: "numeric"
-                                }
-                            ),
-
-                    items:
-                        orderItems,
-
-                    subtotal:
-                        subtotal,
-
-                    deliveryFee:
-                        deliveryFee,
-
-                    deliveryMethod:
-                        delivery,
-
-                    total:
-                        total,
-
-                    customer:
-                        customer,
-
-                    paymentStatus:
-                        "pending-verification",
-
-                    paymentMethod:
-                        "",
-
-                    deliveryStatus:
-                        "processing"
-
-                };
-
-
-                localStorage.setItem(
-                    "threadlyCheckout",
-                    JSON.stringify(customer)
-                );
-
-
-                localStorage.setItem(
-                    "threadlyDeliveryMethod",
-                    delivery
-                );
-
-
-                localStorage.setItem(
-                    "threadlyDeliveryFee",
-                    String(deliveryFee)
-                );
-
-
-                localStorage.setItem(
-                    "threadlyCheckoutSubtotal",
-                    String(subtotal)
-                );
-
-
-                localStorage.setItem(
-                    "threadlyCheckoutTotal",
-                    String(total)
-                );
-
-
-                localStorage.setItem(
-                    "threadlyPendingOrder",
-                    JSON.stringify(
-                        pendingOrder
-                    )
-                );
-
-
-                let orders = [];
-
-
-                try {
-
-                    const savedOrders =
-                        JSON.parse(
-                            localStorage.getItem(
-                                "threadlyOrders"
-                            )
-                        );
-
-
-                    if (
-                        Array.isArray(
-                            savedOrders
-                        )
-                    ) {
-
-                        orders =
-                            savedOrders;
-
-                    }
-
-                } catch (error) {
-
-                    orders = [];
-
-                }
-
-
-                orders.push(
-                    pendingOrder
-                );
-
-
-                localStorage.setItem(
-                    "threadlyOrders",
-                    JSON.stringify(
-                        orders
-                    )
-                );
-
-
-                window.location.href =
-                    "payment-method.html";
 
             }
         );
 
     }
 
+
+    // =========================================
+    // INITIAL DISPLAY
+    // =========================================
 
     renderCheckoutItems();
 
@@ -5751,957 +5516,418 @@ const products = {
 
 })();
 
-// =========================================
-// SECTION 15: PAYMENT METHOD
-// =========================================
-
-(function () {
-
-    const paymentPage =
-        document.querySelector(
-            ".payment-method-page"
-        );
-
-
-    if (!paymentPage) {
-
-        return;
-
-    }
-
-
-    const orderSummary =
-        document.getElementById(
-            "paymentOrderSummary"
-        );
-
-
-    const paymentAmount =
-        document.getElementById(
-            "paymentAmount"
-        );
-
-
-    const paymentMessage =
-        document.getElementById(
-            "paymentMessage"
-        );
-
-
-    let pendingOrder = null;
-
-
-    try {
-
-        pendingOrder =
-            JSON.parse(
-                localStorage.getItem(
-                    "threadlyPendingOrder"
-                )
-            );
-
-    } catch (error) {
-
-        pendingOrder = null;
-
-    }
-
-
-    if (!pendingOrder) {
-
-        if (paymentMessage) {
-
-            paymentMessage.textContent =
-                "No pending order was found.";
-
-        }
-
-        return;
-
-    }
-
-
-    function formatNaira(amount) {
-
-        return "₦" +
-            Number(amount || 0)
-                .toLocaleString();
-
-    }
-
-
-    if (paymentAmount) {
-
-        paymentAmount.textContent =
-            formatNaira(
-                pendingOrder.total
-            );
-
-    }
-
-
-    if (orderSummary) {
-
-        orderSummary.innerHTML = `
-
-            <div class="payment-summary-row">
-                <span>Order</span>
-                <strong>
-                    #${pendingOrder.orderNumber || pendingOrder.id}
-                </strong>
-            </div>
-
-            <div class="payment-summary-row">
-                <span>Subtotal</span>
-                <strong>
-                    ${formatNaira(pendingOrder.subtotal)}
-                </strong>
-            </div>
-
-            <div class="payment-summary-row">
-                <span>
-                    ${
-                        pendingOrder.deliveryMethod ===
-                        "express"
-                            ? "Express Delivery"
-                            : "Standard Delivery"
-                    }
-                </span>
-
-                <strong>
-                    ${formatNaira(pendingOrder.deliveryFee)}
-                </strong>
-            </div>
-
-            <div class="payment-summary-row payment-total">
-                <span>Total</span>
-                <strong>
-                    ${formatNaira(pendingOrder.total)}
-                </strong>
-            </div>
-
-        `;
-
-    }
-
-
-    const paymentOptions =
-        document.querySelectorAll(
-            'input[name="paymentMethod"]'
-        );
-
-
-    paymentOptions.forEach(
-        function (option) {
-
-            option.addEventListener(
-                "change",
-                function () {
-
-                    if (paymentMessage) {
-
-                        paymentMessage.textContent =
-                            "";
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-    const continueButton =
-        document.getElementById(
-            "continuePaymentButton"
-        );
-
-
-    if (continueButton) {
-
-        continueButton.addEventListener(
-            "click",
-            function () {
-
-                const selected =
-                    document.querySelector(
-                        'input[name="paymentMethod"]:checked'
-                    );
-
-
-                if (!selected) {
-
-                    if (paymentMessage) {
-
-                        paymentMessage.textContent =
-                            "Please select a payment method.";
-
-                    }
-
-                    return;
-
-                }
-
-
-                const paymentMethod =
-                    selected.value;
-
-
-                localStorage.setItem(
-                    "threadlyPaymentMethod",
-                    paymentMethod
-                );
-
-
-                pendingOrder.paymentMethod =
-                    paymentMethod;
-
-
-                localStorage.setItem(
-                    "threadlyPendingOrder",
-                    JSON.stringify(
-                        pendingOrder
-                    )
-                );
-
-
-                if (
-                    paymentMethod ===
-                    "bank-transfer"
-                ) {
-
-                    window.location.href =
-                        "transfer.html";
-
-                    return;
-
-                }
-
-
-                if (
-                    paymentMethod ===
-                    "paystack"
-                ) {
-
-                    window.location.href =
-                        "waiting.html";
-
-                    return;
-
-                }
-
-
-                if (paymentMessage) {
-
-                    paymentMessage.textContent =
-                        "Please select a valid payment method.";
-
-                }
-
-            }
-        );
-
-    }
-
-})();
-
-
-// =========================================
-// SECTION 16: BANK TRANSFER
-// =========================================
-
-(function () {
-
-    const transferPage =
-        document.querySelector(
-            ".transfer-page"
-        );
-
-
-    if (!transferPage) {
-
-        return;
-
-    }
-
-
-    const transferAmount =
-        document.getElementById(
-            "transferAmount"
-        );
-
-
-    const transferAccountNumber =
-        document.getElementById(
-            "transferAccountNumber"
-        );
-
-
-    const copyAccountNumber =
-        document.getElementById(
-            "copyAccountNumber"
-        );
-
-
-    const transferDoneButton =
-        document.getElementById(
-            "transferDoneButton"
-        );
-
-
-    const copyMessage =
-        document.getElementById(
-            "copyMessage"
-        );
-
-
-    let pendingOrder = null;
-
-
-    try {
-
-        pendingOrder =
-            JSON.parse(
-                localStorage.getItem(
-                    "threadlyPendingOrder"
-                )
-            );
-
-    } catch (error) {
-
-        pendingOrder = null;
-
-    }
-
-
-    if (!pendingOrder) {
-
-        if (copyMessage) {
-
-            copyMessage.textContent =
-                "No pending order was found.";
-
-        }
-
-        return;
-
-    }
-
-
-    function formatNaira(amount) {
-
-        return "₦" +
-            Number(amount || 0)
-                .toLocaleString();
-
-    }
-
-
-    if (transferAmount) {
-
-        transferAmount.textContent =
-            formatNaira(
-                pendingOrder.total
-            );
-
-    }
-
-
-    if (copyAccountNumber) {
-
-        copyAccountNumber.addEventListener(
-            "click",
-            async function () {
-
-                if (!transferAccountNumber) {
-
-                    return;
-
-                }
-
-
-                const accountNumber =
-                    transferAccountNumber
-                        .textContent
-                        .trim();
-
-
-                try {
-
-                    await navigator.clipboard.writeText(
-                        accountNumber
-                    );
-
-
-                    if (copyMessage) {
-
-                        copyMessage.textContent =
-                            "Account number copied.";
-
-                    }
-
-                } catch (error) {
-
-                    if (copyMessage) {
-
-                        copyMessage.textContent =
-                            "Please copy the account number manually.";
-
-                    }
-
-                }
-
-            }
-        );
-
-    }
-
-
-    if (transferDoneButton) {
-
-        transferDoneButton.addEventListener(
-            "click",
-            function () {
-
-                localStorage.setItem(
-                    "threadlyPaymentAmount",
-                    String(
-                        pendingOrder.total
-                    )
-                );
-
-
-                localStorage.setItem(
-                    "threadlyPaymentMethod",
-                    "transfer"
-                );
-
-
-                localStorage.setItem(
-                    "threadlyPaymentStatus",
-                    "awaiting-receipt"
-                );
-
-
-                pendingOrder.paymentMethod =
-                    "transfer";
-
-
-                pendingOrder.paymentStatus =
-                    "awaiting-receipt";
-
-
-                localStorage.setItem(
-                    "threadlyPendingOrder",
-                    JSON.stringify(
-                        pendingOrder
-                    )
-                );
-
-
-                window.location.href =
-                    "receipt.html";
-
-            }
-        );
-
-    }
-
-})();
-
-
-// =========================================
-// THREADLY - DYNAMIC ORDER DETAILS
-// =========================================
-
-(function () {
-
-    const orderNumberElement =
-        document.getElementById(
-            "detailsOrderNumber"
-        );
-
-
-    if (!orderNumberElement) {
-
-        return;
-
-    }
-
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const orderNumber =
-        params.get("order");
-
-
-    const orders =
-        JSON.parse(
-            localStorage.getItem(
-                "threadlyOrders"
-            ) || "[]"
-        );
-
-
-    const order =
-        orders.find(function (item) {
-
-            return (
-                item.orderNumber ===
-                    orderNumber ||
-                item.id ===
-                    orderNumber
-            );
-
-        });
-
-
-    if (!order) {
-
-        console.log(
-            "THREADLY: Order not found:",
-            orderNumber
-        );
-
-        return;
-
-    }
-
-
-    const orderNumberDisplay =
-        document.getElementById(
-            "detailsOrderNumber"
-        );
-
-
-    const orderDate =
-        document.getElementById(
-            "detailsOrderDate"
-        );
-
-
-    const placedDate =
-        document.getElementById(
-            "placedDate"
-        );
-
-
-    if (orderNumberDisplay) {
-
-        orderNumberDisplay.textContent =
-            "#" +
-            (
-                order.orderNumber ||
-                order.id ||
-                ""
-            );
-
-    }
-
-
-    if (orderDate) {
-
-        orderDate.textContent =
-            "Placed on " +
-            formatOrderDate(
-                order.date ||
-                order.createdAt
-            );
-
-    }
-
-
-    if (placedDate) {
-
-        placedDate.textContent =
-            formatOrderDate(
-                order.date ||
-                order.createdAt
-            );
-
-    }
-
-
-    const productImage =
-        document.getElementById(
-            "detailsProductImage"
-        );
-
-
-    const productName =
-        document.getElementById(
-            "detailsProductName"
-        );
-
-
-    const productCategory =
-        document.getElementById(
-            "detailsProductCategory"
-        );
-
-
-    const productSize =
-        document.getElementById(
-            "detailsProductSize"
-        );
-
-
-    const productQuantity =
-        document.getElementById(
-            "detailsProductQuantity"
-        );
-
-
-    const productPrice =
-        document.getElementById(
-            "detailsProductPrice"
-        );
-
-
-    const product =
-        order.product ||
-        order.item ||
-        order;
-
-
-    if (productName) {
-
-        productName.textContent =
-            product.name ||
-            "Product";
-
-    }
-
-
-    if (productCategory) {
-
-        productCategory.textContent =
-            (
-                product.category ||
-                "THREADLY"
-            ).toUpperCase();
-
-    }
-
-
-    if (productSize) {
-
-        productSize.textContent =
-            product.size ||
-            order.size ||
-            "N/A";
-
-    }
-
-
-    if (productQuantity) {
-
-        productQuantity.textContent =
-            product.quantity ||
-            order.quantity ||
-            1;
-
-    }
-
-
-    if (productImage) {
-
-        const image =
-            product.image ||
-            product.imageUrl;
-
-
-        if (image) {
-
-            productImage.src =
-                image;
-
-        }
-
-    }
-
-
-    if (productPrice) {
-
-        productPrice.textContent =
-            formatMoney(
-                product.price ||
-                order.price ||
-                0
-            );
-
-    }
-
-
-    const orderTotal =
-        document.getElementById(
-            "detailsOrderTotal"
-        );
-
-
-    if (orderTotal) {
-
-        orderTotal.textContent =
-            formatMoney(
-                order.total ||
-                order.orderTotal ||
-                product.price ||
-                0
-            );
-
-    }
-
-
-    const deliveryStatus =
-        order.status ||
-        order.deliveryStatus ||
-        "processing";
-
-
-    updateOrderStatus(
-        deliveryStatus
-    );
-
-
-    const deliveryInformation =
-        document.getElementById(
-            "detailsDeliveryInformation"
-        );
-
-
-    if (deliveryInformation) {
-
-        deliveryInformation.textContent =
-            capitalizeStatus(
-                deliveryStatus
-            );
-
-    }
-
-
-    const estimatedDelivery =
-        document.getElementById(
-            "detailsEstimatedDelivery"
-        );
-
-
-    if (estimatedDelivery) {
-
-        estimatedDelivery.textContent =
-            getEstimatedDelivery(
-                deliveryStatus,
-                order.date ||
-                order.createdAt
-            );
-
-    }
-
-
-    function formatMoney(amount) {
-
-        return (
-            "₦" +
-            Number(amount || 0).toLocaleString(
-                "en-NG"
-            )
-        );
-
-    }
-
-
-    function formatOrderDate(dateValue) {
-
-        if (!dateValue) {
-
-            return "Date unavailable";
-
-        }
-
-
-        const date =
-            new Date(dateValue);
-
-
-        if (isNaN(date.getTime())) {
-
-            return dateValue;
-
-        }
-
-
-        return date.toLocaleDateString(
-            "en-GB",
-            {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            }
-        );
-
-    }
-
-
-    function capitalizeStatus(status) {
-
-        return String(status)
-            .toLowerCase()
-            .replace(
-                /\b\w/g,
-                function (letter) {
-
-                    return letter.toUpperCase();
-
-                }
-            );
-
-    }
-
-
-    function updateOrderStatus(status) {
-
-        const statusElement =
-            document.getElementById(
-                "detailsDeliveryStatus"
-            );
-
-
-        const trackingMessage =
-            document.getElementById(
-                "detailsTrackingMessage"
-            );
-
-
-        const cleanStatus =
-            String(status)
-                .toLowerCase();
-
-
-        if (statusElement) {
-
-            statusElement.textContent =
-                cleanStatus.toUpperCase();
-
-
-            statusElement.className =
-                "delivery-status " +
-                cleanStatus;
-
-        }
-
-
-        if (trackingMessage) {
-
-            const messages = {
-
-                processing:
-                    "Your order is being processed",
-
-                shipped:
-                    "Your order has been shipped",
-
-                delivered:
-                    "Your order has been delivered",
-
-                cancelled:
-                    "This order has been cancelled"
-
-            };
-
-
-            trackingMessage.textContent =
-                messages[cleanStatus] ||
-                "Your order is being processed";
-
-        }
-
-    }
-
-
-    function getEstimatedDelivery(
-        status,
-        dateValue
-    ) {
-
-        const cleanStatus =
-            String(status)
-                .toLowerCase();
-
-
-        if (cleanStatus === "delivered") {
-
-            return "Delivered";
-
-        }
-
-
-        if (cleanStatus === "cancelled") {
-
-            return "Cancelled";
-
-        }
-
-
-        if (!dateValue) {
-
-            return "To be confirmed";
-
-        }
-
-
-        const date =
-            new Date(dateValue);
-
-
-        if (isNaN(date.getTime())) {
-
-            return "To be confirmed";
-
-        }
-
-
-        const start =
-            new Date(date);
-
-
-        start.setDate(
-            start.getDate() + 3
-        );
-
-
-        const end =
-            new Date(date);
-
-
-        end.setDate(
-            end.getDate() + 7
-        );
-
-
-        return (
-            formatShortDate(start) +
-            " - " +
-            formatShortDate(end)
-        );
-
-    }
-
-
-    function formatShortDate(date) {
-
-        return date.toLocaleDateString(
-            "en-GB",
-            {
-                day: "numeric",
-                month: "short",
-                year: "numeric"
-            }
-        );
-
-    }
-
-})();
+// ========================================= 
+// PAYMENT METHOD PAGE 
+// ========================================= 
+ 
+(function () { 
+ 
+    const paymentMethodsCard = 
+        document.querySelector( 
+            ".payment-methods-card" 
+        ); 
+ 
+ 
+    if (!paymentMethodsCard) { 
+ 
+        return; 
+ 
+    } 
+ 
+ 
+    const paymentOrderItems = 
+        document.getElementById( 
+            "paymentOrderItems" 
+        ); 
+ 
+ 
+    const paymentSubtotal = 
+        document.getElementById( 
+            "paymentSubtotal" 
+        ); 
+ 
+ 
+    const paymentDelivery = 
+        document.getElementById( 
+            "paymentDelivery" 
+        ); 
+ 
+ 
+    const paymentTotal = 
+        document.getElementById( 
+            "paymentTotal" 
+        ); 
+ 
+ 
+    const continueBankTransfer = 
+        document.getElementById( 
+            "continueBankTransfer" 
+        ); 
+ 
+ 
+    // ========================================= 
+    // GET PENDING ORDER 
+    // ========================================= 
+ 
+    let pendingOrder = null; 
+ 
+ 
+    try { 
+ 
+        pendingOrder = 
+            JSON.parse( 
+                localStorage.getItem( 
+                    "threadlyPendingOrder" 
+                ) 
+            ); 
+ 
+    } catch (error) { 
+ 
+        pendingOrder = null; 
+ 
+    } 
+ 
+ 
+    if ( 
+        !pendingOrder || 
+        !Array.isArray( 
+            pendingOrder.items 
+        ) 
+    ) { 
+ 
+        if (paymentOrderItems) { 
+ 
+            paymentOrderItems.innerHTML = ` 
+ 
+                <p class="empty-cart"> 
+                    No pending order was found. 
+                </p> 
+ 
+            `; 
+ 
+        } 
+ 
+ 
+        return; 
+ 
+    } 
+ 
+ 
+    // ========================================= 
+    // GET ORDER VALUES 
+    // ========================================= 
+ 
+    const orderItems = 
+        pendingOrder.items; 
+ 
+ 
+    const deliveryMethod = 
+        pendingOrder.delivery_method || 
+        pendingOrder.deliveryMethod || 
+        localStorage.getItem( 
+            "threadlyDeliveryMethod" 
+        ) || 
+        "standard"; 
+ 
+ 
+    const savedDeliveryFee = 
+        pendingOrder.delivery_fee ?? 
+        pendingOrder.deliveryFee; 
+ 
+ 
+    const delivery = 
+        Number( 
+            savedDeliveryFee 
+        ) || 
+        ( 
+            deliveryMethod === "express" 
+                ? 4500 
+                : 2500 
+        ); 
+ 
+ 
+    let calculatedSubtotal = 
+        0; 
+ 
+ 
+    orderItems.forEach( 
+        function (item) { 
+ 
+            calculatedSubtotal += 
+                Number( 
+                    item.price || 0 
+                ) * 
+                Number( 
+                    item.quantity || 1 
+                ); 
+ 
+        } 
+    ); 
+ 
+ 
+    const subtotal = 
+        Number( 
+            pendingOrder.subtotal 
+        ) || 
+        calculatedSubtotal; 
+ 
+ 
+    const total = 
+        Number( 
+            pendingOrder.total 
+        ) || 
+        ( 
+            subtotal + 
+            delivery 
+        ); 
+ 
+ 
+    const orderReference = 
+        pendingOrder.order_number || 
+        pendingOrder.orderNumber || 
+        pendingOrder.orderId || 
+        pendingOrder.id || 
+        ""; 
+ 
+ 
+    // ========================================= 
+    // DISPLAY SUMMARY 
+    // ========================================= 
+ 
+    if (paymentSubtotal) { 
+ 
+        paymentSubtotal.textContent = 
+            "₦" + 
+            subtotal.toLocaleString( 
+                "en-NG" 
+            ); 
+ 
+    } 
+ 
+ 
+    if (paymentDelivery) { 
+ 
+        paymentDelivery.textContent = 
+            "₦" + 
+            delivery.toLocaleString( 
+                "en-NG" 
+            ); 
+ 
+    } 
+ 
+ 
+    if (paymentTotal) { 
+ 
+        paymentTotal.textContent = 
+            "₦" + 
+            total.toLocaleString( 
+                "en-NG" 
+            ); 
+ 
+    } 
+ 
+ 
+    // ========================================= 
+    // DISPLAY ORDER ITEMS 
+    // ========================================= 
+ 
+    if (paymentOrderItems) { 
+ 
+        paymentOrderItems.innerHTML = 
+            ""; 
+ 
+ 
+        if (!orderItems.length) { 
+ 
+            paymentOrderItems.innerHTML = ` 
+ 
+                <p class="empty-cart"> 
+                    Your order is empty. 
+                </p> 
+ 
+            `; 
+ 
+        } else { 
+ 
+            orderItems.forEach( 
+                function (item) { 
+ 
+                    const itemPrice = 
+                        Number( 
+                            item.price || 0 
+                        ); 
+ 
+ 
+                    const itemQuantity = 
+                        Number( 
+                            item.quantity || 1 
+                        ); 
+ 
+ 
+                    const itemTotal = 
+                        itemPrice * 
+                        itemQuantity; 
+ 
+ 
+                    const orderItem = 
+                        document.createElement( 
+                            "div" 
+                        ); 
+ 
+ 
+                    orderItem.className = 
+                        "payment-order-item"; 
+ 
+ 
+                    orderItem.innerHTML = ` 
+ 
+                        <div class="payment-order-item-image"> 
+ 
+                            <img 
+                                src="${item.image || ""}" 
+                                alt="${item.name || "Product"}" 
+                            > 
+ 
+                        </div> 
+ 
+ 
+                        <div> 
+ 
+                            <h4> 
+                                ${item.name || "Product"} 
+                            </h4> 
+ 
+ 
+                            <p> 
+                                Size: 
+                                ${item.size || "One size"} 
+                            </p> 
+ 
+ 
+                            <p> 
+                                Quantity: 
+                                ${itemQuantity} 
+                            </p> 
+ 
+ 
+                            <p> 
+                                ₦${itemTotal.toLocaleString("en-NG")} 
+                            </p> 
+ 
+                        </div> 
+ 
+                    `; 
+ 
+ 
+                    paymentOrderItems.appendChild( 
+                        orderItem 
+                    ); 
+ 
+                } 
+            ); 
+ 
+        } 
+ 
+    } 
+ 
+ 
+    // ========================================= 
+    // CONTINUE TO BANK TRANSFER 
+    // ========================================= 
+ 
+    if (continueBankTransfer) { 
+ 
+        continueBankTransfer.addEventListener( 
+            "click", 
+            function () { 
+ 
+                if (!orderItems.length) { 
+ 
+                    alert( 
+                        "Your order is empty." 
+                    ); 
+ 
+                    return; 
+ 
+                } 
+ 
+ 
+                if (!orderReference) { 
+ 
+                    alert( 
+                        "Your order reference could not be found." 
+                    ); 
+ 
+                    return; 
+ 
+                } 
+ 
+ 
+                // Keep the order reference 
+                // available for the next pages. 
+ 
+                localStorage.setItem( 
+                    "threadlyOrderReference", 
+                    orderReference 
+                ); 
+ 
+ 
+                // Keep the payment amount. 
+ 
+                localStorage.setItem( 
+                    "threadlyPaymentAmount", 
+                    String( 
+                        total 
+                    ) 
+                ); 
+ 
+ 
+                // Save the selected method. 
+ 
+                localStorage.setItem( 
+                    "threadlyPaymentMethod", 
+                    "transfer" 
+                ); 
+ 
+ 
+                // Update the temporary 
+                // pending order object. 
+ 
+                pendingOrder.payment_method = 
+                    "transfer"; 
+ 
+ 
+                pendingOrder.paymentMethod = 
+                    "transfer"; 
+ 
+ 
+                pendingOrder.payment_status = 
+                    pendingOrder.payment_status || 
+                    "pending"; 
+ 
+ 
+                pendingOrder.paymentStatus = 
+                    pendingOrder.paymentStatus || 
+                    "pending"; 
+ 
+ 
+                // Save the updated 
+                // pending order. 
+ 
+                localStorage.setItem( 
+                    "threadlyPendingOrder", 
+                    JSON.stringify( 
+                        pendingOrder 
+                    ) 
+                ); 
+ 
+ 
+                window.location.href = 
+                    "transfer.html"; 
+ 
+            } 
+        ); 
+ 
+    } 
+ 
+})(); 

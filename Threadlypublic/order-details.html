@@ -1,0 +1,2924 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Order Details | THREADLY</title>
+
+
+<script>
+
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("threadlyTheme") ||
+        "system";
+
+
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+
+
+    const shouldUseDark =
+        savedTheme === "dark" ||
+        (
+            savedTheme === "system" &&
+            prefersDark
+        );
+
+
+    if (shouldUseDark) {
+
+        document.documentElement.classList.add(
+            "threadly-dark"
+        );
+
+    }
+
+})();
+
+</script>
+
+
+<style>
+
+:root {
+
+    --bg: #f7f5f2;
+    --surface: #ffffff;
+    --text: #171717;
+    --muted: #737373;
+    --accent: #7d2638;
+    --border: #dedbd6;
+    --soft: #f1efec;
+
+}
+
+* {
+
+    box-sizing: border-box;
+
+}
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+body {
+
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+
+}
+
+a {
+
+    color: inherit;
+    text-decoration: none;
+
+}
+
+button {
+
+    font-family: inherit;
+
+}
+
+
+/* ==============================
+   DARK MODE
+============================== */
+
+.threadly-dark {
+
+    --bg: #111111;
+    --surface: #1b1b1b;
+    --text: #f5f5f5;
+    --muted: #a3a3a3;
+    --accent: #c45a70;
+    --border: #333333;
+    --soft: #222222;
+
+}
+
+
+/* ==============================
+   HEADER
+============================== */
+
+.site-header {
+
+    height: 80px;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+}
+
+.logo-link h1 {
+
+    margin: 0;
+    font-size: 25px;
+    letter-spacing: 3px;
+
+}
+
+.desktop-nav {
+
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+}
+
+.desktop-nav a {
+
+    font-size: 14px;
+    transition: 0.3s ease;
+
+}
+
+.desktop-nav a:hover {
+
+    color: var(--accent);
+
+}
+
+.header-actions {
+
+    display: flex;
+    align-items: center;
+
+}
+
+.menu-button {
+
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 27px;
+    cursor: pointer;
+    display: none;
+
+}
+
+
+/* ==============================
+   MOBILE MENU
+============================== */
+
+.mobile-menu {
+
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(360px, 90%);
+    height: 100vh;
+    background: var(--surface);
+    z-index: 1100;
+    transition: right 0.3s ease;
+    padding: 25px;
+
+}
+
+.mobile-menu.open {
+
+    right: 0;
+
+}
+
+.mobile-menu-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--border);
+
+}
+
+.mobile-menu-header h2 {
+
+    margin: 0;
+    font-size: 16px;
+    letter-spacing: 2px;
+
+}
+
+.close-menu {
+
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 30px;
+    cursor: pointer;
+
+}
+
+.mobile-nav {
+
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+
+}
+
+.mobile-nav a {
+
+    padding: 14px 0;
+    font-size: 15px;
+    border-bottom: 1px solid var(--border);
+
+}
+
+.mobile-nav a.active {
+
+    color: var(--accent);
+
+}
+
+.menu-divider {
+
+    height: 20px;
+
+}
+
+.menu-overlay {
+
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s ease;
+    z-index: 1050;
+
+}
+
+.menu-overlay.open {
+
+    opacity: 1;
+    visibility: visible;
+
+}
+
+
+/* ==============================
+   ORDER PAGE
+============================== */
+
+.order-details-page {
+
+    width: min(1000px, 90%);
+    margin: 70px auto 100px;
+
+}
+
+.page-intro {
+
+    margin-bottom: 40px;
+
+}
+
+.page-intro p {
+
+    margin: 0 0 10px;
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: 600;
+
+}
+
+.page-intro h2 {
+
+    margin: 0 0 12px;
+    font-size: 38px;
+    font-weight: 500;
+
+}
+
+.page-intro span {
+
+    color: var(--muted);
+    font-size: 15px;
+
+}
+
+
+/* ==============================
+   ORDER TOP
+============================== */
+
+.order-main-card {
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+
+}
+
+.order-heading {
+
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+
+}
+
+.order-number-label {
+
+    margin: 0 0 7px;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 1px;
+
+}
+
+.order-number {
+
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+
+}
+
+.order-date {
+
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 13px;
+
+}
+
+.status-badge {
+
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+
+}
+
+
+/* ==============================
+   SIX STAGE PROGRESS
+============================== */
+
+.status-progress {
+
+    padding: 30px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+
+}
+
+.progress-track {
+
+    --progress-width: 0%;
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: repeat(
+        6,
+        minmax(105px, 1fr)
+    );
+
+    min-width: 760px;
+
+    padding: 0 15px;
+
+}
+
+.progress-track::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 7px;
+
+    left: 8%;
+    right: 8%;
+
+    height: 2px;
+
+    background: var(--border);
+
+    z-index: 0;
+
+}
+
+.progress-track::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 7px;
+
+    left: 8%;
+
+    width: var(--progress-width);
+
+    height: 2px;
+
+    background: var(--accent);
+
+    z-index: 0;
+
+    transition: width 0.4s ease;
+
+}
+
+.progress-item {
+
+    position: relative;
+
+    text-align: center;
+
+    z-index: 1;
+
+}
+
+.progress-dot {
+
+    width: 15px;
+
+    height: 15px;
+
+    border-radius: 50%;
+
+    border: 2px solid var(--border);
+
+    background: var(--surface);
+
+    margin: 0 auto 10px;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
+
+}
+
+.progress-item.completed .progress-dot {
+
+    background: var(--accent);
+
+    border-color: var(--accent);
+
+}
+
+.progress-item.active .progress-dot {
+
+    background: var(--accent);
+
+    border-color: var(--accent);
+
+    transform: scale(1.2);
+
+}
+
+.progress-item p {
+
+    margin: 0;
+
+    font-size: 11px;
+
+    color: var(--muted);
+
+    white-space: nowrap;
+
+}
+
+.progress-item.completed p,
+.progress-item.active p {
+
+    color: var(--text);
+
+}
+
+.progress-item.active p {
+
+    font-weight: 600;
+
+}
+
+
+/* ==============================
+   SECTION
+============================== */
+
+.details-section {
+
+    padding: 30px;
+    border-bottom: 1px solid var(--border);
+
+}
+
+.section-title {
+
+    margin: 0 0 20px;
+    font-size: 16px;
+    font-weight: 500;
+
+}
+
+
+/* ==============================
+   PRODUCT
+============================== */
+
+.product-row {
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+
+}
+
+.product-row:last-child {
+
+    border-bottom: 0;
+    padding-bottom: 0;
+
+}
+
+.product-image {
+
+    width: 90px;
+    height: 105px;
+    background: var(--soft);
+    overflow: hidden;
+    flex-shrink: 0;
+
+}
+
+.product-image img {
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+
+}
+
+.product-info {
+
+    flex: 1;
+
+}
+
+.product-info h4 {
+
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 500;
+
+}
+
+.product-info p {
+
+    margin: 5px 0;
+    color: var(--muted);
+    font-size: 13px;
+
+}
+
+.product-price {
+
+    font-size: 15px;
+    font-weight: 500;
+
+}
+
+
+/* ==============================
+   TWO COLUMNS
+============================== */
+
+.details-columns {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+
+}
+
+.details-columns .details-section {
+
+    border-bottom: 0;
+
+}
+
+.details-columns .details-section:first-child {
+
+    border-right: 1px solid var(--border);
+
+}
+
+.details-text {
+
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+
+}
+
+.details-text strong {
+
+    color: var(--text);
+    font-weight: 500;
+
+}
+
+
+/* ==============================
+   PRICE SUMMARY
+============================== */
+
+.price-row {
+
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 9px 0;
+    color: var(--muted);
+    font-size: 14px;
+
+}
+
+.price-row.total {
+
+    margin-top: 12px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    color: var(--text);
+    font-size: 16px;
+
+}
+
+.price-row.total strong {
+
+    font-size: 19px;
+
+}
+
+
+/* ==============================
+   BUTTONS
+============================== */
+
+.order-actions {
+
+    padding: 30px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+
+}
+
+.action-button {
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 46px;
+
+    padding: 0 22px;
+
+    border: 1px solid var(--text);
+
+    background: var(--text);
+    color: var(--surface);
+
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+}
+
+.action-button:hover {
+
+    opacity: 0.85;
+
+}
+
+.action-button.secondary {
+
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+
+}
+
+.action-button.secondary:hover {
+
+    border-color: var(--text);
+
+}
+
+
+/* ==============================
+   ERROR
+============================== */
+
+.order-error {
+
+    display: none;
+
+    padding: 35px;
+
+    text-align: center;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+}
+
+.order-error.show {
+
+    display: block;
+
+}
+
+.order-error h3 {
+
+    margin: 0 0 10px;
+    font-size: 20px;
+
+}
+
+.order-error p {
+
+    margin: 0 0 22px;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 800px) {
+
+    .site-header {
+
+        height: 70px;
+        padding: 0 5%;
+
+    }
+
+    .desktop-nav {
+
+        display: none;
+
+    }
+
+    .menu-button {
+
+        display: block;
+
+    }
+
+    .order-details-page {
+
+        width: 92%;
+        margin: 45px auto 70px;
+
+    }
+
+    .page-intro h2 {
+
+        font-size: 30px;
+
+    }
+
+    .order-heading {
+
+        padding: 22px;
+        flex-direction: column;
+        align-items: flex-start;
+
+    }
+
+    .status-badge {
+
+        align-self: flex-start;
+
+    }
+
+    .status-progress {
+
+        padding: 22px;
+
+    }
+
+    .progress-track {
+
+        min-width: 730px;
+
+    }
+
+    .details-section {
+
+        padding: 22px;
+
+    }
+
+    .details-columns {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .details-columns .details-section:first-child {
+
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+
+    }
+
+    .product-row {
+
+        align-items: flex-start;
+
+    }
+
+    .product-image {
+
+        width: 75px;
+        height: 90px;
+
+    }
+
+    .product-price {
+
+        white-space: nowrap;
+
+    }
+
+    .order-actions {
+
+        padding: 22px;
+        flex-direction: column;
+
+    }
+
+    .action-button {
+
+        width: 100%;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header class="site-header">
+
+<a
+    href="index.html"
+    class="logo-link"
+>
+
+    <h1>
+        THREADLY
+    </h1>
+
+</a>
+
+
+<nav class="desktop-nav">
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="shop.html">
+        Shop
+    </a>
+
+    <a href="shop.html?category=men">
+        Men
+    </a>
+
+    <a href="shop.html?category=women">
+        Women
+    </a>
+
+    <a href="shop.html?category=shoes">
+        Shoes
+    </a>
+
+    <a href="cart.html">
+        Cart
+    </a>
+
+</nav>
+
+
+<div class="header-actions">
+
+    <button
+        id="menuButton"
+        class="menu-button"
+        type="button"
+        aria-label="Open menu"
+    >
+
+        ☰
+
+    </button>
+
+</div>
+
+</header>
+
+
+<div
+    id="mobileMenu"
+    class="mobile-menu"
+>
+
+<div class="mobile-menu-header">
+
+    <h2>
+        MENU
+    </h2>
+
+
+    <button
+        id="closeMenu"
+        class="close-menu"
+        type="button"
+        aria-label="Close menu"
+    >
+
+        ×
+
+    </button>
+
+</div>
+
+
+<nav class="mobile-nav">
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="shop.html">
+        Shop
+    </a>
+
+    <a href="shop.html?category=men">
+        Men
+    </a>
+
+    <a href="shop.html?category=women">
+        Women
+    </a>
+
+    <a href="shop.html?category=shoes">
+        Shoes
+    </a>
+
+
+    <div class="menu-divider"></div>
+
+
+    <a href="login.html">
+        My Account
+    </a>
+
+    <a href="orders.html">
+        My Orders
+    </a>
+
+    <a href="cart.html">
+        My Cart
+    </a>
+
+    <a href="saved.html">
+        Saved Items
+    </a>
+
+
+    <div class="menu-divider"></div>
+
+
+    <a href="settings.html">
+        Settings
+    </a>
+
+    <a href="help.html">
+        Help &amp; Support
+    </a>
+
+</nav>
+
+</div>
+
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
+
+
+<main class="order-details-page">
+
+
+<section class="page-intro">
+
+    <p>
+        YOUR ORDER
+    </p>
+
+    <h2>
+        Order Details
+    </h2>
+
+    <span>
+        View your order information and delivery status.
+    </span>
+
+</section>
+
+
+<div
+    class="order-error"
+    id="orderError"
+>
+
+    <h3>
+        Order not found
+    </h3>
+
+    <p>
+        We could not find this order.
+    </p>
+
+    <a
+        href="orders.html"
+        class="action-button"
+    >
+        BACK TO MY ORDERS
+    </a>
+
+</div>
+
+
+<section
+    class="order-main-card"
+    id="orderContent"
+>
+
+
+<div class="order-heading">
+
+    <div>
+
+        <p class="order-number-label">
+            ORDER NUMBER
+        </p>
+
+        <h3
+            class="order-number"
+            id="orderNumber"
+        >
+            #THR-000000
+        </h3>
+
+        <div
+            class="order-date"
+            id="orderDate"
+        >
+            Recent order
+        </div>
+
+    </div>
+
+
+    <span
+        class="status-badge"
+        id="statusBadge"
+    >
+        PENDING
+    </span>
+
+</div>
+
+
+<div class="status-progress">
+
+    <div
+        class="progress-track"
+        id="progressTrack"
+    >
+
+        <div
+            class="progress-item"
+            id="progressPending"
+        >
+
+            <div class="progress-dot"></div>
+
+            <p>
+                Pending
+            </p>
+
+        </div>
+
+
+        <div
+            class="progress-item"
+            id="progressVerifying"
+        >
+
+            <div class="progress-dot"></div>
+
+            <p>
+                Verifying
+            </p>
+
+        </div>
+
+
+        <div
+            class="progress-item"
+            id="progressPaid"
+        >
+
+            <div class="progress-dot"></div>
+
+            <p>
+                Paid
+            </p>
+
+        </div>
+
+
+        <div
+            class="progress-item"
+            id="progressProcessing"
+        >
+
+            <div class="progress-dot"></div>
+
+            <p>
+                Processing
+            </p>
+
+        </div>
+
+
+        <div
+            class="progress-item"
+            id="progressShipped"
+        >
+
+            <div class="progress-dot"></div>
+
+            <p>
+                Shipped
+            </p>
+
+        </div>
+
+
+        <div
+            class="progress-item"
+            id="progressDelivered"
+        >
+
+            <div class="progress-dot"></div>
+
+            <p>
+                Delivered
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="details-section">
+
+    <h3 class="section-title">
+        Products
+    </h3>
+
+    <div id="productsList">
+
+    </div>
+
+</div>
+
+
+<div class="details-columns">
+
+
+<div class="details-section">
+
+    <h3 class="section-title">
+        Delivery
+    </h3>
+
+    <div
+        class="details-text"
+        id="deliveryDetails"
+    >
+        Not provided
+    </div>
+
+</div>
+
+
+<div class="details-section">
+
+    <h3 class="section-title">
+        Payment
+    </h3>
+
+    <div
+        class="details-text"
+        id="paymentDetails"
+    >
+        Not provided
+    </div>
+
+</div>
+
+
+</div>
+
+
+<div class="details-section">
+
+    <h3 class="section-title">
+        Order Summary
+    </h3>
+
+
+    <div class="price-row">
+
+        <span>
+            Subtotal
+        </span>
+
+        <strong id="subtotal">
+            ₦0
+        </strong>
+
+    </div>
+
+
+    <div class="price-row">
+
+        <span>
+            Delivery
+        </span>
+
+        <strong id="deliveryFee">
+            ₦0
+        </strong>
+
+    </div>
+
+
+    <div class="price-row total">
+
+        <span>
+            Total
+        </span>
+
+        <strong id="total">
+            ₦0
+        </strong>
+
+    </div>
+
+</div>
+
+
+<div class="order-actions">
+
+    <a
+        href="orders.html"
+        class="action-button secondary"
+    >
+        BACK TO MY ORDERS
+    </a>
+
+
+    <a
+        href="shop.html"
+        class="action-button"
+    >
+        CONTINUE SHOPPING
+    </a>
+
+</div>
+
+
+</section>
+
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-client.js"></script>
+
+<script src="app.js"></script>
+
+
+<script>
+
+(function () {
+
+
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
+
+
+    const closeMenu =
+        document.getElementById(
+            "closeMenu"
+        );
+
+
+    const mobileMenu =
+        document.getElementById(
+            "mobileMenu"
+        );
+
+
+    const menuOverlay =
+        document.getElementById(
+            "menuOverlay"
+        );
+
+
+    function openMenu() {
+
+        mobileMenu.classList.add(
+            "open"
+        );
+
+
+        menuOverlay.classList.add(
+            "open"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeMobileMenu() {
+
+        mobileMenu.classList.remove(
+            "open"
+        );
+
+
+        menuOverlay.classList.remove(
+            "open"
+        );
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    menuButton.addEventListener(
+        "click",
+        openMenu
+    );
+
+
+    closeMenu.addEventListener(
+        "click",
+        closeMobileMenu
+    );
+
+
+    menuOverlay.addEventListener(
+        "click",
+        closeMobileMenu
+    );
+
+
+    const orderNumber =
+        document.getElementById(
+            "orderNumber"
+        );
+
+
+    const orderDate =
+        document.getElementById(
+            "orderDate"
+        );
+
+
+    const statusBadge =
+        document.getElementById(
+            "statusBadge"
+        );
+
+
+    const productsList =
+        document.getElementById(
+            "productsList"
+        );
+
+
+    const deliveryDetails =
+        document.getElementById(
+            "deliveryDetails"
+        );
+
+
+    const paymentDetails =
+        document.getElementById(
+            "paymentDetails"
+        );
+
+
+    const subtotal =
+        document.getElementById(
+            "subtotal"
+        );
+
+
+    const deliveryFee =
+        document.getElementById(
+            "deliveryFee"
+        );
+
+
+    const total =
+        document.getElementById(
+            "total"
+        );
+
+
+    const orderContent =
+        document.getElementById(
+            "orderContent"
+        );
+
+
+    const orderError =
+        document.getElementById(
+            "orderError"
+        );
+
+
+    const progressTrack =
+        document.getElementById(
+            "progressTrack"
+        );
+
+
+    const progressItems = [
+
+        document.getElementById(
+            "progressPending"
+        ),
+
+        document.getElementById(
+            "progressVerifying"
+        ),
+
+        document.getElementById(
+            "progressPaid"
+        ),
+
+        document.getElementById(
+            "progressProcessing"
+        ),
+
+        document.getElementById(
+            "progressShipped"
+        ),
+
+        document.getElementById(
+            "progressDelivered"
+        )
+
+    ];
+
+
+    function formatPrice(
+        value
+    ) {
+
+        return (
+            "₦" +
+            (
+                Number(value) || 0
+            ).toLocaleString()
+        );
+
+    }
+
+
+    function formatDate(
+        value
+    ) {
+
+        if (!value) {
+
+            return "Recent order";
+
+        }
+
+
+        const date =
+            new Date(
+                value
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return value;
+
+        }
+
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    function normalizeStatus(
+        value
+    ) {
+
+        return String(
+            value || ""
+        )
+            .toLowerCase()
+            .replace(
+                /[_\s]+/g,
+                "-"
+            );
+
+    }
+
+
+    function getOrderNumber(
+        order
+    ) {
+
+        return (
+            order.order_number ||
+            order.orderNumber ||
+            order.orderId ||
+            order.order_reference ||
+            order.orderReference ||
+            "THR-000000"
+        );
+
+    }
+
+
+    function getDeliveryStatus(
+        order
+    ) {
+
+        let status =
+            normalizeStatus(
+                order.delivery_status ||
+                order.deliveryStatus
+            );
+
+
+        if (
+            status !== "processing" &&
+            status !== "shipped" &&
+            status !== "delivered"
+        ) {
+
+            status =
+                "processing";
+
+        }
+
+
+        return status;
+
+    }
+
+
+    function getPaymentStatus(
+        order
+    ) {
+
+        return normalizeStatus(
+            order.payment_status ||
+            order.paymentStatus
+        );
+
+    }
+
+
+    function getCurrentStage(
+        order
+    ) {
+
+        const paymentStatus =
+            getPaymentStatus(
+                order
+            );
+
+
+        const deliveryStatus =
+            getDeliveryStatus(
+                order
+            );
+
+
+        if (
+            deliveryStatus ===
+            "delivered"
+        ) {
+
+            return "delivered";
+
+        }
+
+
+        if (
+            deliveryStatus ===
+            "shipped"
+        ) {
+
+            return "shipped";
+
+        }
+
+
+        if (
+            paymentStatus ===
+            "awaiting-verification" ||
+            paymentStatus ===
+            "pending-verification" ||
+            paymentStatus ===
+            "verifying"
+        ) {
+
+            return "verifying";
+
+        }
+
+
+        if (
+            paymentStatus ===
+            "pending" ||
+            paymentStatus ===
+            "awaiting-payment" ||
+            paymentStatus ===
+            "unpaid"
+        ) {
+
+            return "pending";
+
+        }
+
+
+        if (
+            paymentStatus ===
+            "paid" ||
+            paymentStatus ===
+            "successful" ||
+            paymentStatus ===
+            "success"
+        ) {
+
+            return "processing";
+
+        }
+
+
+        if (
+            deliveryStatus ===
+            "processing"
+        ) {
+
+            return "processing";
+
+        }
+
+
+        return "pending";
+
+    }
+
+
+    function getStageLabel(
+        stage
+    ) {
+
+        const labels = {
+
+            pending:
+                "PENDING",
+
+            verifying:
+                "VERIFYING",
+
+            paid:
+                "PAID",
+
+            processing:
+                "PROCESSING",
+
+            shipped:
+                "SHIPPED",
+
+            delivered:
+                "DELIVERED"
+
+        };
+
+
+        return (
+            labels[stage] ||
+            "PENDING"
+        );
+
+    }
+
+
+    function updateProgress(
+        order
+    ) {
+
+        const stages = [
+
+            "pending",
+            "verifying",
+            "paid",
+            "processing",
+            "shipped",
+            "delivered"
+
+        ];
+
+
+        const currentStage =
+            getCurrentStage(
+                order
+            );
+
+
+        const currentIndex =
+            stages.indexOf(
+                currentStage
+            );
+
+
+        const paymentStatus =
+            getPaymentStatus(
+                order
+            );
+
+
+        progressItems.forEach(
+            function (
+                item,
+                index
+            ) {
+
+
+                item.classList.remove(
+                    "completed"
+                );
+
+
+                item.classList.remove(
+                    "active"
+                );
+
+
+                if (
+                    index <
+                    currentIndex
+                ) {
+
+                    item.classList.add(
+                        "completed"
+                    );
+
+                }
+
+
+                if (
+                    index ===
+                    currentIndex
+                ) {
+
+                    item.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /*
+         * Once payment is marked paid,
+         * the Paid stage is completed.
+         * Processing becomes the active
+         * delivery stage.
+         */
+
+        if (
+            paymentStatus ===
+                "paid" ||
+            paymentStatus ===
+                "successful" ||
+            paymentStatus ===
+                "success"
+        ) {
+
+            progressItems[2].classList.add(
+                "completed"
+            );
+
+        }
+
+
+        let progressWidth =
+            0;
+
+
+        if (
+            currentIndex > 0
+        ) {
+
+            progressWidth =
+                (
+                    currentIndex /
+                    (
+                        stages.length -
+                        1
+                    )
+                ) * 84;
+
+        }
+
+
+        progressTrack.style.setProperty(
+            "--progress-width",
+            progressWidth + "%"
+        );
+
+
+        statusBadge.textContent =
+            getStageLabel(
+                currentStage
+            );
+
+    }
+
+
+    function getItems(
+        order
+    ) {
+
+        let items =
+            order.items ||
+            [];
+
+
+        if (
+            typeof items ===
+            "string"
+        ) {
+
+            try {
+
+                items =
+                    JSON.parse(
+                        items
+                    );
+
+            } catch (error) {
+
+                items = [];
+
+            }
+
+        }
+
+
+        return Array.isArray(
+            items
+        )
+            ? items
+            : [];
+
+    }
+
+
+    function getProductName(
+        item
+    ) {
+
+        return (
+            item.name ||
+            item.productName ||
+            item.title ||
+            "THREADLY Product"
+        );
+
+    }
+
+
+    function getProductImage(
+        item
+    ) {
+
+        return (
+            item.image ||
+            item.imageUrl ||
+            item.productImage ||
+            "images/hoodie-001.jpg"
+        );
+
+    }
+
+
+    function getProductSize(
+        item,
+        order
+    ) {
+
+        return (
+            item.size ||
+            item.selectedSize ||
+            order.size ||
+            "N/A"
+        );
+
+    }
+
+
+    function getProductQuantity(
+        item
+    ) {
+
+        return Number(
+            item.quantity ||
+            item.qty ||
+            1
+        );
+
+    }
+
+
+    function getProductPrice(
+        item
+    ) {
+
+        return Number(
+            item.price ||
+            0
+        );
+
+    }
+
+
+    function getOrderSubtotal(
+        order,
+        items
+    ) {
+
+        if (
+            order.subtotal !==
+            undefined &&
+            order.subtotal !==
+            null
+        ) {
+
+            return (
+                Number(
+                    order.subtotal
+                ) || 0
+            );
+
+        }
+
+
+        let value =
+            0;
+
+
+        items.forEach(
+            function (
+                item
+            ) {
+
+                value +=
+                    getProductPrice(
+                        item
+                    ) *
+                    getProductQuantity(
+                        item
+                    );
+
+            }
+        );
+
+
+        return value;
+
+    }
+
+
+    function getDeliveryFee(
+        order
+    ) {
+
+        return (
+            Number(
+                order.delivery_fee
+            ) || 0
+        );
+
+    }
+
+
+    function getTotal(
+        order,
+        items
+    ) {
+
+        if (
+            order.total !==
+            undefined &&
+            order.total !==
+            null
+        ) {
+
+            return (
+                Number(
+                    order.total
+                ) || 0
+            );
+
+        }
+
+
+        return (
+            getOrderSubtotal(
+                order,
+                items
+            ) +
+            getDeliveryFee(
+                order
+            )
+        );
+
+    }
+
+
+    function getCustomer(
+        order
+    ) {
+
+        let customer =
+            order.customer;
+
+
+        if (
+            typeof customer ===
+            "string"
+        ) {
+
+            try {
+
+                customer =
+                    JSON.parse(
+                        customer
+                    );
+
+            } catch (error) {
+
+                customer = {};
+
+            }
+
+        }
+
+
+        if (
+            customer &&
+            typeof customer ===
+            "object"
+        ) {
+
+            return customer;
+
+        }
+
+
+        return {};
+
+    }
+
+
+    function getSavedOrders() {
+
+        let orders = [];
+
+
+        try {
+
+            const saved =
+                JSON.parse(
+                    localStorage.getItem(
+                        "threadlyOrders"
+                    )
+                );
+
+
+            if (
+                Array.isArray(
+                    saved
+                )
+            ) {
+
+                orders.push(
+                    ...saved
+                );
+
+            }
+
+        } catch (error) {
+
+            orders = [];
+
+        }
+
+
+        try {
+
+            const pending =
+                JSON.parse(
+                    localStorage.getItem(
+                        "threadlyPendingOrder"
+                    )
+                );
+
+
+            if (pending) {
+
+                const pendingNumber =
+                    getOrderNumber(
+                        pending
+                    );
+
+
+                const exists =
+                    orders.some(
+                        function (
+                            order
+                        ) {
+
+                            return (
+                                getOrderNumber(
+                                    order
+                                ) ===
+                                pendingNumber
+                            );
+
+                        }
+                    );
+
+
+                if (!exists) {
+
+                    orders.unshift(
+                        pending
+                    );
+
+                }
+
+            }
+
+        } catch (error) {
+
+            /* Nothing to do */
+
+        }
+
+
+        return orders;
+
+    }
+
+
+    async function waitForSupabase() {
+
+        for (
+            let attempt = 0;
+            attempt < 50;
+            attempt++
+        ) {
+
+            if (
+                window.threadlySupabase
+            ) {
+
+                return (
+                    window.threadlySupabase
+                );
+
+            }
+
+
+            await new Promise(
+                function (
+                    resolve
+                ) {
+
+                    setTimeout(
+                        resolve,
+                        100
+                    );
+
+                }
+            );
+
+        }
+
+
+        return null;
+
+    }
+
+
+    async function findOrder(
+        orderNumber
+    ) {
+
+        const client =
+            await waitForSupabase();
+
+
+        if (
+            client
+        ) {
+
+            try {
+
+                const {
+                    data: userData,
+                    error: userError
+                } =
+                    await client.auth.getUser();
+
+
+                if (
+                    userError
+                ) {
+
+                    throw userError;
+
+                }
+
+
+                const user =
+                    userData.user;
+
+
+                if (
+                    user
+                ) {
+
+                    const result =
+                        await client
+                            .from("orders")
+                            .select("*")
+                            .eq(
+                                "user_id",
+                                user.id
+                            )
+                            .eq(
+                                "order_number",
+                                orderNumber
+                            )
+                            .maybeSingle();
+
+
+                    if (
+                        result.error
+                    ) {
+
+                        throw result.error;
+
+                    }
+
+
+                    if (
+                        result.data
+                    ) {
+
+                        return result.data;
+
+                    }
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Supabase order lookup failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        const localOrders =
+            getSavedOrders();
+
+
+        return localOrders.find(
+            function (
+                order
+            ) {
+
+                return (
+                    String(
+                        getOrderNumber(
+                            order
+                        )
+                    ).toLowerCase() ===
+                    String(
+                        orderNumber
+                    ).toLowerCase()
+                );
+
+            }
+        ) || null;
+
+    }
+
+
+    function showProducts(
+        items,
+        order
+    ) {
+
+        productsList.innerHTML =
+            "";
+
+
+        if (
+            !items.length
+        ) {
+
+            productsList.innerHTML =
+
+                "<p class='details-text'>" +
+                "No product information found." +
+                "</p>";
+
+            return;
+
+        }
+
+
+        items.forEach(
+            function (
+                item
+            ) {
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                row.className =
+                    "product-row";
+
+
+                const imageWrapper =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                imageWrapper.className =
+                    "product-image";
+
+
+                const image =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                image.src =
+                    getProductImage(
+                        item
+                    );
+
+
+                image.alt =
+                    getProductName(
+                        item
+                    );
+
+
+                image.onerror =
+                    function () {
+
+                        this.src =
+                            "images/hoodie-001.jpg";
+
+                    };
+
+
+                imageWrapper.appendChild(
+                    image
+                );
+
+
+                const info =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                info.className =
+                    "product-info";
+
+
+                const name =
+                    document.createElement(
+                        "h4"
+                    );
+
+
+                name.textContent =
+                    getProductName(
+                        item
+                    );
+
+
+                const size =
+                    document.createElement(
+                        "p"
+                    );
+
+
+                size.textContent =
+                    "Size: " +
+                    getProductSize(
+                        item,
+                        order
+                    );
+
+
+                const quantity =
+                    document.createElement(
+                        "p"
+                    );
+
+
+                quantity.textContent =
+                    "Quantity: " +
+                    getProductQuantity(
+                        item
+                    );
+
+
+                info.appendChild(
+                    name
+                );
+
+
+                info.appendChild(
+                    size
+                );
+
+
+                info.appendChild(
+                    quantity
+                );
+
+
+                const price =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                price.className =
+                    "product-price";
+
+
+                price.textContent =
+                    formatPrice(
+                        getProductPrice(
+                            item
+                        ) *
+                        getProductQuantity(
+                            item
+                        )
+                    );
+
+
+                row.appendChild(
+                    imageWrapper
+                );
+
+
+                row.appendChild(
+                    info
+                );
+
+
+                row.appendChild(
+                    price
+                );
+
+
+                productsList.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    function showOrder(
+        order
+    ) {
+
+        const orderNumberValue =
+            getOrderNumber(
+                order
+            );
+
+
+        const items =
+            getItems(
+                order
+            );
+
+
+        const orderSubtotal =
+            getOrderSubtotal(
+                order,
+                items
+            );
+
+
+        const orderDeliveryFee =
+            getDeliveryFee(
+                order
+            );
+
+
+        const orderTotal =
+            getTotal(
+                order,
+                items
+            );
+
+
+        const customer =
+            getCustomer(
+                order
+            );
+
+
+        orderNumber.textContent =
+            "#" +
+            orderNumberValue;
+
+
+        orderDate.textContent =
+            formatDate(
+                order.created_at
+            );
+
+
+        updateProgress(
+            order
+        );
+
+
+        showProducts(
+            items,
+            order
+        );
+
+
+        const deliveryMethod =
+            order.delivery_method ||
+            "Not provided";
+
+
+        let deliveryHTML =
+
+            "<strong>" +
+            String(
+                deliveryMethod
+            ).toUpperCase() +
+            "</strong><br>";
+
+
+        if (
+            order.estimated_delivery
+        ) {
+
+            deliveryHTML +=
+                "Estimated delivery: " +
+                order.estimated_delivery +
+                "<br>";
+
+        }
+
+
+        if (
+            customer.fullName
+        ) {
+
+            deliveryHTML +=
+                customer.fullName +
+                "<br>";
+
+        }
+
+
+        if (
+            customer.address
+        ) {
+
+            deliveryHTML +=
+                customer.address +
+                "<br>";
+
+        }
+
+
+        if (
+            customer.city
+        ) {
+
+            deliveryHTML +=
+                customer.city +
+                "<br>";
+
+        }
+
+
+        if (
+            customer.state
+        ) {
+
+            deliveryHTML +=
+                customer.state +
+                "<br>";
+
+        }
+
+
+        if (
+            customer.phone
+        ) {
+
+            deliveryHTML +=
+                customer.phone;
+
+        }
+
+
+        deliveryDetails.innerHTML =
+            deliveryHTML;
+
+
+        const paymentMethod =
+            order.payment_method ||
+            "Not provided";
+
+
+        const paymentStatus =
+            order.payment_status ||
+            "pending";
+
+
+        paymentDetails.innerHTML =
+
+            "<strong>" +
+            String(
+                paymentMethod
+            )
+                .replace(
+                    /-/g,
+                    " "
+                )
+                .toUpperCase() +
+            "</strong><br>" +
+
+            "Status: " +
+
+            String(
+                paymentStatus
+            )
+                .replace(
+                    /-/g,
+                    " "
+                )
+                .toUpperCase();
+
+
+        subtotal.textContent =
+            formatPrice(
+                orderSubtotal
+            );
+
+
+        deliveryFee.textContent =
+            formatPrice(
+                orderDeliveryFee
+            );
+
+
+        total.textContent =
+            formatPrice(
+                orderTotal
+            );
+
+
+        orderContent.style.display =
+            "";
+
+
+        orderError.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    async function startOrderDetails() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const requestedOrderNumber =
+            params.get(
+                "id"
+            );
+
+
+        if (
+            !requestedOrderNumber
+        ) {
+
+            orderContent.style.display =
+                "none";
+
+
+            orderError.classList.add(
+                "show"
+            );
+
+
+            return;
+
+        }
+
+
+        const order =
+            await findOrder(
+                requestedOrderNumber
+            );
+
+
+        if (
+            !order
+        ) {
+
+            orderContent.style.display =
+                "none";
+
+
+            orderError.classList.add(
+                "show"
+            );
+
+
+            return;
+
+        }
+
+
+        showOrder(
+            order
+        );
+
+    }
+
+
+    startOrderDetails();
+
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
+

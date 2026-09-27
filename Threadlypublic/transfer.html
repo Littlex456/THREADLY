@@ -555,7 +555,6 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-
         let pendingOrder = null;
 
 
@@ -573,7 +572,6 @@ document.addEventListener(
             pendingOrder = null;
 
         }
-
 
 
         const transferAmount =
@@ -606,6 +604,9 @@ document.addEventListener(
             );
 
 
+        // =========================================
+        // CHECK PENDING ORDER
+        // =========================================
 
         if (!pendingOrder) {
 
@@ -616,11 +617,14 @@ document.addEventListener(
 
             }
 
+
             if (doneButton) {
 
-                doneButton.disabled = true;
+                doneButton.disabled =
+                    true;
 
             }
+
 
             if (copyMessage) {
 
@@ -629,11 +633,15 @@ document.addEventListener(
 
             }
 
+
             return;
 
         }
 
 
+        // =========================================
+        // GET ORDER TOTAL
+        // =========================================
 
         const total =
             Number(
@@ -641,6 +649,52 @@ document.addEventListener(
             );
 
 
+        // =========================================
+        // GET ORDER REFERENCE
+        // =========================================
+
+        const orderReference =
+            pendingOrder.order_number ||
+            pendingOrder.orderNumber ||
+            pendingOrder.orderId ||
+            pendingOrder.id ||
+            "";
+
+
+        if (!total) {
+
+            if (transferAmount) {
+
+                transferAmount.textContent =
+                    "₦0";
+
+            }
+
+
+            if (doneButton) {
+
+                doneButton.disabled =
+                    true;
+
+            }
+
+
+            if (copyMessage) {
+
+                copyMessage.textContent =
+                    "Payment amount could not be found.";
+
+            }
+
+
+            return;
+
+        }
+
+
+        // =========================================
+        // DISPLAY TRANSFER AMOUNT
+        // =========================================
 
         if (transferAmount) {
 
@@ -653,19 +707,40 @@ document.addEventListener(
         }
 
 
+        // =========================================
+        // COPY ACCOUNT NUMBER
+        // =========================================
 
-        if (copyButton && accountNumber) {
+        if (
+            copyButton &&
+            accountNumber
+        ) {
 
             copyButton.addEventListener(
                 "click",
                 async function () {
 
+                    const number =
+                        accountNumber.textContent
+                            .trim();
+
+
+                    if (!number) {
+
+                        return;
+
+                    }
+
 
                     try {
 
                         await navigator.clipboard.writeText(
-                            accountNumber.textContent.trim()
+                            number
                         );
+
+
+                        copyButton.textContent =
+                            "COPIED ✓";
 
 
                         if (copyMessage) {
@@ -679,6 +754,10 @@ document.addEventListener(
                         setTimeout(
                             function () {
 
+                                copyButton.textContent =
+                                    "COPY";
+
+
                                 if (copyMessage) {
 
                                     copyMessage.textContent =
@@ -687,7 +766,7 @@ document.addEventListener(
                                 }
 
                             },
-                            2000
+                            1800
                         );
 
 
@@ -708,12 +787,91 @@ document.addEventListener(
         }
 
 
+        // =========================================
+        // TRANSFER COMPLETE
+        // =========================================
 
         if (doneButton) {
 
             doneButton.addEventListener(
                 "click",
                 function () {
+
+                    if (!orderReference) {
+
+                        if (copyMessage) {
+
+                            copyMessage.textContent =
+                                "Order reference could not be found.";
+
+                        }
+
+                        return;
+
+                    }
+
+
+                    // Keep the order reference
+                    // for the receipt page.
+
+                    localStorage.setItem(
+                        "threadlyOrderReference",
+                        orderReference
+                    );
+
+
+                    // Keep the amount.
+
+                    localStorage.setItem(
+                        "threadlyPaymentAmount",
+                        String(
+                            total
+                        )
+                    );
+
+
+                    // Save the payment method.
+
+                    localStorage.setItem(
+                        "threadlyPaymentMethod",
+                        "transfer"
+                    );
+
+
+                    // Save the current payment status.
+
+                    localStorage.setItem(
+                        "threadlyPaymentStatus",
+                        "awaiting-receipt"
+                    );
+
+
+                    // Update the temporary
+                    // pending order object.
+
+                    pendingOrder.payment_method =
+                        "transfer";
+
+
+                    pendingOrder.paymentMethod =
+                        "transfer";
+
+
+                    pendingOrder.payment_status =
+                        "awaiting-receipt";
+
+
+                    pendingOrder.paymentStatus =
+                        "awaiting-receipt";
+
+
+                    localStorage.setItem(
+                        "threadlyPendingOrder",
+                        JSON.stringify(
+                            pendingOrder
+                        )
+                    );
+
 
                     window.location.href =
                         "receipt.html";
@@ -722,7 +880,6 @@ document.addEventListener(
             );
 
         }
-
 
     }
 );

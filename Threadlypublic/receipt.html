@@ -681,7 +681,6 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-
         const form =
             document.getElementById(
                 "receiptForm"
@@ -742,9 +741,7 @@ document.addEventListener(
             );
 
 
-
         let pendingOrder = null;
-
 
 
         try {
@@ -761,7 +758,6 @@ document.addEventListener(
             pendingOrder = null;
 
         }
-
 
 
         if (!pendingOrder) {
@@ -785,11 +781,21 @@ document.addEventListener(
         }
 
 
+        // =========================================
+        // GET ORDER REFERENCE
+        // =========================================
 
-        const orderId =
-            pendingOrder.orderId || "";
+        const orderNumber =
+            pendingOrder.order_number ||
+            pendingOrder.orderNumber ||
+            pendingOrder.orderId ||
+            pendingOrder.id ||
+            "";
 
 
+        // =========================================
+        // GET TOTAL
+        // =========================================
 
         const total =
             Number(
@@ -797,15 +803,13 @@ document.addEventListener(
             );
 
 
-
         if (orderReference) {
 
             orderReference.textContent =
-                orderId ||
+                orderNumber ||
                 "THR-000000";
 
         }
-
 
 
         if (amountElement) {
@@ -819,6 +823,9 @@ document.addEventListener(
         }
 
 
+        // =========================================
+        // FILE PREVIEW
+        // =========================================
 
         if (fileInput) {
 
@@ -826,30 +833,78 @@ document.addEventListener(
                 "change",
                 function () {
 
-
                     const file =
                         fileInput.files[0];
 
 
                     if (!file) {
+                        return;
+                    }
+
+
+                    const allowedTypes = [
+                        "image/jpeg",
+                        "image/png",
+                        "image/webp",
+                        "application/pdf"
+                    ];
+
+
+                    if (
+                        !allowedTypes.includes(
+                            file.type
+                        )
+                    ) {
+
+                        message.textContent =
+                            "Please upload a JPG, PNG, WEBP or PDF file.";
+
+                        fileInput.value =
+                            "";
 
                         return;
 
                     }
 
 
+                    if (
+                        file.size >
+                        10 * 1024 * 1024
+                    ) {
 
-                    fileName.textContent =
-                        file.name;
+                        message.textContent =
+                            "Receipt file must be 10MB or smaller.";
+
+                        fileInput.value =
+                            "";
+
+                        return;
+
+                    }
 
 
+                    message.textContent =
+                        "";
 
-                    previewContainer.style.display =
-                        "block";
 
+                    if (fileName) {
+
+                        fileName.textContent =
+                            file.name;
+
+                    }
+
+
+                    if (previewContainer) {
+
+                        previewContainer.style.display =
+                            "block";
+
+                    }
 
 
                     if (
+                        preview &&
                         file.type.startsWith(
                             "image/"
                         )
@@ -858,17 +913,15 @@ document.addEventListener(
                         preview.style.display =
                             "block";
 
-
                         preview.src =
                             URL.createObjectURL(
                                 file
                             );
 
-                    } else {
+                    } else if (preview) {
 
                         preview.style.display =
                             "none";
-
 
                         preview.removeAttribute(
                             "src"
@@ -876,13 +929,15 @@ document.addEventListener(
 
                     }
 
-
                 }
             );
 
         }
 
 
+        // =========================================
+        // REMOVE RECEIPT
+        // =========================================
 
         if (removeButton) {
 
@@ -890,26 +945,47 @@ document.addEventListener(
                 "click",
                 function () {
 
+                    if (fileInput) {
 
-                    fileInput.value =
-                        "";
+                        fileInput.value =
+                            "";
 
-
-                    preview.src =
-                        "";
-
-
-                    preview.style.display =
-                        "none";
+                    }
 
 
-                    previewContainer.style.display =
-                        "none";
+                    if (preview) {
+
+                        preview.src =
+                            "";
+
+                        preview.style.display =
+                            "none";
+
+                    }
 
 
-                    fileName.textContent =
-                        "Receipt";
+                    if (previewContainer) {
 
+                        previewContainer.style.display =
+                            "none";
+
+                    }
+
+
+                    if (fileName) {
+
+                        fileName.textContent =
+                            "Receipt";
+
+                    }
+
+
+                    if (message) {
+
+                        message.textContent =
+                            "";
+
+                    }
 
                 }
             );
@@ -917,6 +993,9 @@ document.addEventListener(
         }
 
 
+        // =========================================
+        // SUBMIT RECEIPT
+        // =========================================
 
         if (form) {
 
@@ -924,14 +1003,11 @@ document.addEventListener(
                 "submit",
                 async function (event) {
 
-
                     event.preventDefault();
-
 
 
                     const file =
                         fileInput.files[0];
-
 
 
                     if (!file) {
@@ -944,8 +1020,7 @@ document.addEventListener(
                     }
 
 
-
-                    if (!orderId) {
+                    if (!orderNumber) {
 
                         message.textContent =
                             "Order reference is missing.";
@@ -954,6 +1029,15 @@ document.addEventListener(
 
                     }
 
+
+                    if (!total) {
+
+                        message.textContent =
+                            "Order amount could not be found.";
+
+                        return;
+
+                    }
 
 
                     submitButton.disabled =
@@ -968,13 +1052,14 @@ document.addEventListener(
                         "";
 
 
-
                     try {
 
+                        // =========================================
+                        // GET SUPABASE
+                        // =========================================
 
                         const supabase =
                             window.threadlySupabase;
-
 
 
                         if (!supabase) {
@@ -986,6 +1071,9 @@ document.addEventListener(
                         }
 
 
+                        // =========================================
+                        // GET CURRENT USER
+                        // =========================================
 
                         const {
                             data:
@@ -996,7 +1084,6 @@ document.addEventListener(
                             await supabase.auth.getSession();
 
 
-
                         if (sessionError) {
 
                             throw sessionError;
@@ -1004,10 +1091,8 @@ document.addEventListener(
                         }
 
 
-
                         const session =
                             sessionData.session;
-
 
 
                         if (
@@ -1023,11 +1108,13 @@ document.addEventListener(
                         }
 
 
-
                         const user =
                             session.user;
 
 
+                        // =========================================
+                        // FIND ORDER
+                        // =========================================
 
                         const {
                             data:
@@ -1042,14 +1129,13 @@ document.addEventListener(
                                 )
                                 .eq(
                                     "order_number",
-                                    orderId
+                                    orderNumber
                                 )
                                 .eq(
                                     "user_id",
                                     user.id
                                 )
                                 .maybeSingle();
-
 
 
                         if (orderLookupError) {
@@ -1059,17 +1145,19 @@ document.addEventListener(
                         }
 
 
-
                         if (!existingOrder) {
 
                             throw new Error(
                                 "THREADLY could not find this order in Supabase. Order reference: " +
-                                orderId
+                                orderNumber
                             );
 
                         }
 
 
+                        // =========================================
+                        // CREATE STORAGE FILE PATH
+                        // =========================================
 
                         const fileExtension =
                             file.name
@@ -1078,6 +1166,13 @@ document.addEventListener(
                                 .toLowerCase();
 
 
+                        const safeFileName =
+                            file.name
+                                .replace(
+                                    /[^a-zA-Z0-9._-]/g,
+                                    "_"
+                                );
+
 
                         const filePath =
                             user.id +
@@ -1085,10 +1180,13 @@ document.addEventListener(
                             existingOrder.order_number +
                             "-" +
                             Date.now() +
-                            "." +
-                            fileExtension;
+                            "-" +
+                            safeFileName;
 
 
+                        // =========================================
+                        // UPLOAD RECEIPT
+                        // =========================================
 
                         const {
                             error:
@@ -1101,12 +1199,16 @@ document.addEventListener(
                                     filePath,
                                     file,
                                     {
-                                        upsert: false,
+                                        cacheControl:
+                                            "3600",
+
+                                        upsert:
+                                            false,
+
                                         contentType:
                                             file.type
                                     }
                                 );
-
 
 
                         if (uploadError) {
@@ -1116,24 +1218,9 @@ document.addEventListener(
                         }
 
 
-
-                        const {
-                            data:
-                                publicData
-                        } =
-                            supabase
-                                .storage
-                                .from("receipts")
-                                .getPublicUrl(
-                                    filePath
-                                );
-
-
-
-                        const receiptUrl =
-                            publicData.publicUrl;
-
-
+                        // =========================================
+                        // UPDATE ORDER
+                        // =========================================
 
                         const {
                             data:
@@ -1145,11 +1232,14 @@ document.addEventListener(
                                 .from("orders")
                                 .update({
 
-                                    receipt_url:
-                                        receiptUrl,
-
                                     payment_status:
-                                        "receipt-submitted",
+                                        "pending-verification",
+
+                                    payment_method:
+                                        "transfer",
+
+                                    receipt_url:
+                                        filePath,
 
                                     updated_at:
                                         new Date()
@@ -1165,9 +1255,8 @@ document.addEventListener(
                                     user.id
                                 )
                                 .select(
-                                    "id, order_number, payment_status, receipt_url"
+                                    "id, order_number, payment_status, payment_method, receipt_url"
                                 );
-
 
 
                         console.log(
@@ -1176,13 +1265,11 @@ document.addEventListener(
                         );
 
 
-
                         if (updateError) {
 
                             throw updateError;
 
                         }
-
 
 
                         if (
@@ -1197,14 +1284,27 @@ document.addEventListener(
                         }
 
 
+                        // =========================================
+                        // UPDATE LOCAL ORDER DATA
+                        // =========================================
+
+                        pendingOrder.payment_status =
+                            "pending-verification";
 
                         pendingOrder.paymentStatus =
-                            "receipt-submitted";
+                            "pending-verification";
 
+                        pendingOrder.payment_method =
+                            "transfer";
+
+                        pendingOrder.paymentMethod =
+                            "transfer";
+
+                        pendingOrder.receipt_url =
+                            filePath;
 
                         pendingOrder.receiptUrl =
-                            receiptUrl;
-
+                            filePath;
 
 
                         localStorage.setItem(
@@ -1215,7 +1315,6 @@ document.addEventListener(
                         );
 
 
-
                         localStorage.setItem(
                             "threadlyLastOrder",
                             JSON.stringify(
@@ -1224,10 +1323,18 @@ document.addEventListener(
                         );
 
 
+                        localStorage.setItem(
+                            "threadlyOrderReference",
+                            existingOrder.order_number
+                        );
+
+
+                        // =========================================
+                        // SUCCESS
+                        // =========================================
 
                         message.textContent =
                             "Receipt submitted successfully.";
-
 
 
                         submitButton.textContent =
@@ -1236,7 +1343,6 @@ document.addEventListener(
 
                         submitButton.disabled =
                             true;
-
 
 
                         setTimeout(
@@ -1249,10 +1355,7 @@ document.addEventListener(
                             1200
                         );
 
-
-
                     } catch (error) {
-
 
                         console.error(
                             "Receipt upload error:",
@@ -1272,21 +1375,17 @@ document.addEventListener(
                         submitButton.textContent =
                             "SUBMIT RECEIPT";
 
-
                     }
-
 
                 }
             );
 
         }
 
-
     }
 );
 
 </script>
-
 
 
 <script src="app.js"></script>
