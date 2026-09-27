@@ -8552,6 +8552,7 @@ input:checked
     .filter-toggle {
         width:
             100%;
+        box-sizing: border-box;    
     }
 
     .filter-panel {
