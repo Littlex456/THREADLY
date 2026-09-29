@@ -1899,19 +1899,9 @@ const products = {
                 return;
 
             }
-            console.log(
-    "THREADLY products from Supabase:",
-    data
-);
+            
 
-console.log(
-    "BAGGY PRODUCT:",
-    data.find(
-        function (item) {
-            return item.id === "Baggy-001";
-        }
-    )
-);
+
 
 
             Object.keys(
@@ -1987,9 +1977,7 @@ console.log(
             applyShopFilters();
 
 
-            console.log(
-                "THREADLY products loaded from Supabase."
-            );
+
 
 
         } catch (error) {
