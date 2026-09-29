@@ -1,0 +1,2891 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Add Product | THREADLY Vendor</title>
+
+
+    <script>
+
+        (function () {
+
+            const savedTheme =
+                localStorage.getItem(
+                    "threadlyVendorTheme"
+                ) || "light";
+
+
+            if (savedTheme === "dark") {
+
+                document.documentElement.classList.add(
+                    "threadly-vendor-dark"
+                );
+
+            }
+
+        })();
+
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+
+        html {
+            background: #f7f5f2;
+        }
+
+
+        html.threadly-vendor-dark {
+            background: #111;
+        }
+
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f7f5f2;
+            color: #171717;
+
+            transition:
+                background-color 0.25s ease,
+                color 0.25s ease;
+        }
+
+
+        html.threadly-vendor-dark body {
+            background: #111;
+            color: #f5f5f5;
+        }
+
+
+        .header {
+            height: 70px;
+
+            background: #fff;
+
+            border-bottom: 1px solid #dedbd6;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            z-index: 1000;
+
+            transition:
+                background-color 0.25s ease,
+                border-color 0.25s ease,
+                color 0.25s ease;
+        }
+
+
+        html.threadly-vendor-dark .header {
+            background: #1b1b1b;
+            border-color: #333;
+        }
+
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+
+        .vendor-name {
+            font-size: 14px;
+            color: #737373;
+        }
+
+
+        html.threadly-vendor-dark .vendor-name {
+            color: #a3a3a3;
+        }
+
+
+        .menu-button {
+            display: none;
+
+            border: none;
+
+            background: none;
+
+            color: #171717;
+
+            font-size: 25px;
+
+            cursor: pointer;
+        }
+
+
+        html.threadly-vendor-dark .menu-button {
+            color: #f5f5f5;
+        }
+
+
+        .sidebar {
+            position: fixed;
+
+            top: 70px;
+            left: 0;
+            bottom: 0;
+
+            width: 230px;
+
+            background: #fff;
+
+            border-right: 1px solid #dedbd6;
+
+            padding: 25px 15px;
+
+            z-index: 900;
+
+            transition:
+                transform 0.25s ease,
+                background-color 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+
+        html.threadly-vendor-dark .sidebar {
+            background: #1b1b1b;
+            border-color: #333;
+        }
+
+
+        .vendor-label {
+            font-size: 11px;
+
+            color: #737373;
+
+            letter-spacing: 1px;
+
+            margin: 0 12px 15px;
+        }
+
+
+        html.threadly-vendor-dark .vendor-label {
+            color: #a3a3a3;
+        }
+
+
+        .vendor-link {
+            display: block;
+
+            padding: 13px 12px;
+
+            margin-bottom: 5px;
+
+            color: #171717;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-size: 14px;
+
+            transition:
+                background-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        html.threadly-vendor-dark .vendor-link {
+            color: #f5f5f5;
+        }
+
+
+        .vendor-link:hover {
+            background: #f2efeb;
+        }
+
+
+        html.threadly-vendor-dark .vendor-link:hover {
+            background: #282828;
+        }
+
+
+        .vendor-link.active {
+            background: #f2efeb;
+            color: #7d2638;
+        }
+
+
+        html.threadly-vendor-dark .vendor-link.active {
+            background: #282828;
+            color: #c45a70;
+        }
+
+
+        .logout-link {
+            margin-top: 25px;
+        }
+
+
+        .mobile-overlay {
+            display: none;
+        }
+
+
+        .main {
+            margin-left: 230px;
+
+            min-height: 100vh;
+
+            padding: 100px 35px 40px;
+
+            transition:
+                background-color 0.25s ease,
+                color 0.25s ease;
+        }
+
+
+        .back-link {
+            display: inline-block;
+
+            margin-bottom: 18px;
+
+            color: #737373;
+
+            text-decoration: none;
+
+            font-size: 14px;
+        }
+
+
+        .back-link:hover {
+            color: #7d2638;
+        }
+
+
+        html.threadly-vendor-dark .back-link {
+            color: #a3a3a3;
+        }
+
+
+        html.threadly-vendor-dark .back-link:hover {
+            color: #c45a70;
+        }
+
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+
+        .page-title {
+            margin: 0 0 7px;
+
+            font-size: 30px;
+        }
+
+
+        .page-subtitle {
+            margin: 0;
+
+            color: #737373;
+
+            font-size: 14px;
+        }
+
+
+        html.threadly-vendor-dark .page-subtitle {
+            color: #a3a3a3;
+        }
+
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.4fr)
+                minmax(300px, 0.8fr);
+
+            gap: 20px;
+
+            align-items: start;
+        }
+
+
+        .card {
+            background: #fff;
+
+            border: 1px solid #dedbd6;
+
+            border-radius: 10px;
+
+            padding: 22px;
+
+            transition:
+                background-color 0.25s ease,
+                border-color 0.25s ease,
+                color 0.25s ease;
+        }
+
+
+        html.threadly-vendor-dark .card {
+            background: #1b1b1b;
+
+            border-color: #333;
+        }
+
+
+        .card-title {
+            margin: 0 0 18px;
+
+            font-size: 17px;
+        }
+
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .field label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid #dedbd6;
+
+            border-radius: 7px;
+
+            background: #fff;
+
+            color: #171717;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                background-color 0.25s ease,
+                color 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+
+        .field textarea {
+            min-height: 130px;
+
+            resize: vertical;
+        }
+
+
+        html.threadly-vendor-dark .field input,
+        html.threadly-vendor-dark .field textarea,
+        html.threadly-vendor-dark .field select {
+            background: #111;
+
+            color: #f5f5f5;
+
+            border-color: #333;
+        }
+
+
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            border-color: #7d2638;
+        }
+
+
+        html.threadly-vendor-dark .field input:focus,
+        html.threadly-vendor-dark .field textarea:focus,
+        html.threadly-vendor-dark .field select:focus {
+            border-color: #c45a70;
+        }
+
+
+        .two-columns {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+        }
+
+
+        .size-section {
+            margin-top: 10px;
+        }
+
+
+        .size-title {
+            display: block;
+
+            margin-bottom: 10px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .size-options {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+
+        .size-option {
+            position: relative;
+        }
+
+
+        .size-option input {
+            position: absolute;
+
+            opacity: 0;
+
+            pointer-events: none;
+        }
+
+
+        .size-option label {
+            display: block;
+
+            min-width: 48px;
+
+            padding: 9px 12px;
+
+            text-align: center;
+
+            border: 1px solid #dedbd6;
+
+            border-radius: 6px;
+
+            background: #fff;
+
+            color: #171717;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            transition:
+                background-color 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        html.threadly-vendor-dark .size-option label {
+            background: #111;
+
+            color: #f5f5f5;
+
+            border-color: #333;
+        }
+
+
+        .size-option input:checked + label {
+            background: #7d2638;
+
+            color: #fff;
+
+            border-color: #7d2638;
+        }
+
+
+        html.threadly-vendor-dark .size-option input:checked + label {
+            background: #c45a70;
+
+            border-color: #c45a70;
+        }
+
+
+        .image-upload {
+            border: 2px dashed #dedbd6;
+
+            border-radius: 9px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background-color 0.2s ease;
+        }
+
+
+        .image-upload:hover {
+            border-color: #7d2638;
+
+            background: #faf8f5;
+        }
+
+
+        html.threadly-vendor-dark .image-upload {
+            border-color: #333;
+        }
+
+
+        html.threadly-vendor-dark .image-upload:hover {
+            border-color: #c45a70;
+
+            background: #222;
+        }
+
+
+        .image-upload input {
+            display: none;
+        }
+
+
+        .upload-title {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 5px;
+        }
+
+
+        .upload-text {
+            font-size: 12px;
+
+            color: #737373;
+        }
+
+
+        html.threadly-vendor-dark .upload-text {
+            color: #a3a3a3;
+        }
+
+
+        .image-preview-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+
+        .image-preview {
+            position: relative;
+
+            aspect-ratio: 1 / 1;
+
+            overflow: hidden;
+
+            border-radius: 8px;
+
+            background: #f2efeb;
+
+            border: 1px solid #dedbd6;
+        }
+
+
+        html.threadly-vendor-dark .image-preview {
+            background: #242424;
+
+            border-color: #333;
+        }
+
+
+        .image-preview img {
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+
+        .main-label {
+            position: absolute;
+
+            left: 7px;
+            top: 7px;
+
+            padding: 4px 7px;
+
+            border-radius: 4px;
+
+            background: #7d2638;
+
+            color: #fff;
+
+            font-size: 10px;
+
+            font-weight: 600;
+        }
+
+
+        .remove-image {
+            position: absolute;
+
+            right: 7px;
+            top: 7px;
+
+            width: 27px;
+            height: 27px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: rgba(0, 0, 0, 0.7);
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+
+        .stock-toggle {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 14px;
+
+            border: 1px solid #dedbd6;
+
+            border-radius: 8px;
+        }
+
+
+        html.threadly-vendor-dark .stock-toggle {
+            border-color: #333;
+        }
+
+
+        .stock-text strong {
+            display: block;
+
+            font-size: 14px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .stock-text span {
+            color: #737373;
+
+            font-size: 12px;
+        }
+
+
+        html.threadly-vendor-dark .stock-text span {
+            color: #a3a3a3;
+        }
+
+
+        .switch {
+            position: relative;
+
+            width: 48px;
+            height: 26px;
+
+            flex-shrink: 0;
+        }
+
+
+        .switch input {
+            opacity: 0;
+
+            width: 0;
+            height: 0;
+        }
+
+
+        .slider {
+            position: absolute;
+
+            inset: 0;
+
+            background: #cfcac3;
+
+            border-radius: 30px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .slider::before {
+            content: "";
+
+            position: absolute;
+
+            width: 20px;
+            height: 20px;
+
+            left: 3px;
+            top: 3px;
+
+            border-radius: 50%;
+
+            background: #fff;
+
+            transition: 0.2s;
+        }
+
+
+        .switch input:checked + .slider {
+            background: #7d2638;
+        }
+
+
+        html.threadly-vendor-dark .switch input:checked + .slider {
+            background: #c45a70;
+        }
+
+
+        .switch input:checked + .slider::before {
+            transform: translateX(22px);
+        }
+
+
+        .form-actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .button {
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+
+        .cancel-button {
+            background: #f2efeb;
+
+            color: #171717;
+        }
+
+
+        html.threadly-vendor-dark .cancel-button {
+            background: #282828;
+
+            color: #f5f5f5;
+        }
+
+
+        .save-button {
+            background: #7d2638;
+
+            color: #fff;
+        }
+
+
+        .save-button:hover {
+            background: #641d2d;
+        }
+
+
+        html.threadly-vendor-dark .save-button {
+            background: #c45a70;
+        }
+
+
+        html.threadly-vendor-dark .save-button:hover {
+            background: #a84459;
+        }
+
+
+        .save-button:disabled {
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+
+        .message {
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 13px 15px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+        }
+
+
+        .message.success {
+            display: block;
+
+            background: #e7f5eb;
+
+            color: #23743d;
+        }
+
+
+        .message.error {
+            display: block;
+
+            background: #f9e3e3;
+
+            color: #9a2929;
+        }
+
+
+        .hidden {
+            display: none;
+        }
+
+
+        @media (max-width: 900px) {
+
+            .menu-button {
+                display: block;
+            }
+
+
+            .vendor-name {
+                display: none;
+            }
+
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+
+            .mobile-overlay {
+                display: block;
+
+                position: fixed;
+
+                inset: 70px 0 0;
+
+                background: rgba(0, 0, 0, 0.35);
+
+                opacity: 0;
+
+                visibility: hidden;
+
+                z-index: 850;
+
+                transition: 0.25s ease;
+            }
+
+
+            .mobile-overlay.open {
+                opacity: 1;
+
+                visibility: visible;
+            }
+
+
+            .main {
+                margin-left: 0;
+
+                padding:
+                    95px 20px 30px;
+            }
+
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 0 18px;
+            }
+
+
+            .main {
+                padding-left: 15px;
+
+                padding-right: 15px;
+            }
+
+
+            .card {
+                padding: 18px;
+            }
+
+
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+
+
+            .image-preview-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+
+            .button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <div class="logo">
+        THREADLY
+    </div>
+
+
+    <div
+        class="vendor-name"
+        id="vendorName"
+    >
+        Vendor
+    </div>
+
+
+    <button
+        class="menu-button"
+        id="menuButton"
+    >
+        ☰
+    </button>
+
+</header>
+
+
+
+<aside
+    class="sidebar"
+    id="vendorSidebar"
+>
+
+    <div class="vendor-label">
+        VENDOR PANEL
+    </div>
+
+
+    <a
+        href="vendor-dashboard.html"
+        class="vendor-link"
+    >
+        Dashboard
+    </a>
+
+
+    <a
+        href="vendor-products.html"
+        class="vendor-link active"
+    >
+        Products
+    </a>
+
+
+    <a
+        href="vendor-orders.html"
+        class="vendor-link"
+    >
+        Orders
+    </a>
+
+
+    <a
+        href="vendor-customers.html"
+        class="vendor-link"
+    >
+        Customers
+    </a>
+
+
+    <a
+        href="vendor-payments.html"
+        class="vendor-link"
+    >
+        Payments
+    </a>
+
+
+    <a
+        href="vendor-inventory.html"
+        class="vendor-link"
+    >
+        Inventory
+    </a>
+
+
+    <a
+        href="vendor-settings.html"
+        class="vendor-link"
+    >
+        Settings
+    </a>
+
+
+    <a
+        href="#"
+        class="vendor-link logout-link"
+        id="logoutButton"
+    >
+        Log out
+    </a>
+
+</aside>
+
+
+
+<div
+    class="mobile-overlay"
+    id="mobileOverlay"
+></div>
+
+
+
+<main class="main">
+
+
+    <a
+        href="vendor-products.html"
+        class="back-link"
+    >
+        ← Back to Products
+    </a>
+
+
+    <div class="page-header">
+
+        <h1
+            class="page-title"
+            id="pageTitle"
+        >
+            Add Product
+        </h1>
+
+        <p class="page-subtitle">
+            Add a new product to your THREADLY store.
+        </p>
+
+    </div>
+
+
+    <div
+        class="message"
+        id="formMessage"
+    ></div>
+
+
+    <form id="productForm">
+
+
+        <div class="form-grid">
+
+
+            <div>
+
+
+                <div class="card">
+
+                    <h2 class="card-title">
+                        Product Information
+                    </h2>
+
+
+                    <div class="field">
+
+                        <label for="productName">
+                            Product Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productName"
+                            placeholder="e.g. Oversized Hoodie"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="two-columns">
+
+
+                        <div class="field">
+
+                            <label for="productId">
+                                Product ID
+                            </label>
+
+                            <input
+                                type="text"
+                                id="productId"
+                                placeholder="e.g. hoodie-001"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="filterCategory">
+                                Product Type
+                            </label>
+
+                            <select
+                                id="filterCategory"
+                                required
+                            >
+
+                                <option value="">
+                                    Select type
+                                </option>
+
+                                <option value="clothing">
+                                    Clothing
+                                </option>
+
+                                <option value="shoes">
+                                    Shoes
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="productCategory">
+                            Category
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productCategory"
+                            placeholder="e.g. Hoodie, Shirt, Sneaker"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="two-columns">
+
+
+                        <div class="field">
+
+                            <label for="productPrice">
+                                Price (₦)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="productPrice"
+                                min="0"
+                                step="0.01"
+                                placeholder="25000"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="productQuantity">
+                                Quantity
+                            </label>
+
+                            <input
+                                type="number"
+                                id="productQuantity"
+                                min="0"
+                                step="1"
+                                value="0"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="productDescription">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="productDescription"
+                            placeholder="Describe the product..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="size-section">
+
+                        <span class="size-title">
+                            Available Sizes
+                        </span>
+
+
+                        <div
+                            class="size-options"
+                            id="clothingSizes"
+                        >
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="sizeS"
+                                    value="S"
+                                >
+
+                                <label for="sizeS">
+                                    S
+                                </label>
+
+                            </div>
+
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="sizeM"
+                                    value="M"
+                                >
+
+                                <label for="sizeM">
+                                    M
+                                </label>
+
+                            </div>
+
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="sizeL"
+                                    value="L"
+                                >
+
+                                <label for="sizeL">
+                                    L
+                                </label>
+
+                            </div>
+
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="sizeXL"
+                                    value="XL"
+                                >
+
+                                <label for="sizeXL">
+                                    XL
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="size-options hidden"
+                            id="shoeSizes"
+                        >
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="size39"
+                                    value="39"
+                                >
+
+                                <label for="size39">
+                                    39
+                                </label>
+
+                            </div>
+
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="size40"
+                                    value="40"
+                                >
+
+                                <label for="size40">
+                                    40
+                                </label>
+
+                            </div>
+
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="size41"
+                                    value="41"
+                                >
+
+                                <label for="size41">
+                                    41
+                                </label>
+
+                            </div>
+
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="size42"
+                                    value="42"
+                                >
+
+                                <label for="size42">
+                                    42
+                                </label>
+
+                            </div>
+
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="size43"
+                                    value="43"
+                                >
+
+                                <label for="size43">
+                                    43
+                                </label>
+
+                            </div>
+
+
+                            <div class="size-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="size44"
+                                    value="44"
+                                >
+
+                                <label for="size44">
+                                    44
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card" style="margin-top:20px;">
+
+                    <h2 class="card-title">
+                        Product Images
+                    </h2>
+
+
+                    <label
+                        class="image-upload"
+                        for="productImages"
+                    >
+
+                        <div class="upload-title">
+                            Add product pictures
+                        </div>
+
+                        <div class="upload-text">
+                            Select one or multiple images
+                        </div>
+
+                        <input
+                            type="file"
+                            id="productImages"
+                            accept="image/*"
+                            multiple
+                        >
+
+                    </label>
+
+
+                    <div
+                        class="image-preview-grid"
+                        id="imagePreviewGrid"
+                    ></div>
+
+                </div>
+
+
+            </div>
+
+
+            <div>
+
+
+                <div class="card">
+
+                    <h2 class="card-title">
+                        Stock
+                    </h2>
+
+
+                    <div class="stock-toggle">
+
+                        <div class="stock-text">
+
+                            <strong>
+                                Product is in stock
+                            </strong>
+
+                            <span>
+                                Customers can purchase this product.
+                            </span>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="inStock"
+                                checked
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card" style="margin-top:20px;">
+
+                    <h2 class="card-title">
+                        Save Product
+                    </h2>
+
+
+                    <p
+                        class="page-subtitle"
+                        style="line-height:1.6;"
+                    >
+                        The first picture will be used as the main product image.
+                    </p>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="button"
+                            class="button cancel-button"
+                            id="cancelButton"
+                        >
+                            Cancel
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="button save-button"
+                            id="saveButton"
+                        >
+                            Save Product
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </form>
+
+
+</main>
+
+
+
+<script>
+
+(async function () {
+
+
+    const supabase =
+        window.threadlySupabase;
+
+
+    const PRODUCT_BUCKET =
+        "product-images";
+
+
+    const vendorName =
+        document.getElementById("vendorName");
+
+
+    const menuButton =
+        document.getElementById("menuButton");
+
+
+    const vendorSidebar =
+        document.getElementById("vendorSidebar");
+
+
+    const mobileOverlay =
+        document.getElementById("mobileOverlay");
+
+
+    const logoutButton =
+        document.getElementById("logoutButton");
+
+
+    const productForm =
+        document.getElementById("productForm");
+
+
+    const pageTitle =
+        document.getElementById("pageTitle");
+
+
+    const productName =
+        document.getElementById("productName");
+
+
+    const productId =
+        document.getElementById("productId");
+
+
+    const filterCategory =
+        document.getElementById("filterCategory");
+
+
+    const productCategory =
+        document.getElementById("productCategory");
+
+
+    const productPrice =
+        document.getElementById("productPrice");
+
+
+    const productQuantity =
+        document.getElementById("productQuantity");
+
+
+    const productDescription =
+        document.getElementById("productDescription");
+
+
+    const productImages =
+        document.getElementById("productImages");
+
+
+    const imagePreviewGrid =
+        document.getElementById("imagePreviewGrid");
+
+
+    const inStock =
+        document.getElementById("inStock");
+
+
+    const saveButton =
+        document.getElementById("saveButton");
+
+
+    const cancelButton =
+        document.getElementById("cancelButton");
+
+
+    const formMessage =
+        document.getElementById("formMessage");
+
+
+    const clothingSizes =
+        document.getElementById("clothingSizes");
+
+
+    const shoeSizes =
+        document.getElementById("shoeSizes");
+
+
+    let currentUser = null;
+
+    let editingProduct = null;
+
+    let imageItems = [];
+
+
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const editingId =
+        urlParams.get("id");
+
+
+    function showMessage(
+        message,
+        type
+    ) {
+
+        formMessage.textContent =
+            message;
+
+        formMessage.className =
+            "message " +
+            type;
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    function clearMessage() {
+
+        formMessage.textContent =
+            "";
+
+        formMessage.className =
+            "message";
+
+    }
+
+
+    function openMenu() {
+
+        vendorSidebar.classList.add(
+            "open"
+        );
+
+        mobileOverlay.classList.add(
+            "open"
+        );
+
+    }
+
+
+    function closeMenu() {
+
+        vendorSidebar.classList.remove(
+            "open"
+        );
+
+        mobileOverlay.classList.remove(
+            "open"
+        );
+
+    }
+
+
+    menuButton.addEventListener(
+        "click",
+        openMenu
+    );
+
+
+    mobileOverlay.addEventListener(
+        "click",
+        closeMenu
+    );
+
+
+    document
+        .querySelectorAll(".vendor-link")
+        .forEach(
+            function (link) {
+
+                link.addEventListener(
+                    "click",
+                    closeMenu
+                );
+
+            }
+        );
+
+
+    cancelButton.addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "vendor-products.html";
+
+        }
+    );
+
+
+    function updateSizeSection() {
+
+        if (
+            filterCategory.value ===
+            "shoes"
+        ) {
+
+            clothingSizes.classList.add(
+                "hidden"
+            );
+
+            shoeSizes.classList.remove(
+                "hidden"
+            );
+
+        } else {
+
+            shoeSizes.classList.add(
+                "hidden"
+            );
+
+            clothingSizes.classList.remove(
+                "hidden"
+            );
+
+        }
+
+    }
+
+
+    filterCategory.addEventListener(
+        "change",
+        updateSizeSection
+    );
+
+
+    function getSelectedSizes() {
+
+        const checkedSizes =
+            document.querySelectorAll(
+                ".size-option input:checked"
+            );
+
+
+        return Array.from(
+            checkedSizes
+        ).map(
+            function (input) {
+
+                return input.value;
+
+            }
+        );
+
+    }
+
+
+    function clearSelectedSizes() {
+
+        document
+            .querySelectorAll(
+                ".size-option input"
+            )
+            .forEach(
+                function (input) {
+
+                    input.checked =
+                        false;
+
+                }
+            );
+
+    }
+
+
+    function setSelectedSizes(
+        sizes
+    ) {
+
+        clearSelectedSizes();
+
+
+        if (!Array.isArray(sizes)) {
+            return;
+        }
+
+
+        sizes.forEach(
+            function (size) {
+
+                const input =
+                    document.querySelector(
+                        `.size-option input[value="${size}"]`
+                    );
+
+
+                if (input) {
+
+                    input.checked =
+                        true;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    function addImageItem(
+        item
+    ) {
+
+        imageItems.push(item);
+
+        renderImagePreviews();
+
+    }
+
+
+    function renderImagePreviews() {
+
+        imagePreviewGrid.innerHTML =
+            "";
+
+
+        imageItems.forEach(
+            function (item, index) {
+
+                const preview =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                preview.className =
+                    "image-preview";
+
+
+                const image =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                image.src =
+                    item.url;
+
+
+                image.alt =
+                    "Product image";
+
+
+                const removeButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                removeButton.type =
+                    "button";
+
+
+                removeButton.className =
+                    "remove-image";
+
+
+                removeButton.textContent =
+                    "×";
+
+
+                removeButton.addEventListener(
+                    "click",
+                    function () {
+
+                        if (
+                            item.type ===
+                            "new" &&
+                            item.preview
+                        ) {
+
+                            URL.revokeObjectURL(
+                                item.preview
+                            );
+
+                        }
+
+
+                        imageItems.splice(
+                            index,
+                            1
+                        );
+
+
+                        renderImagePreviews();
+
+                    }
+                );
+
+
+                preview.appendChild(
+                    image
+                );
+
+
+                if (index === 0) {
+
+                    const mainLabel =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    mainLabel.className =
+                        "main-label";
+
+
+                    mainLabel.textContent =
+                        "Main";
+
+
+                    preview.appendChild(
+                        mainLabel
+                    );
+
+                }
+
+
+                preview.appendChild(
+                    removeButton
+                );
+
+
+                imagePreviewGrid.appendChild(
+                    preview
+                );
+
+            }
+        );
+
+    }
+
+
+    productImages.addEventListener(
+        "change",
+        function () {
+
+            const files =
+                Array.from(
+                    productImages.files || []
+                );
+
+
+            files.forEach(
+                function (file) {
+
+                    if (
+                        !file.type.startsWith(
+                            "image/"
+                        )
+                    ) {
+                        return;
+                    }
+
+
+                    const preview =
+                        URL.createObjectURL(
+                            file
+                        );
+
+
+                    addImageItem({
+                        type: "new",
+                        file: file,
+                        url: preview,
+                        preview: preview
+                    });
+
+                }
+            );
+
+
+            productImages.value =
+                "";
+
+        }
+    );
+
+
+    function generateProductId(
+        name
+    ) {
+
+        const slug =
+            name
+                .toLowerCase()
+                .trim()
+                .replace(
+                    /[^a-z0-9]+/g,
+                    "-"
+                )
+                .replace(
+                    /^-+|-+$/g,
+                    ""
+                );
+
+
+        const number =
+            Math.floor(
+                1000 +
+                Math.random() * 9000
+            );
+
+
+        return (
+            slug ||
+            "product"
+        ) +
+        "-" +
+        number;
+
+    }
+
+
+    async function uploadNewImages() {
+
+        const uploadedUrls = [];
+
+
+        const newImages =
+            imageItems.filter(
+                function (item) {
+
+                    return (
+                        item.type ===
+                        "new"
+                    );
+
+                }
+            );
+
+
+        for (
+            let i = 0;
+            i < newImages.length;
+            i++
+        ) {
+
+            const item =
+                newImages[i];
+
+
+            const file =
+                item.file;
+
+
+            const extension =
+                file.name
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+
+
+            const fileName =
+                Date.now() +
+                "-" +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 10) +
+                "." +
+                extension;
+
+
+            const path =
+                "products/" +
+                currentUser.id +
+                "/" +
+                fileName;
+
+
+            const {
+                data,
+                error
+            } =
+                await supabase
+                    .storage
+                    .from(
+                        PRODUCT_BUCKET
+                    )
+                    .upload(
+                        path,
+                        file,
+                        {
+                            cacheControl:
+                                "3600",
+                            contentType:
+                                file.type,
+                            upsert:
+                                false
+                        }
+                    );
+
+
+            if (error) {
+
+                throw new Error(
+                    "Image upload failed: " +
+                    error.message
+                );
+
+            }
+
+
+            const {
+                data: publicData
+            } =
+                supabase
+                    .storage
+                    .from(
+                        PRODUCT_BUCKET
+                    )
+                    .getPublicUrl(
+                        data.path
+                    );
+
+
+            uploadedUrls.push(
+                publicData.publicUrl
+            );
+
+        }
+
+
+        return uploadedUrls;
+
+    }
+
+
+    async function loadExistingProduct() {
+
+        if (!editingId) {
+            return;
+        }
+
+
+        pageTitle.textContent =
+            "Edit Product";
+
+
+        saveButton.textContent =
+            "Save Changes";
+
+
+        const {
+            data: product,
+            error
+        } =
+            await supabase
+                .from("products")
+                .select(`
+                    id,
+                    name,
+                    category,
+                    filter_category,
+                    price,
+                    image,
+                    images,
+                    in_stock,
+                    quantity,
+                    description,
+                    sizes
+                `)
+                .eq(
+                    "id",
+                    editingId
+                )
+                .single();
+
+
+        if (error) {
+
+            showMessage(
+                "This product could not be loaded: " +
+                error.message,
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (!product) {
+
+            showMessage(
+                "This product was not found.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        editingProduct =
+            product;
+
+
+        productName.value =
+            product.name || "";
+
+
+        productId.value =
+            product.id || "";
+
+
+        productCategory.value =
+            product.category || "";
+
+
+        filterCategory.value =
+            product.filter_category ||
+            "clothing";
+
+
+        productPrice.value =
+            product.price || "";
+
+
+        productQuantity.value =
+            product.quantity || 0;
+
+
+        productDescription.value =
+            product.description || "";
+
+
+        inStock.checked =
+            product.in_stock !== false;
+
+
+        setSelectedSizes(
+            product.sizes
+        );
+
+
+        updateSizeSection();
+
+
+        let existingImages = [];
+
+
+        if (
+            Array.isArray(
+                product.images
+            )
+        ) {
+
+            existingImages =
+                product.images.filter(
+                    function (image) {
+
+                        return (
+                            typeof image ===
+                            "string" &&
+                            image.trim() !== ""
+                        );
+
+                    }
+                );
+
+        }
+
+
+        if (
+            product.image &&
+            !existingImages.includes(
+                product.image
+            )
+        ) {
+
+            existingImages.unshift(
+                product.image
+            );
+
+        }
+
+
+        imageItems =
+            existingImages.map(
+                function (url) {
+
+                    return {
+                        type: "existing",
+                        url: url
+                    };
+
+                }
+            );
+
+
+        renderImagePreviews();
+
+    }
+
+
+    async function checkVendor() {
+
+        if (!supabase) {
+
+            showMessage(
+                "Supabase is unavailable.",
+                "error"
+            );
+
+            return false;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await supabase.auth.getSession();
+
+
+        if (
+            error ||
+            !data ||
+            !data.session ||
+            !data.session.user
+        ) {
+
+            window.location.replace(
+                "login.html"
+            );
+
+            return false;
+
+        }
+
+
+        currentUser =
+            data.session.user;
+
+
+        const {
+            data: profile,
+            error: profileError
+        } =
+            await supabase
+                .from("profiles")
+                .select(
+                    "full_name, role"
+                )
+                .eq(
+                    "id",
+                    currentUser.id
+                )
+                .single();
+
+
+        if (
+            profileError ||
+            !profile
+        ) {
+
+            showMessage(
+                "Your vendor profile could not be loaded.",
+                "error"
+            );
+
+            return false;
+
+        }
+
+
+        if (
+            profile.role !== "vendor" &&
+            profile.role !== "admin"
+        ) {
+
+            window.location.replace(
+                "index.html"
+            );
+
+            return false;
+
+        }
+
+
+        vendorName.textContent =
+            profile.full_name ||
+            "Vendor";
+
+
+        return true;
+
+    }
+
+
+    productForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            clearMessage();
+
+
+            const name =
+                productName.value.trim();
+
+
+            const id =
+                productId.value.trim() ||
+                generateProductId(name);
+
+
+            const category =
+                productCategory.value.trim();
+
+
+            const filter_category =
+                filterCategory.value;
+
+
+            const price =
+                Number(
+                    productPrice.value
+                );
+
+
+            const quantity =
+                Number(
+                    productQuantity.value
+                );
+
+
+            const description =
+                productDescription.value.trim();
+
+
+            const sizes =
+                getSelectedSizes();
+
+
+            const stock =
+                inStock.checked;
+
+
+            if (!name) {
+
+                showMessage(
+                    "Please enter a product name.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!category) {
+
+                showMessage(
+                    "Please enter a category.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!filter_category) {
+
+                showMessage(
+                    "Please select whether this is clothing or shoes.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !Number.isFinite(price) ||
+                price < 0
+            ) {
+
+                showMessage(
+                    "Please enter a valid price.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !Number.isInteger(quantity) ||
+                quantity < 0
+            ) {
+
+                showMessage(
+                    "Please enter a valid quantity.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            saveButton.disabled =
+                true;
+
+
+            saveButton.textContent =
+                "Saving...";
+
+
+            try {
+
+                const uploadedImages =
+                    await uploadNewImages();
+
+
+                const existingUrls =
+                    imageItems
+                        .filter(
+                            function (item) {
+
+                                return (
+                                    item.type ===
+                                    "existing"
+                                );
+
+                            }
+                        )
+                        .map(
+                            function (item) {
+
+                                return item.url;
+
+                            }
+                        );
+
+
+                const allImages =
+                    existingUrls.concat(
+                        uploadedImages
+                    );
+
+
+                const mainImage =
+                    allImages[0] || "";
+
+
+                const productData = {
+
+                    id: id,
+
+                    name: name,
+
+                    category: category,
+
+                    filter_category:
+                        filter_category,
+
+                    price: price,
+
+                    image: mainImage,
+
+                    images: allImages,
+
+                    in_stock:
+                        stock &&
+                        quantity > 0,
+
+                    quantity: quantity,
+
+                    description:
+                        description,
+
+                    sizes: sizes
+
+                };
+
+
+                if (editingId) {
+
+                    const {
+                        error
+                    } =
+                        await supabase
+                            .from("products")
+                            .update(
+                                productData
+                            )
+                            .eq(
+                                "id",
+                                editingId
+                            );
+
+
+                    if (error) {
+
+                        throw new Error(
+                            error.message
+                        );
+
+                    }
+
+
+                    showMessage(
+                        "Product updated successfully.",
+                        "success"
+                    );
+
+                } else {
+
+                    const {
+                        error
+                    } =
+                        await supabase
+                            .from("products")
+                            .insert(
+                                productData
+                            );
+
+
+                    if (error) {
+
+                        throw new Error(
+                            error.message
+                        );
+
+                    }
+
+
+                    showMessage(
+                        "Product added successfully.",
+                        "success"
+                    );
+
+                }
+
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            "vendor-products.html";
+
+                    },
+                    800
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Product save error:",
+                    error
+                );
+
+
+                showMessage(
+                    error.message ||
+                    "The product could not be saved.",
+                    "error"
+                );
+
+
+                saveButton.disabled =
+                    false;
+
+
+                saveButton.textContent =
+                    editingId
+                        ? "Save Changes"
+                        : "Save Product";
+
+            }
+
+        }
+    );
+
+
+    logoutButton.addEventListener(
+        "click",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            await supabase.auth.signOut();
+
+
+            localStorage.removeItem(
+                "threadlyLoggedIn"
+            );
+
+
+            localStorage.removeItem(
+                "threadlyUser"
+            );
+
+
+            window.location.replace(
+                "login.html"
+            );
+
+        }
+    );
+
+
+    const allowed =
+        await checkVendor();
+
+
+    if (!allowed) {
+        return;
+    }
+
+
+    updateSizeSection();
+
+
+    await loadExistingProduct();
+
+
+})();
+
+</script>
+
+
+</body>
+
+</html>

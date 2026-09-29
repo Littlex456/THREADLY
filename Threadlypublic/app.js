@@ -1042,6 +1042,181 @@
     }
 
 })();
+// =========================================
+// CUSTOMER STOREFRONT SETTINGS
+// =========================================
+
+async function loadStorefrontSettings() {
+
+    try {
+
+        const supabase =
+            await window.threadlyGetSupabase();
+
+        if (!supabase) {
+
+            return;
+
+        }
+
+        const {
+            data,
+            error
+        } =
+            await supabase
+                .from("storefront_settings")
+                .select(`
+                    store_name,
+                    store_email,
+                    store_phone,
+                    store_address,
+                    store_city,
+                    store_state,
+                    store_open
+                `)
+                .eq("id", 1)
+                .maybeSingle();
+
+        if (error) {
+
+            console.error(
+                "THREADLY storefront settings error:",
+                error
+            );
+
+            return;
+
+        }
+
+        if (!data) {
+
+            return;
+
+        }
+
+        window.threadlyStorefront =
+            data;
+
+        window.threadlyStoreOpen =
+            data.store_open === true;
+
+
+        const storeName =
+            data.store_name ||
+            "THREADLY";
+
+
+        document
+            .querySelectorAll(
+                "h1, h2, h3, a"
+            )
+            .forEach(
+                function (element) {
+
+                    if (
+                        element.children.length ===
+                        0 &&
+                        element.textContent.trim() ===
+                        "THREADLY"
+                    ) {
+
+                        element.textContent =
+                            storeName;
+
+                    }
+
+                }
+            );
+
+
+        document.body.dataset.storeOpen =
+            data.store_open === true
+                ? "true"
+                : "false";
+
+
+        document
+            .querySelectorAll(
+                "[data-store-name]"
+            )
+            .forEach(
+                function (element) {
+
+                    element.textContent =
+                        storeName;
+
+                }
+            );
+
+
+        document
+            .querySelectorAll(
+                "[data-store-email]"
+            )
+            .forEach(
+                function (element) {
+
+                    element.textContent =
+                        data.store_email || "";
+
+                }
+            );
+
+
+        document
+            .querySelectorAll(
+                "[data-store-phone]"
+            )
+            .forEach(
+                function (element) {
+
+                    element.textContent =
+                        data.store_phone || "";
+
+                }
+            );
+
+
+        document
+            .querySelectorAll(
+                "[data-store-address]"
+            )
+            .forEach(
+                function (element) {
+
+                    element.textContent =
+                        data.store_address || "";
+
+                }
+            );
+
+    } catch (error) {
+
+        console.error(
+            "THREADLY could not load storefront settings:",
+            error
+        );
+
+    }
+
+}
+
+
+if (
+    document.readyState ===
+    "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadStorefrontSettings
+    );
+
+} else {
+
+    loadStorefrontSettings();
+
+}
 
 
 // =========================================
@@ -1409,6 +1584,7 @@ const products = {
 
             let supabase;
 
+
             try {
 
                 supabase =
@@ -1506,6 +1682,40 @@ const products = {
             );
 
 
+            const { data: profile, error: profileError } =
+                await supabase
+                    .from("profiles")
+                    .select("role")
+                    .eq("id", data.user.id)
+                    .single();
+
+
+            if (profileError) {
+
+                console.error(
+                    "THREADLY profile error:",
+                    profileError
+                );
+
+                loginMessage.textContent =
+                    "Your account profile could not be loaded.";
+
+                return;
+            }
+
+
+            if (
+                profile.role === "vendor" ||
+                profile.role === "admin"
+            ) {
+
+                window.location.href =
+                    "vendor-dashboard.html";
+
+                return;
+            }
+
+
             const params =
                 new URLSearchParams(
                     window.location.search
@@ -1532,7 +1742,6 @@ const products = {
     );
 
 })();
-
 
 // =========================================
 // SECTION 6: HOME SEARCH
@@ -1658,6 +1867,7 @@ const products = {
                         filter_category,
                         price,
                         image,
+                        images,
                         in_stock,
                         quantity,
                         description,
@@ -1689,6 +1899,19 @@ const products = {
                 return;
 
             }
+            console.log(
+    "THREADLY products from Supabase:",
+    data
+);
+
+console.log(
+    "BAGGY PRODUCT:",
+    data.find(
+        function (item) {
+            return item.id === "Baggy-001";
+        }
+    )
+);
 
 
             Object.keys(
@@ -1723,9 +1946,16 @@ const products = {
                             Number(
                                 item.price
                             ),
+                        images:
+    Array.isArray(
+        item.images
+    )
+        ? item.images
+        : [],    
 
                         image:
                             item.image,
+
 
                         inStock:
                             item.in_stock === true,
@@ -2944,7 +3174,10 @@ const products = {
     const productPage =
         document.querySelector(".product-page");
 
-    if (!productPage) return;
+
+    if (!productPage) {
+        return;
+    }
 
 
     const params =
@@ -2960,6 +3193,53 @@ const products = {
     if (!productId) {
         return;
     }
+
+
+    // =========================================
+    // PRODUCT ELEMENTS
+    // =========================================
+
+    const productImage =
+        document.getElementById("productImage");
+
+    const productName =
+        document.getElementById("productName");
+
+    const productPrice =
+        document.getElementById("productPrice");
+
+    const productCategory =
+        document.getElementById("productCategory");
+
+    const productDescription =
+        document.querySelector(".product-description");
+
+    const sizeSection =
+        document.getElementById("sizeSection");
+
+    const sizeOptions =
+        document.getElementById("sizeOptions");
+
+    const selectedSize =
+        document.getElementById("selectedSize");
+
+    const quantityDisplay =
+        document.getElementById("quantity");
+
+    const decreaseQuantity =
+        document.getElementById("decreaseQuantity");
+
+    const increaseQuantity =
+        document.getElementById("increaseQuantity");
+
+    const addToCartButton =
+        document.getElementById("addToCartButton");
+
+    const saveProductButton =
+        document.getElementById("saveProductButton");
+
+    const thumbnails =
+        document.getElementById("productThumbnails");
 
 
     // =========================================
@@ -2997,6 +3277,7 @@ const products = {
                             filter_category,
                             price,
                             image,
+                            images,
                             in_stock,
                             quantity,
                             description,
@@ -3058,6 +3339,13 @@ const products = {
                                 image:
                                     item.image,
 
+                                images:
+                                    Array.isArray(
+                                        item.images
+                                    )
+                                        ? item.images
+                                        : [],
+
                                 inStock:
                                     item.in_stock === true,
 
@@ -3112,50 +3400,10 @@ const products = {
 
 
     // =========================================
-    // PRODUCT ELEMENTS
+    // CURRENT SIZE
     // =========================================
 
-    const productImage =
-        document.getElementById("productImage");
-
-    const productName =
-        document.getElementById("productName");
-
-    const productPrice =
-        document.getElementById("productPrice");
-
-    const productCategory =
-        document.getElementById("productCategory");
-
-    const productDescription =
-        document.querySelector(".product-description");
-
-    const sizeSection =
-        document.getElementById("sizeSection");
-
-    const sizeOptions =
-        document.getElementById("sizeOptions");
-
-    const selectedSize =
-        document.getElementById("selectedSize");
-
-    const quantityDisplay =
-        document.getElementById("quantity");
-
-    const decreaseQuantity =
-        document.getElementById("decreaseQuantity");
-
-    const increaseQuantity =
-        document.getElementById("increaseQuantity");
-
-    const addToCartButton =
-        document.getElementById("addToCartButton");
-
-    const saveProductButton =
-        document.getElementById("saveProductButton");
-
-    const thumbnails =
-        document.getElementById("productThumbnails");
+    let currentSize = "";
 
 
     // =========================================
@@ -3202,84 +3450,137 @@ const products = {
 
     if (productImage) {
 
-        productImage.src =
-            product.image;
-
-        productImage.alt =
-            product.name;
-
-        productImage.onerror =
-            function () {
-
-                this.style.display =
-                    "none";
-
-            };
-
-    }
+        let images = [];
 
 
-    // =========================================
-    // THUMBNAIL
-    // =========================================
+        if (Array.isArray(product.images)) {
 
-    if (thumbnails && productImage) {
+            images =
+                product.images.filter(
+                    function (image) {
 
-        thumbnails.innerHTML = "";
-
-
-        const thumbnail =
-            document.createElement("button");
-
-
-        thumbnail.type =
-            "button";
-
-
-        thumbnail.className =
-            "product-thumbnail active";
-
-
-        thumbnail.innerHTML = `
-            <img
-                src="${product.image}"
-                alt="${product.name}"
-            >
-        `;
-
-
-        thumbnail.addEventListener(
-            "click",
-            function () {
-
-                productImage.src =
-                    product.image;
-
-
-                thumbnails
-                    .querySelectorAll(
-                        ".product-thumbnail"
-                    )
-                    .forEach(function (item) {
-
-                        item.classList.remove(
-                            "active"
+                        return (
+                            typeof image === "string" &&
+                            image.trim() !== ""
                         );
 
-                    });
+                    }
+                );
+
+        }
 
 
-                thumbnail.classList.add(
-                    "active"
+        if (
+            product.image &&
+            !images.includes(product.image)
+        ) {
+
+            images.unshift(
+                product.image
+            );
+
+        }
+
+
+        if (images.length > 0) {
+
+            productImage.src =
+                images[0];
+
+            productImage.alt =
+                product.name;
+
+
+            productImage.onerror =
+                function () {
+
+                    this.style.display =
+                        "none";
+
+                };
+
+
+            if (thumbnails) {
+
+                thumbnails.innerHTML =
+                    "";
+
+
+                images.forEach(
+                    function (image, index) {
+
+                        const thumbnail =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        thumbnail.type =
+                            "button";
+
+
+                        thumbnail.className =
+                            "product-thumbnail";
+
+
+                        if (index === 0) {
+
+                            thumbnail.classList.add(
+                                "active"
+                            );
+
+                        }
+
+
+                        thumbnail.innerHTML = `
+                            <img
+                                src="${image}"
+                                alt="${product.name}"
+                            >
+                        `;
+
+
+                        thumbnail.addEventListener(
+                            "click",
+                            function () {
+
+                                productImage.src =
+                                    image;
+
+
+                                thumbnails
+                                    .querySelectorAll(
+                                        ".product-thumbnail"
+                                    )
+                                    .forEach(
+                                        function (item) {
+
+                                            item.classList.remove(
+                                                "active"
+                                            );
+
+                                        }
+                                    );
+
+
+                                thumbnail.classList.add(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        thumbnails.appendChild(
+                            thumbnail
+                        );
+
+                    }
                 );
 
             }
-        );
 
-
-        thumbnails.appendChild(
-            thumbnail
-        );
+        }
 
     }
 
@@ -3288,23 +3589,23 @@ const products = {
     // SIZE SELECTION
     // =========================================
 
-    let currentSize = "";
-
-
     if (
         sizeOptions &&
         product.sizes &&
         product.sizes.length
     ) {
 
-        sizeOptions.innerHTML = "";
+        sizeOptions.innerHTML =
+            "";
 
 
         product.sizes.forEach(
             function (size) {
 
                 const button =
-                    document.createElement("button");
+                    document.createElement(
+                        "button"
+                    );
 
 
                 button.type =
@@ -3536,15 +3837,17 @@ const products = {
 
 
                 const existingItem =
-                    cart.find(function (item) {
+                    cart.find(
+                        function (item) {
 
-                        return (
-                            item.id === productId &&
-                            String(item.size) ===
-                                String(currentSize)
-                        );
+                            return (
+                                item.id === productId &&
+                                String(item.size) ===
+                                    String(currentSize)
+                            );
 
-                    });
+                        }
+                    );
 
 
                 if (existingItem) {
@@ -3613,8 +3916,6 @@ const products = {
         );
 
     }
-
-
     // =========================================
     // SAVED ITEMS
     // =========================================

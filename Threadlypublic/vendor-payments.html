@@ -1,0 +1,2665 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Payments | THREADLY Vendor</title>
+
+    <style>
+
+        :root {
+            --bg: #f7f5f2;
+            --surface: #ffffff;
+            --surface-2: #f1efeb;
+            --text: #171717;
+            --muted: #737373;
+            --accent: #7d2638;
+            --accent-dark: #641d2d;
+            --border: #dedbd6;
+
+            --shadow:
+                0 12px 35px rgba(
+                    0,
+                    0,
+                    0,
+                    0.06
+                );
+        }
+
+        :root.dark-mode {
+            --bg: #111111;
+            --surface: #1b1b1b;
+            --surface-2: #222222;
+            --text: #f5f5f5;
+            --muted: #a3a3a3;
+            --accent: #c45a70;
+            --accent-dark: #a8465b;
+            --border: #333333;
+
+            --shadow:
+                0 12px 35px rgba(
+                    0,
+                    0,
+                    0,
+                    0.25
+                );
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        body,
+        .vendor-header,
+        .vendor-sidebar,
+        .vendor-link,
+        .product-tools,
+        .product-table-wrapper,
+        .action-button,
+        .payment-container,
+        .payment-stat,
+        .payment-search input,
+        .payment-tools select,
+        .status-select,
+        .mobile-sidebar,
+        .mobile-close,
+        .menu-button {
+            transition:
+                background-color 0.25s ease,
+                color 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .vendor-header {
+            height: 72px;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface);
+            border-bottom:
+                1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .vendor-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .vendor-brand h1 {
+            margin: 0;
+            font-size: 21px;
+            letter-spacing: 3px;
+        }
+
+        .vendor-divider {
+            width: 1px;
+            height: 22px;
+            background: var(--border);
+        }
+
+        .vendor-page-title {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .vendor-header-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .vendor-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .menu-button {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border:
+                1px solid var(--border);
+            border-radius: 9px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 20px;
+        }
+
+
+        /* =========================================
+           LAYOUT
+        ========================================= */
+
+        .vendor-layout {
+            display: flex;
+            min-height:
+                calc(100vh - 72px);
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+
+        .vendor-sidebar {
+            width: 245px;
+            flex-shrink: 0;
+            padding: 25px 17px;
+            background: var(--surface);
+            border-right:
+                1px solid var(--border);
+        }
+
+        .sidebar-label {
+            margin:
+                0 0 13px;
+            padding-left: 12px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .sidebar-nav a {
+            padding:
+                12px 13px;
+            border-radius: 8px;
+            color:
+                var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .sidebar-nav a:hover {
+            background:
+                var(--surface-2);
+            color:
+                var(--text);
+        }
+
+        .sidebar-nav a.active {
+            background:
+                rgba(
+                    125,
+                    38,
+                    56,
+                    0.10
+                );
+            color:
+                var(--accent);
+        }
+
+        .logout-button {
+            width: 100%;
+            margin-top: 25px;
+            padding:
+                12px 13px;
+            border:
+                1px solid var(--border);
+            border-radius: 8px;
+            background:
+                transparent;
+            color:
+                var(--muted);
+            text-align:
+                left;
+            font-size:
+                13px;
+            font-weight:
+                600;
+        }
+
+        .logout-button:hover {
+            border-color:
+                var(--accent);
+            color:
+                var(--accent);
+        }
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .vendor-main {
+            flex: 1;
+            min-width: 0;
+            padding: 38px;
+        }
+
+        .page-heading {
+            margin-bottom:
+                28px;
+        }
+
+        .page-heading p {
+            margin:
+                0 0 7px;
+            color:
+                var(--accent);
+            font-size:
+                11px;
+            font-weight:
+                700;
+            letter-spacing:
+                1.8px;
+        }
+
+        .page-heading h2 {
+            margin:
+                0;
+            font-size:
+                34px;
+            line-height:
+                1.1;
+        }
+
+        .page-heading span {
+            display:
+                block;
+            margin-top:
+                10px;
+            color:
+                var(--muted);
+            font-size:
+                14px;
+        }
+
+
+        /* =========================================
+           STATS
+        ========================================= */
+
+        .payment-stats {
+            display:
+                grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap:
+                16px;
+            margin-bottom:
+                25px;
+        }
+
+        .payment-stat {
+            padding:
+                20px;
+            background:
+                var(--surface);
+            border:
+                1px solid var(--border);
+            border-radius:
+                12px;
+            box-shadow:
+                var(--shadow);
+        }
+
+        .payment-stat span {
+            display:
+                block;
+            margin-bottom:
+                9px;
+            color:
+                var(--muted);
+            font-size:
+                11px;
+            font-weight:
+                600;
+            letter-spacing:
+                0.4px;
+        }
+
+        .payment-stat strong {
+            font-size:
+                26px;
+        }
+
+
+        /* =========================================
+           TOOLS
+        ========================================= */
+
+        .payment-tools {
+            display:
+                flex;
+            align-items:
+                center;
+            gap:
+                12px;
+            margin-bottom:
+                20px;
+        }
+
+        .payment-search {
+            flex:
+                1;
+        }
+
+        .payment-search input {
+            width:
+                100%;
+            height:
+                44px;
+            padding:
+                0 14px;
+            border:
+                1px solid var(--border);
+            border-radius:
+                8px;
+            outline:
+                none;
+            background:
+                var(--surface);
+            color:
+                var(--text);
+        }
+
+        .payment-tools select {
+            height:
+                44px;
+            min-width:
+                165px;
+            padding:
+                0 12px;
+            border:
+                1px solid var(--border);
+            border-radius:
+                8px;
+            background:
+                var(--surface);
+            color:
+                var(--text);
+            outline:
+                none;
+        }
+
+        .payment-tools select:focus,
+        .payment-search input:focus {
+            border-color:
+                var(--accent);
+        }
+
+
+        /* =========================================
+           COUNT
+        ========================================= */
+
+        .payment-count {
+            margin-bottom:
+                13px;
+            color:
+                var(--muted);
+            font-size:
+                12px;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .payment-container {
+            background:
+                var(--surface);
+            border:
+                1px solid var(--border);
+            border-radius:
+                12px;
+            overflow:
+                hidden;
+            box-shadow:
+                var(--shadow);
+        }
+
+        .payment-head,
+        .payment-row {
+            display:
+                grid;
+            grid-template-columns:
+                1.1fr
+                1.4fr
+                0.9fr
+                1fr
+                1fr
+                1fr
+                1.15fr;
+            gap:
+                15px;
+            align-items:
+                center;
+        }
+
+        .payment-head {
+            padding:
+                15px 18px;
+            background:
+                var(--surface-2);
+            border-bottom:
+                1px solid var(--border);
+            color:
+                var(--muted);
+            font-size:
+                10px;
+            font-weight:
+                700;
+            letter-spacing:
+                1px;
+        }
+
+        .payment-row {
+            padding:
+                18px;
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .payment-row:last-child {
+            border-bottom:
+                none;
+        }
+
+        .payment-order strong,
+        .payment-customer strong {
+            display:
+                block;
+            margin-bottom:
+                4px;
+            font-size:
+                13px;
+        }
+
+        .payment-order span,
+        .payment-customer span {
+            color:
+                var(--muted);
+            font-size:
+                11px;
+        }
+
+        .payment-amount {
+            font-weight:
+                700;
+            font-size:
+                13px;
+        }
+
+        .payment-method {
+            color:
+                var(--muted);
+            font-size:
+                12px;
+            text-transform:
+                capitalize;
+        }
+
+
+        /* =========================================
+           STATUS
+        ========================================= */
+
+        .status-select {
+            width:
+                100%;
+            min-width:
+                0;
+            height:
+                36px;
+            padding:
+                0 8px;
+            border:
+                1px solid var(--border);
+            border-radius:
+                7px;
+            background:
+                var(--surface);
+            color:
+                var(--text);
+            font-size:
+                11px;
+            font-weight:
+                600;
+            outline:
+                none;
+        }
+
+        .status-select:focus {
+            border-color:
+                var(--accent);
+        }
+
+
+        /* =========================================
+           RECEIPT
+        ========================================= */
+
+        .receipt-action {
+            display:
+                inline-flex;
+            align-items:
+                center;
+            justify-content:
+                center;
+            min-height:
+                34px;
+            padding:
+                0 10px;
+            margin-bottom:
+                7px;
+            border:
+                1px solid var(--accent);
+            border-radius:
+                7px;
+            color:
+                var(--accent);
+            background:
+                transparent;
+            font-size:
+                10px;
+            font-weight:
+                700;
+        }
+
+        .receipt-action:hover {
+            background:
+                var(--accent);
+            color:
+                #ffffff;
+        }
+
+        .no-receipt {
+            display:
+                block;
+            margin-bottom:
+                7px;
+            color:
+                var(--muted);
+            font-size:
+                11px;
+        }
+
+
+        /* =========================================
+           SAVE
+        ========================================= */
+
+        .save-status-button {
+            width:
+                100%;
+            min-height:
+                36px;
+            padding:
+                0 10px;
+            border:
+                none;
+            border-radius:
+                7px;
+            background:
+                var(--accent);
+            color:
+                #ffffff;
+            font-size:
+                10px;
+            font-weight:
+                700;
+            letter-spacing:
+                0.5px;
+        }
+
+        .save-status-button:hover {
+            background:
+                var(--accent-dark);
+        }
+
+        .save-status-button:disabled {
+            opacity:
+                0.55;
+            cursor:
+                not-allowed;
+        }
+
+
+        /* =========================================
+           MESSAGE
+        ========================================= */
+
+        .payment-message {
+            padding:
+                35px 20px;
+            text-align:
+                center;
+            color:
+                var(--muted);
+            font-size:
+                13px;
+        }
+
+
+        /* =========================================
+           MOBILE MENU
+        ========================================= */
+
+        .mobile-overlay {
+            display:
+                none;
+            position:
+                fixed;
+            inset:
+                0;
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.35
+                );
+            z-index:
+                199;
+        }
+
+        .mobile-overlay.active {
+            display:
+                block;
+        }
+
+        .mobile-sidebar {
+            display:
+                none;
+            position:
+                fixed;
+            top:
+                0;
+            left:
+                0;
+            width:
+                280px;
+            height:
+                100vh;
+            padding:
+                25px 18px;
+            background:
+                var(--surface);
+            border-right:
+                1px solid var(--border);
+            z-index:
+                200;
+            transform:
+                translateX(-100%);
+            transition:
+                transform 0.25s ease;
+        }
+
+        .mobile-sidebar.active {
+            transform:
+                translateX(0);
+        }
+
+        .mobile-sidebar-header {
+            display:
+                flex;
+            align-items:
+                center;
+            justify-content:
+                space-between;
+            margin-bottom:
+                25px;
+        }
+
+        .mobile-sidebar-header strong {
+            font-size:
+                18px;
+            letter-spacing:
+                2px;
+        }
+
+        .mobile-close {
+            width:
+                38px;
+            height:
+                38px;
+            border:
+                1px solid var(--border);
+            border-radius:
+                8px;
+            background:
+                var(--surface);
+            color:
+                var(--text);
+            font-size:
+                20px;
+        }
+
+        .mobile-nav {
+            display:
+                flex;
+            flex-direction:
+                column;
+            gap:
+                5px;
+        }
+
+        .mobile-nav a {
+            padding:
+                12px;
+            border-radius:
+                8px;
+            color:
+                var(--muted);
+            font-size:
+                13px;
+            font-weight:
+                600;
+        }
+
+        .mobile-nav a.active {
+            background:
+                rgba(
+                    125,
+                    38,
+                    56,
+                    0.10
+                );
+            color:
+                var(--accent);
+        }
+
+        .mobile-logout {
+            width:
+                100%;
+            margin-top:
+                22px;
+            padding:
+                12px;
+            border:
+                1px solid var(--border);
+            border-radius:
+                8px;
+            background:
+                transparent;
+            color:
+                var(--muted);
+            text-align:
+                left;
+            font-size:
+                13px;
+            font-weight:
+                600;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1100px) {
+
+            .payment-stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .payment-head {
+                display:
+                    none;
+            }
+
+            .payment-row {
+                grid-template-columns:
+                    1fr
+                    1fr
+                    1fr;
+                gap:
+                    14px;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+
+            .vendor-header {
+                height:
+                    66px;
+                padding:
+                    0 18px;
+            }
+
+            .vendor-brand h1 {
+                font-size:
+                    18px;
+            }
+
+            .vendor-divider,
+            .vendor-page-title,
+            .vendor-name {
+                display:
+                    none;
+            }
+
+            .menu-button {
+                display:
+                    block;
+            }
+
+            .vendor-sidebar {
+                display:
+                    none;
+            }
+
+            .mobile-sidebar {
+                display:
+                    block;
+            }
+
+            .vendor-layout {
+                min-height:
+                    calc(100vh - 66px);
+            }
+
+            .vendor-main {
+                padding:
+                    28px 18px;
+            }
+
+            .page-heading h2 {
+                font-size:
+                    29px;
+            }
+
+            .payment-stats {
+                grid-template-columns:
+                    1fr 1fr;
+                gap:
+                    10px;
+            }
+
+            .payment-stat {
+                padding:
+                    17px;
+            }
+
+            .payment-stat strong {
+                font-size:
+                    21px;
+            }
+
+            .payment-tools {
+                flex-direction:
+                    column;
+                align-items:
+                    stretch;
+            }
+
+            .payment-tools select {
+                width:
+                    100%;
+            }
+
+            .payment-row {
+                grid-template-columns:
+                    1fr 1fr;
+                padding:
+                    18px 15px;
+            }
+
+            .payment-row > div:nth-child(1),
+            .payment-row > div:nth-child(2) {
+                grid-column:
+                    span 2;
+            }
+        }
+
+
+        @media (max-width: 470px) {
+
+            .payment-stats {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .payment-row {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .payment-row > div:nth-child(1),
+            .payment-row > div:nth-child(2) {
+                grid-column:
+                    span 1;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="vendor-header">
+
+    <div class="vendor-brand">
+
+        <h1>
+            THREADLY
+        </h1>
+
+        <div class="vendor-divider"></div>
+
+        <span class="vendor-page-title">
+            Vendor Payments
+        </span>
+
+    </div>
+
+
+    <div class="vendor-header-right">
+
+        <span
+            id="vendorName"
+            class="vendor-name"
+        >
+            Vendor
+        </span>
+
+
+        <button
+            id="menuButton"
+            class="menu-button"
+            type="button"
+        >
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<div
+    id="mobileOverlay"
+    class="mobile-overlay"
+></div>
+
+
+
+<aside
+    id="mobileSidebar"
+    class="mobile-sidebar"
+>
+
+    <div class="mobile-sidebar-header">
+
+        <strong>
+            THREADLY
+        </strong>
+
+
+        <button
+            id="closeMobileMenu"
+            class="mobile-close"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+
+    <nav class="mobile-nav">
+
+        <a href="vendor-dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="vendor-products.html">
+            Products
+        </a>
+
+        <a href="vendor-orders.html">
+            Orders
+        </a>
+
+        <a href="vendor-customers.html">
+            Customers
+        </a>
+
+        <a
+            href="vendor-payments.html"
+            class="active"
+        >
+            Payments
+        </a>
+
+        <a href="vendor-inventory.html">
+            Inventory
+        </a>
+
+        <a href="vendor-settings.html">
+            Settings
+        </a>
+
+    </nav>
+
+
+    <button
+        id="mobileLogout"
+        class="mobile-logout"
+        type="button"
+    >
+        Log out
+    </button>
+
+</aside>
+
+
+
+<div class="vendor-layout">
+
+
+    <aside class="vendor-sidebar">
+
+        <p class="sidebar-label">
+            VENDOR PANEL
+        </p>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="vendor-dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="vendor-products.html">
+                Products
+            </a>
+
+            <a href="vendor-orders.html">
+                Orders
+            </a>
+
+            <a href="vendor-customers.html">
+                Customers
+            </a>
+
+            <a
+                href="vendor-payments.html"
+                class="active"
+            >
+                Payments
+            </a>
+
+            <a href="vendor-inventory.html">
+                Inventory
+            </a>
+
+            <a href="vendor-settings.html">
+                Settings
+            </a>
+
+        </nav>
+
+
+        <button
+            id="logoutButton"
+            class="logout-button"
+            type="button"
+        >
+            Log out
+        </button>
+
+    </aside>
+
+
+
+    <main class="vendor-main">
+
+
+        <section class="page-heading">
+
+            <p>
+                PAYMENT MANAGEMENT
+            </p>
+
+            <h2>
+                Payments
+            </h2>
+
+            <span>
+                Review receipts, verify payments and manage order delivery status.
+            </span>
+
+        </section>
+
+
+
+        <section class="payment-stats">
+
+
+            <div class="payment-stat">
+
+                <span>
+                    TOTAL PAYMENTS
+                </span>
+
+                <strong id="totalPayments">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="payment-stat">
+
+                <span>
+                    PENDING
+                </span>
+
+                <strong id="pendingPayments">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="payment-stat">
+
+                <span>
+                    PAID
+                </span>
+
+                <strong id="paidPayments">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="payment-stat">
+
+                <span>
+                    RECEIPTS
+                </span>
+
+                <strong id="receiptCount">
+                    0
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <div class="payment-tools">
+
+
+            <div class="payment-search">
+
+                <input
+                    type="text"
+                    id="paymentSearch"
+                    placeholder="Search order or customer..."
+                >
+
+            </div>
+
+
+            <select id="paymentFilter">
+
+                <option value="all">
+                    All Payment Status
+                </option>
+
+                <option value="pending-verification">
+                    Pending Verification
+                </option>
+
+                <option value="paid">
+                    Paid
+                </option>
+
+                <option value="failed">
+                    Failed
+                </option>
+
+            </select>
+
+
+            <select id="deliveryFilter">
+
+                <option value="all">
+                    All Delivery Status
+                </option>
+
+                <option value="processing">
+                    Processing
+                </option>
+
+                <option value="shipped">
+                    Shipped
+                </option>
+
+                <option value="delivered">
+                    Delivered
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+
+        <div
+            id="paymentCount"
+            class="payment-count"
+        >
+            Loading payments...
+        </div>
+
+
+
+        <section class="payment-container">
+
+
+            <div class="payment-head">
+
+                <div>
+                    ORDER
+                </div>
+
+                <div>
+                    CUSTOMER
+                </div>
+
+                <div>
+                    AMOUNT
+                </div>
+
+                <div>
+                    METHOD
+                </div>
+
+                <div>
+                    PAYMENT
+                </div>
+
+                <div>
+                    DELIVERY
+                </div>
+
+                <div>
+                    ACTION
+                </div>
+
+            </div>
+
+
+            <div id="paymentList">
+
+                <div class="payment-message">
+                    Loading payments...
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-client.js"></script>
+
+
+
+<script>
+
+(function () {
+
+    const savedTheme =
+        localStorage.getItem(
+            "threadlyVendorTheme"
+        ) || "light";
+
+    if (savedTheme === "dark") {
+
+        document.documentElement.classList.add(
+            "dark-mode"
+        );
+
+    }
+
+})();
+
+</script>
+
+
+
+<script>
+
+(function () {
+
+
+    const db =
+        window.threadlySupabase;
+
+
+    let allPayments = [];
+
+
+    const vendorName =
+        document.getElementById(
+            "vendorName"
+        );
+
+
+    const paymentList =
+        document.getElementById(
+            "paymentList"
+        );
+
+
+    const paymentCount =
+        document.getElementById(
+            "paymentCount"
+        );
+
+
+    const paymentSearch =
+        document.getElementById(
+            "paymentSearch"
+        );
+
+
+    const paymentFilter =
+        document.getElementById(
+            "paymentFilter"
+        );
+
+
+    const deliveryFilter =
+        document.getElementById(
+            "deliveryFilter"
+        );
+
+
+    const totalPayments =
+        document.getElementById(
+            "totalPayments"
+        );
+
+
+    const pendingPayments =
+        document.getElementById(
+            "pendingPayments"
+        );
+
+
+    const paidPayments =
+        document.getElementById(
+            "paidPayments"
+        );
+
+
+    const receiptCount =
+        document.getElementById(
+            "receiptCount"
+        );
+
+
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
+
+
+    const closeMobileMenu =
+        document.getElementById(
+            "closeMobileMenu"
+        );
+
+
+    const mobileSidebar =
+        document.getElementById(
+            "mobileSidebar"
+        );
+
+
+    const mobileOverlay =
+        document.getElementById(
+            "mobileOverlay"
+        );
+
+
+    const logoutButton =
+        document.getElementById(
+            "logoutButton"
+        );
+
+
+    const mobileLogout =
+        document.getElementById(
+            "mobileLogout"
+        );
+
+
+
+    function openMobileMenu() {
+
+        mobileSidebar.classList.add(
+            "active"
+        );
+
+        mobileOverlay.classList.add(
+            "active"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+
+    function closeMenu() {
+
+        mobileSidebar.classList.remove(
+            "active"
+        );
+
+        mobileOverlay.classList.remove(
+            "active"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+
+    if (menuButton) {
+
+        menuButton.addEventListener(
+            "click",
+            openMobileMenu
+        );
+
+    }
+
+
+
+    if (closeMobileMenu) {
+
+        closeMobileMenu.addEventListener(
+            "click",
+            closeMenu
+        );
+
+    }
+
+
+
+    if (mobileOverlay) {
+
+        mobileOverlay.addEventListener(
+            "click",
+            closeMenu
+        );
+
+    }
+
+
+
+    async function logout() {
+
+        await db.auth.signOut();
+
+        localStorage.removeItem(
+            "threadlyLoggedIn"
+        );
+
+        localStorage.removeItem(
+            "threadlyUser"
+        );
+
+        window.location.href =
+            "login.html";
+
+    }
+
+
+
+    if (logoutButton) {
+
+        logoutButton.addEventListener(
+            "click",
+            logout
+        );
+
+    }
+
+
+
+    if (mobileLogout) {
+
+        mobileLogout.addEventListener(
+            "click",
+            logout
+        );
+
+    }
+
+
+
+    function normalizePaymentStatus(
+        status
+    ) {
+
+        const value =
+            String(
+                status || ""
+            ).toLowerCase();
+
+
+        if (
+            value === "paid" ||
+            value === "payment-confirmed" ||
+            value === "confirmed"
+        ) {
+
+            return "paid";
+
+        }
+
+
+        if (
+            value === "failed" ||
+            value === "payment-failed"
+        ) {
+
+            return "failed";
+
+        }
+
+
+        return "pending-verification";
+
+    }
+
+
+
+    function normalizeDeliveryStatus(
+        status
+    ) {
+
+        const value =
+            String(
+                status || ""
+            ).toLowerCase();
+
+
+        if (value === "shipped") {
+
+            return "shipped";
+
+        }
+
+
+        if (value === "delivered") {
+
+            return "delivered";
+
+        }
+
+
+        return "processing";
+
+    }
+
+
+
+    function formatMoney(
+        amount
+    ) {
+
+        return "₦" +
+            Number(
+                amount || 0
+            ).toLocaleString(
+                "en-NG"
+            );
+
+    }
+
+
+
+    function formatDate(
+        date
+    ) {
+
+        if (!date) {
+
+            return "N/A";
+
+        }
+
+
+        return new Date(
+            date
+        ).toLocaleDateString(
+            "en-NG",
+            {
+                day:
+                    "numeric",
+
+                month:
+                    "short",
+
+                year:
+                    "numeric"
+            }
+        );
+
+    }
+
+
+
+    async function checkVendor() {
+
+        try {
+
+            if (!db) {
+
+                throw new Error(
+                    "Supabase could not be loaded."
+                );
+
+            }
+
+
+            const {
+                data:
+                    sessionData,
+                error:
+                    sessionError
+            } =
+                await db.auth.getSession();
+
+
+            if (sessionError) {
+
+                throw sessionError;
+
+            }
+
+
+            if (
+                !sessionData ||
+                !sessionData.session ||
+                !sessionData.session.user
+            ) {
+
+                window.location.href =
+                    "login.html";
+
+                return false;
+
+            }
+
+
+            const user =
+                sessionData.session.user;
+
+
+            const {
+                data:
+                    profile,
+                error:
+                    profileError
+            } =
+                await db
+                    .from("profiles")
+                    .select(
+                        "full_name, role"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
+
+
+            if (profileError) {
+
+                throw profileError;
+
+            }
+
+
+            if (
+                !profile ||
+                (
+                    profile.role !== "vendor" &&
+                    profile.role !== "admin"
+                )
+            ) {
+
+                window.location.href =
+                    "login.html";
+
+                return false;
+
+            }
+
+
+            if (vendorName) {
+
+                vendorName.textContent =
+                    profile.full_name ||
+                    "Vendor";
+
+            }
+
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "Vendor check error:",
+                error
+            );
+
+
+            paymentList.innerHTML = `
+
+                <div class="payment-message">
+
+                    ${error.message}
+
+                </div>
+
+            `;
+
+
+            return false;
+
+        }
+
+    }
+
+
+
+    async function loadPayments() {
+
+        paymentList.innerHTML = `
+
+            <div class="payment-message">
+
+                Loading payments...
+
+            </div>
+
+        `;
+
+
+        const {
+            data,
+            error
+        } =
+            await db
+                .from("orders")
+                .select(`
+                    id,
+                    order_number,
+                    customer,
+                    total,
+                    payment_status,
+                    payment_method,
+                    delivery_status,
+                    receipt_url,
+                    created_at,
+                    updated_at
+                `)
+                .order(
+                    "created_at",
+                    {
+                        ascending:
+                            false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Payment loading error:",
+                error
+            );
+
+
+            paymentList.innerHTML = `
+
+                <div class="payment-message">
+
+                    ${error.message}
+
+                </div>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        allPayments =
+            Array.isArray(data)
+                ? data
+                : [];
+
+
+        updateStats();
+
+        renderPayments();
+
+    }
+
+
+
+    function updateStats() {
+
+        totalPayments.textContent =
+            allPayments.length;
+
+
+        pendingPayments.textContent =
+            allPayments.filter(
+                function (order) {
+
+                    return normalizePaymentStatus(
+                        order.payment_status
+                    ) ===
+                    "pending-verification";
+
+                }
+            ).length;
+
+
+        paidPayments.textContent =
+            allPayments.filter(
+                function (order) {
+
+                    return normalizePaymentStatus(
+                        order.payment_status
+                    ) ===
+                    "paid";
+
+                }
+            ).length;
+
+
+        receiptCount.textContent =
+            allPayments.filter(
+                function (order) {
+
+                    return Boolean(
+                        order.receipt_url
+                    );
+
+                }
+            ).length;
+
+    }
+
+
+
+    async function getReceiptUrl(
+        path
+    ) {
+
+        if (!path) {
+
+            return null;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await db.storage
+                .from("receipts")
+                .createSignedUrl(
+                    path,
+                    3600
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Receipt error:",
+                error
+            );
+
+            return null;
+
+        }
+
+
+        return data &&
+            data.signedUrl
+            ? data.signedUrl
+            : null;
+
+    }
+
+
+
+    async function renderPayments() {
+
+        const search =
+            paymentSearch.value
+                .trim()
+                .toLowerCase();
+
+
+        const selectedPayment =
+            paymentFilter.value;
+
+
+        const selectedDelivery =
+            deliveryFilter.value;
+
+
+        const filtered =
+            allPayments.filter(
+                function (order) {
+
+                    const customer =
+                        order.customer ||
+                        {};
+
+
+                    const customerName =
+                        String(
+                            customer.fullName ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const orderNumber =
+                        String(
+                            order.order_number ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const paymentStatus =
+                        normalizePaymentStatus(
+                            order.payment_status
+                        );
+
+
+                    const deliveryStatus =
+                        normalizeDeliveryStatus(
+                            order.delivery_status
+                        );
+
+
+                    const matchesSearch =
+                        !search ||
+                        orderNumber.includes(
+                            search
+                        ) ||
+                        customerName.includes(
+                            search
+                        );
+
+
+                    const matchesPayment =
+                        selectedPayment ===
+                            "all" ||
+                        paymentStatus ===
+                            selectedPayment;
+
+
+                    const matchesDelivery =
+                        selectedDelivery ===
+                            "all" ||
+                        deliveryStatus ===
+                            selectedDelivery;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesPayment &&
+                        matchesDelivery
+                    );
+
+                }
+            );
+
+
+        paymentCount.textContent =
+            filtered.length +
+            " payment" +
+            (
+                filtered.length === 1
+                    ? ""
+                    : "s"
+            );
+
+
+        if (
+            filtered.length === 0
+        ) {
+
+            paymentList.innerHTML = `
+
+                <div class="payment-message">
+
+                    No payments found.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const rows = [];
+
+
+        for (
+            const order of filtered
+        ) {
+
+            const customer =
+                order.customer ||
+                {};
+
+
+            const paymentStatus =
+                normalizePaymentStatus(
+                    order.payment_status
+                );
+
+
+            const deliveryStatus =
+                normalizeDeliveryStatus(
+                    order.delivery_status
+                );
+
+
+            let receiptHtml = `
+
+                <span class="no-receipt">
+
+                    No receipt
+
+                </span>
+
+            `;
+
+
+            if (
+                order.receipt_url
+            ) {
+
+                const receiptUrl =
+                    await getReceiptUrl(
+                        order.receipt_url
+                    );
+
+
+                if (receiptUrl) {
+
+                    receiptHtml = `
+
+                        <a
+                            href="${receiptUrl}"
+                            target="_blank"
+                            class="receipt-action"
+                        >
+                            VIEW RECEIPT
+                        </a>
+
+                    `;
+
+                } else {
+
+                    receiptHtml = `
+
+                        <span class="no-receipt">
+
+                            Receipt unavailable
+
+                        </span>
+
+                    `;
+
+                }
+
+            }
+
+
+            rows.push(`
+
+                <div
+                    class="payment-row"
+                    data-id="${order.id}"
+                >
+
+
+                    <div class="payment-order">
+
+                        <strong>
+
+                            #${order.order_number || order.id}
+
+                        </strong>
+
+                        <span>
+
+                            ${formatDate(order.created_at)}
+
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="payment-customer">
+
+                        <strong>
+
+                            ${customer.fullName || "Unknown Customer"}
+
+                        </strong>
+
+                        <span>
+
+                            ${customer.email || customer.phone || ""}
+
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="payment-amount">
+
+                        ${formatMoney(order.total)}
+
+                    </div>
+
+
+
+                    <div class="payment-method">
+
+                        ${
+                            order.payment_method
+                                ? String(
+                                    order.payment_method
+                                ).replace(
+                                    /-/g,
+                                    " "
+                                )
+                                : "Not selected"
+                        }
+
+                    </div>
+
+
+
+                    <div>
+
+                        <select
+                            class="status-select payment-status-select"
+                            data-id="${order.id}"
+                        >
+
+                            <option
+                                value="pending-verification"
+                                ${
+                                    paymentStatus ===
+                                    "pending-verification"
+                                        ? "selected"
+                                        : ""
+                                }
+                            >
+                                Pending
+                            </option>
+
+
+                            <option
+                                value="paid"
+                                ${
+                                    paymentStatus ===
+                                    "paid"
+                                        ? "selected"
+                                        : ""
+                                }
+                            >
+                                Paid
+                            </option>
+
+
+                            <option
+                                value="failed"
+                                ${
+                                    paymentStatus ===
+                                    "failed"
+                                        ? "selected"
+                                        : ""
+                                }
+                            >
+                                Failed
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <select
+                            class="status-select delivery-status-select"
+                            data-id="${order.id}"
+                        >
+
+                            <option
+                                value="processing"
+                                ${
+                                    deliveryStatus ===
+                                    "processing"
+                                        ? "selected"
+                                        : ""
+                                }
+                            >
+                                Processing
+                            </option>
+
+
+                            <option
+                                value="shipped"
+                                ${
+                                    deliveryStatus ===
+                                    "shipped"
+                                        ? "selected"
+                                        : ""
+                                }
+                            >
+                                Shipped
+                            </option>
+
+
+                            <option
+                                value="delivered"
+                                ${
+                                    deliveryStatus ===
+                                    "delivered"
+                                        ? "selected"
+                                        : ""
+                                }
+                            >
+                                Delivered
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div>
+
+                        ${receiptHtml}
+
+
+                        <button
+                            type="button"
+                            class="save-status-button"
+                            data-id="${order.id}"
+                        >
+                            SAVE
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            `);
+
+        }
+
+
+        paymentList.innerHTML =
+            rows.join("");
+
+
+        attachSaveButtons();
+
+    }
+
+
+
+    function attachSaveButtons() {
+
+        const buttons =
+            document.querySelectorAll(
+                ".save-status-button"
+            );
+
+
+        buttons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    async function () {
+
+
+                        const orderId =
+                            button.dataset.id;
+
+
+                        const row =
+                            button.closest(
+                                ".payment-row"
+                            );
+
+
+                        const paymentSelect =
+                            row.querySelector(
+                                ".payment-status-select"
+                            );
+
+
+                        const deliverySelect =
+                            row.querySelector(
+                                ".delivery-status-select"
+                            );
+
+
+                        const paymentStatus =
+                            paymentSelect.value;
+
+
+                        const deliveryStatus =
+                            deliverySelect.value;
+
+
+                        button.disabled =
+                            true;
+
+                        button.textContent =
+                            "SAVING...";
+
+
+                        const {
+                            data:
+                                updatedOrder,
+                            error
+                        } =
+                            await db
+                                .from("orders")
+                                .update({
+
+                                    payment_status:
+                                        paymentStatus,
+
+                                    delivery_status:
+                                        deliveryStatus,
+
+                                    updated_at:
+                                        new Date()
+                                            .toISOString()
+
+                                })
+                                .eq(
+                                    "id",
+                                    orderId
+                                )
+                                .select(
+                                    "id, payment_status, delivery_status, updated_at"
+                                )
+                                .maybeSingle();
+
+
+                        if (error) {
+
+                            console.error(
+                                "Save error:",
+                                error
+                            );
+
+
+                            button.disabled =
+                                false;
+
+                            button.textContent =
+                                "SAVE";
+
+
+                            alert(
+                                error.message
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        if (!updatedOrder) {
+
+                            button.disabled =
+                                false;
+
+                            button.textContent =
+                                "SAVE";
+
+
+                            alert(
+                                "Supabase did not update this order. Check the vendor update policy."
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        const order =
+                            allPayments.find(
+                                function (item) {
+
+                                    return (
+                                        item.id ===
+                                        orderId
+                                    );
+
+                                }
+                            );
+
+
+                        if (order) {
+
+                            order.payment_status =
+                                updatedOrder
+                                    .payment_status;
+
+
+                            order.delivery_status =
+                                updatedOrder
+                                    .delivery_status;
+
+
+                            order.updated_at =
+                                updatedOrder
+                                    .updated_at;
+
+                        }
+
+
+                        updateStats();
+
+
+                        button.textContent =
+                            "SAVED ✓";
+
+
+                        setTimeout(
+                            function () {
+
+                                button.disabled =
+                                    false;
+
+                                button.textContent =
+                                    "SAVE";
+
+                            },
+                            1200
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+
+    paymentSearch.addEventListener(
+        "input",
+        renderPayments
+    );
+
+
+    paymentFilter.addEventListener(
+        "change",
+        renderPayments
+    );
+
+
+    deliveryFilter.addEventListener(
+        "change",
+        renderPayments
+    );
+
+
+
+    async function startPage() {
+
+        const allowed =
+            await checkVendor();
+
+
+        if (!allowed) {
+
+            return;
+
+        }
+
+
+        await loadPayments();
+
+    }
+
+
+
+    startPage();
+
+
+})();
+
+</script>
+
+
+</body>
+
+</html>

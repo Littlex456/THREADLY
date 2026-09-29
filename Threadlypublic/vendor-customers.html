@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Customers | THREADLY Vendor</title>
+
+<script>
+
+    (function () {
+
+        const savedTheme =
+            localStorage.getItem(
+                "threadlyVendorTheme"
+            ) || "light";
+
+        if (
+            savedTheme === "dark"
+        ) {
+
+            document.documentElement.dataset.vendorTheme =
+                "dark";
+
+        }
+
+    })();
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f7f5f2;
+        color: #171717;
+    }
+
+    body.dark {
+        background: #111;
+        color: #f5f5f5;
+    }
+
+    .header {
+        height: 70px;
+        background: #fff;
+        border-bottom: 1px solid #dedbd6;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    body.dark .header {
+        background: #1b1b1b;
+        border-color: #333;
+    }
+
+    .logo {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .vendor-name {
+        font-size: 14px;
+        color: #737373;
+    }
+
+    .menu-button {
+        display: none;
+        border: none;
+        background: none;
+        color: inherit;
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        bottom: 0;
+        width: 230px;
+        background: #fff;
+        border-right: 1px solid #dedbd6;
+        padding: 25px 15px;
+        z-index: 900;
+    }
+
+    body.dark .sidebar {
+        background: #1b1b1b;
+        border-color: #333;
+    }
+
+    .vendor-label {
+        font-size: 11px;
+        color: #737373;
+        letter-spacing: 1px;
+        margin: 0 12px 15px;
+    }
+
+    .vendor-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        padding: 13px 12px;
+        border-radius: 6px;
+        margin-bottom: 5px;
+        font-size: 14px;
+        transition: .2s ease;
+    }
+
+    .vendor-link:hover,
+    .vendor-link.active {
+        background: #f2efeb;
+        color: #7d2638;
+    }
+
+    body.dark .vendor-link:hover,
+    body.dark .vendor-link.active {
+        background: #282828;
+        color: #c45a70;
+    }
+
+    .logout-link {
+        margin-top: 20px;
+        color: #7d2638;
+        cursor: pointer;
+    }
+
+    body.dark .logout-link {
+        color: #c45a70;
+    }
+
+    .main {
+        margin-left: 230px;
+        padding: 100px 35px 40px;
+    }
+
+    .page-header {
+        margin-bottom: 28px;
+    }
+
+    .page-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .page-subtitle {
+        margin: 7px 0 0;
+        color: #737373;
+        font-size: 14px;
+    }
+
+    .filters {
+        background: #fff;
+        border: 1px solid #dedbd6;
+        padding: 18px;
+        border-radius: 8px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+
+    body.dark .filters {
+        background: #1b1b1b;
+        border-color: #333;
+    }
+
+    .search {
+        flex: 1;
+        min-width: 220px;
+        height: 44px;
+        padding: 0 14px;
+        border: 1px solid #dedbd6;
+        border-radius: 6px;
+        background: #fff;
+        color: #171717;
+        outline: none;
+        font-family: inherit;
+        font-size: 14px;
+    }
+
+    .search:focus {
+        border-color: #7d2638;
+    }
+
+    body.dark .search {
+        background: #111;
+        color: #f5f5f5;
+        border-color: #333;
+    }
+
+    body.dark .search:focus {
+        border-color: #c45a70;
+    }
+
+    select {
+        height: 44px;
+        padding: 0 14px;
+        border: 1px solid #dedbd6;
+        border-radius: 6px;
+        background: #fff;
+        color: #171717;
+        min-width: 160px;
+        outline: none;
+        font-family: inherit;
+        font-size: 14px;
+    }
+
+    body.dark select {
+        background: #111;
+        color: #f5f5f5;
+        border-color: #333;
+    }
+
+    .customer-count {
+        color: #737373;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .customers-container {
+        background: #fff;
+        border: 1px solid #dedbd6;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    body.dark .customers-container {
+        background: #1b1b1b;
+        border-color: #333;
+    }
+
+    .customer-row {
+        padding: 17px 20px;
+        border-bottom: 1px solid #dedbd6;
+        display: grid;
+        grid-template-columns: 1.5fr 1.2fr 1.3fr 1fr 1fr;
+        gap: 20px;
+        align-items: center;
+    }
+
+    body.dark .customer-row {
+        border-color: #333;
+    }
+
+    .customer-row:last-child {
+        border-bottom: none;
+    }
+
+    .customer-heading {
+        background: #f7f5f2;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: #737373;
+    }
+
+    body.dark .customer-heading {
+        background: #111;
+    }
+
+    .customer-name {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .customer-info {
+        font-size: 13px;
+        color: #737373;
+    }
+
+    .role {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        text-transform: capitalize;
+        background: #f0ece8;
+        color: #555;
+    }
+
+    body.dark .role {
+        background: #292929;
+        color: #ccc;
+    }
+
+    .customer-id {
+        font-size: 10px;
+        color: #737373;
+        word-break: break-all;
+        line-height: 1.4;
+    }
+
+    .empty-message {
+        padding: 50px 20px;
+        text-align: center;
+        color: #737373;
+        font-size: 14px;
+    }
+
+    .mobile-overlay {
+        display: none;
+    }
+
+    @media (max-width: 900px) {
+
+        .menu-button {
+            display: block;
+        }
+
+        .header {
+            padding: 0 18px;
+        }
+
+        .sidebar {
+            transform: translateX(-100%);
+            transition: .25s ease;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            inset: 70px 0 0;
+            background: rgba(0, 0, 0, .4);
+            z-index: 800;
+        }
+
+        .mobile-overlay.open {
+            display: block;
+        }
+
+        .main {
+            margin-left: 0;
+            padding: 95px 18px 30px;
+        }
+
+        .customer-heading {
+            display: none;
+        }
+
+        .customer-row {
+            display: block;
+            padding: 20px;
+        }
+
+        .customer-row > div {
+            margin-bottom: 14px;
+        }
+
+        .customer-row > div:last-child {
+            margin-bottom: 0;
+        }
+
+    }
+
+    @media (max-width: 500px) {
+
+        .vendor-name {
+            display: none;
+        }
+
+        .page-title {
+            font-size: 24px;
+        }
+
+        .filters {
+            padding: 14px;
+        }
+
+        .search,
+        select {
+            width: 100%;
+            min-width: 0;
+        }
+
+    }
+
+</style>
+
+
+</head>
+
+<body>
+<script>
+
+    (function () {
+
+        const savedTheme =
+            localStorage.getItem(
+                "threadlyVendorTheme"
+            ) || "light";
+
+
+        document.body.classList.toggle(
+            "dark",
+            savedTheme === "dark"
+        );
+
+    })();
+
+</script>
+
+<header class="header">
+
+    <div class="logo">
+        THREADLY
+    </div>
+
+    <div
+        class="vendor-name"
+        id="vendorName"
+    >
+        Vendor
+    </div>
+
+    <button
+        class="menu-button"
+        id="menuButton"
+    >
+        ☰
+    </button>
+
+</header>
+
+
+<aside
+    class="sidebar"
+    id="vendorSidebar"
+>
+
+    <div class="vendor-label">
+        VENDOR PANEL
+    </div>
+
+    <a
+        href="vendor-dashboard.html"
+        class="vendor-link"
+    >
+        Dashboard
+    </a>
+
+    <a
+        href="vendor-products.html"
+        class="vendor-link"
+    >
+        Products
+    </a>
+
+    <a
+        href="vendor-orders.html"
+        class="vendor-link"
+    >
+        Orders
+    </a>
+
+    <a
+        href="vendor-customers.html"
+        class="vendor-link active"
+    >
+        Customers
+    </a>
+
+    <a
+        href="vendor-payments.html"
+        class="vendor-link"
+    >
+        Payments
+    </a>
+
+    <a
+        href="vendor-inventory.html"
+        class="vendor-link"
+    >
+        Inventory
+    </a>
+
+    <a
+        href="vendor-settings.html"
+        class="vendor-link"
+    >
+        Settings
+    </a>
+
+    <a
+        href="#"
+        class="vendor-link logout-link"
+        id="logoutButton"
+    >
+        Log out
+    </a>
+
+</aside>
+
+
+<div
+    class="mobile-overlay"
+    id="mobileOverlay"
+></div>
+
+
+<main class="main">
+
+
+    <div class="page-header">
+
+        <h1 class="page-title">
+            Customers
+        </h1>
+
+        <p class="page-subtitle">
+            View registered THREADLY customers.
+        </p>
+
+    </div>
+
+
+    <div class="filters">
+
+        <input
+            type="text"
+            id="customerSearch"
+            class="search"
+            placeholder="Search by name, username or phone..."
+        >
+
+        <select id="roleFilter">
+
+            <option value="customer">
+                Customers
+            </option>
+
+            <option value="all">
+                All accounts
+            </option>
+
+            <option value="vendor">
+                Vendors
+            </option>
+
+            <option value="admin">
+                Admins
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div
+        class="customer-count"
+        id="customerCount"
+    >
+        Loading customers...
+    </div>
+
+
+    <section class="customers-container">
+
+
+        <div class="customer-row customer-heading">
+
+            <div>
+                Customer
+            </div>
+
+            <div>
+                Username
+            </div>
+
+            <div>
+                Phone
+            </div>
+
+            <div>
+                Role
+            </div>
+
+            <div>
+                Joined
+            </div>
+
+        </div>
+
+
+        <div id="customersList">
+
+            <div class="empty-message">
+                Loading customers...
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<script>
+
+    (async function () {
+
+        const vendorName =
+            document.getElementById("vendorName");
+
+        const menuButton =
+            document.getElementById("menuButton");
+
+        const vendorSidebar =
+            document.getElementById("vendorSidebar");
+
+        const mobileOverlay =
+            document.getElementById("mobileOverlay");
+
+        const logoutButton =
+            document.getElementById("logoutButton");
+
+        const customerSearch =
+            document.getElementById("customerSearch");
+
+        const roleFilter =
+            document.getElementById("roleFilter");
+
+        const customerCount =
+            document.getElementById("customerCount");
+
+        const customersList =
+            document.getElementById("customersList");
+
+
+        let customers = [];
+
+
+        function closeMenu() {
+
+            vendorSidebar.classList.remove("open");
+
+            mobileOverlay.classList.remove("open");
+
+        }
+
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                vendorSidebar.classList.toggle("open");
+
+                mobileOverlay.classList.toggle("open");
+
+            }
+        );
+
+
+        mobileOverlay.addEventListener(
+            "click",
+            closeMenu
+        );
+
+
+        document
+            .querySelectorAll(".vendor-link")
+            .forEach(
+                function (link) {
+
+                    link.addEventListener(
+                        "click",
+                        closeMenu
+                    );
+
+                }
+            );
+
+
+        const supabase =
+            window.threadlySupabase;
+
+
+        if (!supabase) {
+
+            customersList.innerHTML =
+                `
+                <div class="empty-message">
+                    Authentication service is unavailable.
+                </div>
+                `;
+
+            return;
+
+        }
+
+
+        const {
+            data: sessionData,
+            error: sessionError
+        } =
+            await supabase.auth.getSession();
+
+
+        if (
+            sessionError ||
+            !sessionData ||
+            !sessionData.session ||
+            !sessionData.session.user
+        ) {
+
+            window.location.replace(
+                "login.html"
+            );
+
+            return;
+
+        }
+
+
+        const user =
+            sessionData.session.user;
+
+
+        const {
+            data: profile,
+            error: profileError
+        } =
+            await supabase
+                .from("profiles")
+                .select("full_name, role")
+                .eq("id", user.id)
+                .single();
+
+
+        if (
+            profileError ||
+            !profile
+        ) {
+
+            customersList.innerHTML =
+                `
+                <div class="empty-message">
+                    Your vendor profile could not be loaded.
+                </div>
+                `;
+
+            return;
+
+        }
+
+
+        if (
+            profile.role !== "vendor" &&
+            profile.role !== "admin"
+        ) {
+
+            window.location.replace(
+                "index.html"
+            );
+
+            return;
+
+        }
+
+
+        vendorName.textContent =
+            profile.full_name ||
+            "Vendor";
+
+
+        async function loadCustomers() {
+
+
+            customersList.innerHTML =
+                `
+                <div class="empty-message">
+                    Loading customers...
+                </div>
+                `;
+
+
+            const {
+                data,
+                error
+            } =
+                await supabase
+                    .from("profiles")
+                    .select(`
+                        id,
+                        full_name,
+                        phone,
+                        username,
+                        role,
+                        created_at
+                    `)
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Customers loading error:",
+                    error
+                );
+
+
+                customersList.innerHTML =
+                    `
+                    <div class="empty-message">
+                        Customers could not be loaded.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            customers =
+                data || [];
+
+            renderCustomers();
+
+        }
+
+
+        function renderCustomers() {
+
+
+            const search =
+                customerSearch.value
+                    .trim()
+                    .toLowerCase();
+
+
+            const role =
+                roleFilter.value;
+
+
+            const filteredCustomers =
+                customers.filter(
+                    function (customer) {
+
+
+                        const name =
+                            customer.full_name ||
+                            "";
+
+
+                        const username =
+                            customer.username ||
+                            "";
+
+
+                        const phone =
+                            customer.phone ||
+                            "";
+
+
+                        const matchesSearch =
+                            name
+                                .toLowerCase()
+                                .includes(search)
+                            ||
+                            username
+                                .toLowerCase()
+                                .includes(search)
+                            ||
+                            phone
+                                .toLowerCase()
+                                .includes(search);
+
+
+                        const matchesRole =
+                            role === "all" ||
+                            customer.role === role;
+
+
+                        return (
+                            matchesSearch &&
+                            matchesRole
+                        );
+
+                    }
+                );
+
+
+            customerCount.textContent =
+                filteredCustomers.length +
+                " account" +
+                (
+                    filteredCustomers.length === 1
+                        ? ""
+                        : "s"
+                );
+
+
+            customersList.innerHTML = "";
+
+
+            if (!filteredCustomers.length) {
+
+                customersList.innerHTML =
+                    `
+                    <div class="empty-message">
+                        No customers found.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            filteredCustomers.forEach(
+                function (customer) {
+
+
+                    const date =
+                        new Date(
+                            customer.created_at
+                        );
+
+
+                    const formattedDate =
+                        date.toLocaleDateString(
+                            "en-NG",
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        );
+
+
+                    const row =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    row.className =
+                        "customer-row";
+
+
+                    row.innerHTML =
+                        `
+
+                        <div>
+
+                            <div class="customer-name">
+                                ${customer.full_name || "-"}
+                            </div>
+
+                            <div class="customer-id">
+                                ${customer.id}
+                            </div>
+
+                        </div>
+
+
+                        <div class="customer-info">
+                            ${customer.username || "-"}
+                        </div>
+
+
+                        <div class="customer-info">
+                            ${customer.phone || "-"}
+                        </div>
+
+
+                        <div>
+
+                            <span class="role">
+                                ${customer.role || "customer"}
+                            </span>
+
+                        </div>
+
+
+                        <div class="customer-info">
+                            ${formattedDate}
+                        </div>
+
+                    `;
+
+
+                    customersList.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+        }
+
+
+        customerSearch.addEventListener(
+            "input",
+            renderCustomers
+        );
+
+
+        roleFilter.addEventListener(
+            "change",
+            renderCustomers
+        );
+
+
+        logoutButton.addEventListener(
+            "click",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                await supabase.auth.signOut();
+
+
+                localStorage.removeItem(
+                    "threadlyLoggedIn"
+                );
+
+
+                localStorage.removeItem(
+                    "threadlyUser"
+                );
+
+
+                window.location.replace(
+                    "login.html"
+                );
+
+            }
+        );
+
+
+        await loadCustomers();
+
+
+    })();
+
+</script>
+
+
+</body>
+
+</html>

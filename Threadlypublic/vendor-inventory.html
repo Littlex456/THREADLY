@@ -1,0 +1,2862 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Inventory | THREADLY Vendor
+    </title>
+
+
+    <style>
+
+        :root {
+
+            --bg: #f7f5f2;
+            --surface: #ffffff;
+            --surface-2: #f1efeb;
+            --text: #171717;
+            --muted: #737373;
+            --accent: #7d2638;
+            --accent-dark: #641d2d;
+            --border: #dedbd6;
+            --success: #2f7d4f;
+            --warning: #a56a00;
+            --danger: #b3261e;
+
+        }
+        :root.dark-mode {
+
+            --bg: #111111;
+            --surface: #1b1b1b;
+            --surface-2: #242424;
+            --text: #f5f5f5;
+            --muted: #a3a3a3;
+            --accent: #c45a70;
+            --accent-dark: #a84459;
+            --border: #333333;
+            --success: #55a874;
+            --danger: #e05b53;
+            --input-bg: #1b1b1b;
+
+        }
+
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+
+            background:
+                var(--bg);
+
+            color:
+                var(--text);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+        }
+
+
+        body {
+
+            overflow-x: hidden;
+
+        }
+
+
+        button,
+        input,
+        select {
+
+            font: inherit;
+
+        }
+
+
+        button {
+
+            cursor: pointer;
+
+        }
+
+
+        a {
+
+            color: inherit;
+            text-decoration: none;
+
+        }
+
+
+        /* HEADER */
+
+        .vendor-header {
+
+            height: 72px;
+
+            padding:
+                0 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background:
+                var(--surface);
+
+            border-bottom:
+                1px solid var(--border);
+
+            position:
+                sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+        }
+
+
+        .vendor-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+        }
+
+
+        .vendor-brand h1 {
+
+            margin: 0;
+
+            font-size: 21px;
+
+            letter-spacing: 3px;
+
+        }
+
+
+        .vendor-divider {
+
+            width: 1px;
+
+            height: 22px;
+
+            background:
+                var(--border);
+
+        }
+
+
+        .vendor-page-title {
+
+            color:
+                var(--muted);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .vendor-header-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+        }
+
+
+        .vendor-name {
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .menu-button {
+
+            display: none;
+
+            width: 42px;
+
+            height: 42px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 9px;
+
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
+
+            font-size: 20px;
+
+        }
+
+
+        /* LAYOUT */
+
+        .vendor-layout {
+
+            display: flex;
+
+            min-height:
+                calc(100vh - 72px);
+
+        }
+
+
+        /* SIDEBAR */
+
+        .vendor-sidebar {
+
+            width: 245px;
+
+            min-height:
+                calc(100vh - 72px);
+
+            flex-shrink: 0;
+
+            padding:
+                25px 17px;
+
+            background:
+                var(--surface);
+
+            border-right:
+                1px solid var(--border);
+
+        }
+
+
+        .sidebar-label {
+
+            margin:
+                0 0 13px;
+
+            padding-left:
+                12px;
+
+            color:
+                var(--muted);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+        }
+
+
+        .sidebar-nav {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap: 5px;
+
+        }
+
+
+        .sidebar-nav a {
+
+            padding:
+                12px 13px;
+
+            border-radius:
+                8px;
+
+            color:
+                var(--muted);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+
+        }
+
+
+        .sidebar-nav a:hover {
+
+            background:
+                var(--surface-2);
+
+            color:
+                var(--text);
+
+        }
+
+
+        .sidebar-nav a.active {
+
+            background:
+                rgba(125, 38, 56, 0.10);
+
+            color:
+                var(--accent);
+
+        }
+
+
+        .logout-button {
+
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding:
+                12px 13px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 8px;
+
+            background:
+                transparent;
+
+            color:
+                var(--muted);
+
+            text-align:
+                left;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .logout-button:hover {
+
+            border-color:
+                var(--accent);
+
+            color:
+                var(--accent);
+
+        }
+
+
+        /* MAIN */
+
+        .vendor-main {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 38px;
+
+        }
+
+
+        .page-heading {
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .page-heading p {
+
+            margin:
+                0 0 7px;
+
+            color:
+                var(--accent);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.8px;
+
+        }
+
+
+        .page-heading h2 {
+
+            margin: 0;
+
+            font-size: 34px;
+
+            line-height: 1.1;
+
+        }
+
+
+        .page-heading span {
+
+            display: block;
+
+            margin-top: 10px;
+
+            color:
+                var(--muted);
+
+            font-size: 14px;
+
+        }
+
+
+        /* STATS */
+
+        .inventory-stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .inventory-stat {
+
+            padding: 20px;
+
+            background:
+                var(--surface);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 12px 35px rgba(
+                    0,
+                    0,
+                    0,
+                    0.06
+                );
+
+        }
+
+
+        .inventory-stat span {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            color:
+                var(--muted);
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            letter-spacing: 0.4px;
+
+        }
+
+
+        .inventory-stat strong {
+
+            font-size: 26px;
+
+        }
+
+
+        /* TOOLS */
+
+        .inventory-tools {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .inventory-search {
+
+            flex: 1;
+
+        }
+
+
+        .inventory-search input {
+
+            width: 100%;
+
+            height: 44px;
+
+            padding:
+                0 14px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 8px;
+
+            outline: none;
+
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
+
+        }
+
+
+        .inventory-search input:focus {
+
+            border-color:
+                var(--accent);
+
+        }
+
+
+        .inventory-tools select {
+
+            height: 44px;
+
+            min-width: 170px;
+
+            padding:
+                0 12px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 8px;
+
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
+
+            outline: none;
+
+        }
+
+
+        .inventory-tools select:focus {
+
+            border-color:
+                var(--accent);
+
+        }
+
+
+        /* COUNT */
+
+        .inventory-count {
+
+            margin-bottom: 13px;
+
+            color:
+                var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        /* TABLE */
+
+        .inventory-container {
+
+            background:
+                var(--surface);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 12px 35px rgba(
+                    0,
+                    0,
+                    0,
+                    0.06
+                );
+
+        }
+
+
+        .inventory-head,
+        .inventory-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1.9fr
+                1fr
+                0.8fr
+                1.1fr
+                1fr
+                1.1fr;
+
+            gap: 16px;
+
+            align-items: center;
+
+        }
+
+
+        .inventory-head {
+
+            padding:
+                15px 18px;
+
+            background:
+                var(--surface-2);
+
+            border-bottom:
+                1px solid var(--border);
+
+            color:
+                var(--muted);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .inventory-row {
+
+            padding:
+                17px 18px;
+
+            border-bottom:
+                1px solid var(--border);
+
+        }
+
+
+        .inventory-row:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .product-info {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            min-width: 0;
+
+        }
+
+
+        .product-image {
+
+            width: 54px;
+
+            height: 54px;
+
+            flex-shrink: 0;
+
+            border-radius: 8px;
+
+            object-fit: cover;
+
+            background:
+                var(--surface-2);
+
+            border:
+                1px solid var(--border);
+
+        }
+
+
+        .product-details {
+
+            min-width: 0;
+
+        }
+
+
+        .product-details strong {
+
+            display: block;
+
+            margin-bottom: 4px;
+
+            font-size: 13px;
+
+        }
+
+
+        .product-details span {
+
+            display: block;
+
+            overflow: hidden;
+
+            white-space: nowrap;
+
+            text-overflow: ellipsis;
+
+            color:
+                var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        .product-category {
+
+            color:
+                var(--muted);
+
+            font-size: 12px;
+
+            text-transform: capitalize;
+
+        }
+
+
+        .product-price {
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+
+        .size-list {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 5px;
+
+        }
+
+
+        .size-item {
+
+            padding:
+                5px 7px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 5px;
+
+            background:
+                var(--surface-2);
+
+            color:
+                var(--text);
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+        }
+
+
+        .no-sizes {
+
+            color:
+                var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        .stock-input {
+
+            width: 75px;
+
+            height: 36px;
+
+            padding:
+                0 9px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 7px;
+
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
+
+            outline: none;
+
+            text-align: center;
+
+            font-size: 12px;
+
+        }
+
+
+        .stock-input:focus {
+
+            border-color:
+                var(--accent);
+
+        }
+
+
+        .stock-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 82px;
+
+            padding:
+                7px 9px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .stock-badge.in-stock {
+
+            background:
+                rgba(
+                    47,
+                    125,
+                    79,
+                    0.11
+                );
+
+            color:
+                var(--success);
+
+        }
+
+
+        .stock-badge.low-stock {
+
+            background:
+                rgba(
+                    165,
+                    106,
+                    0,
+                    0.12
+                );
+
+            color:
+                var(--warning);
+
+        }
+
+
+        .stock-badge.out-of-stock {
+
+            background:
+                rgba(
+                    179,
+                    38,
+                    30,
+                    0.10
+                );
+
+            color:
+                var(--danger);
+
+        }
+
+
+        .save-stock-button {
+
+            min-height: 36px;
+
+            padding:
+                0 12px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background:
+                var(--accent);
+
+            color:
+                #ffffff;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .save-stock-button:hover {
+
+            background:
+                var(--accent-dark);
+
+        }
+
+
+        .save-stock-button.saved {
+
+            background:
+                var(--success);
+
+        }
+
+
+        .save-stock-button:disabled {
+
+            opacity: 0.55;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .inventory-message {
+
+            padding:
+                40px 20px;
+
+            text-align: center;
+
+            color:
+                var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        /* MOBILE MENU */
+
+        .mobile-overlay {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.35
+                );
+
+            z-index: 199;
+
+        }
+
+
+        .mobile-overlay.active {
+
+            display: block;
+
+        }
+
+
+        .mobile-sidebar {
+
+            display: none;
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 280px;
+
+            height: 100vh;
+
+            padding:
+                25px 18px;
+
+            background:
+                var(--surface);
+
+            border-right:
+                1px solid var(--border);
+
+            z-index: 200;
+
+            transform:
+                translateX(-100%);
+
+            transition:
+                transform 0.25s ease;
+
+        }
+
+
+        .mobile-sidebar.active {
+
+            transform:
+                translateX(0);
+
+        }
+
+
+        .mobile-sidebar-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .mobile-sidebar-header strong {
+
+            font-size: 18px;
+
+            letter-spacing: 2px;
+
+        }
+
+
+        .mobile-close {
+
+            width: 38px;
+
+            height: 38px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 8px;
+
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
+
+            font-size: 20px;
+
+        }
+
+
+        .mobile-nav {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+
+        }
+
+
+        .mobile-nav a {
+
+            padding:
+                12px;
+
+            border-radius: 8px;
+
+            color:
+                var(--muted);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .mobile-nav a.active {
+
+            background:
+                rgba(
+                    125,
+                    38,
+                    56,
+                    0.10
+                );
+
+            color:
+                var(--accent);
+
+        }
+
+
+        .mobile-logout {
+
+            width: 100%;
+
+            margin-top: 22px;
+
+            padding: 12px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 8px;
+
+            background:
+                transparent;
+
+            color:
+                var(--muted);
+
+            text-align: left;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+
+            .inventory-stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+
+            .inventory-head {
+
+                display: none;
+
+            }
+
+
+            .inventory-row {
+
+                grid-template-columns:
+                    1.5fr
+                    1fr
+                    1fr;
+
+                gap: 14px;
+
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+
+            .vendor-header {
+
+                height: 66px;
+
+                padding:
+                    0 18px;
+
+            }
+
+
+            .vendor-brand h1 {
+
+                font-size: 18px;
+
+            }
+
+
+            .vendor-divider,
+            .vendor-page-title,
+            .vendor-name {
+
+                display: none;
+
+            }
+
+
+            .menu-button {
+
+                display: block;
+
+            }
+
+
+            .vendor-sidebar {
+
+                display: none;
+
+            }
+
+
+            .mobile-sidebar {
+
+                display: block;
+
+            }
+
+
+            .vendor-layout {
+
+                min-height:
+                    calc(100vh - 66px);
+
+            }
+
+
+            .vendor-main {
+
+                padding:
+                    28px 18px;
+
+            }
+
+
+            .page-heading h2 {
+
+                font-size: 29px;
+
+            }
+
+
+            .inventory-stats {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 10px;
+
+            }
+
+
+            .inventory-stat {
+
+                padding: 17px;
+
+            }
+
+
+            .inventory-stat strong {
+
+                font-size: 21px;
+
+            }
+
+
+            .inventory-tools {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+            }
+
+
+            .inventory-tools select {
+
+                width: 100%;
+
+            }
+
+
+            .inventory-row {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                padding:
+                    18px 15px;
+
+            }
+
+
+            .inventory-row > div:first-child {
+
+                grid-column:
+                    span 2;
+
+            }
+
+        }
+
+
+        @media (max-width: 470px) {
+
+            .inventory-stats {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .inventory-row {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .inventory-row > div:first-child {
+
+                grid-column:
+                    span 1;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="vendor-header">
+
+    <div class="vendor-brand">
+
+        <h1>
+            THREADLY
+        </h1>
+
+
+        <div class="vendor-divider"></div>
+
+
+        <span class="vendor-page-title">
+            Vendor Inventory
+        </span>
+
+    </div>
+
+
+    <div class="vendor-header-right">
+
+        <span
+            id="vendorName"
+            class="vendor-name"
+        >
+            Vendor
+        </span>
+
+
+        <button
+            id="menuButton"
+            class="menu-button"
+            type="button"
+        >
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+
+<div
+    id="mobileOverlay"
+    class="mobile-overlay"
+></div>
+
+
+<aside
+    id="mobileSidebar"
+    class="mobile-sidebar"
+>
+
+    <div class="mobile-sidebar-header">
+
+        <strong>
+            THREADLY
+        </strong>
+
+
+        <button
+            id="closeMobileMenu"
+            class="mobile-close"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <nav class="mobile-nav">
+
+        <a href="vendor-dashboard.html">
+            Dashboard
+        </a>
+
+
+        <a href="vendor-products.html">
+            Products
+        </a>
+
+
+        <a href="vendor-orders.html">
+            Orders
+        </a>
+
+
+        <a href="vendor-customers.html">
+            Customers
+        </a>
+
+
+        <a href="vendor-payments.html">
+            Payments
+        </a>
+
+
+        <a
+            href="vendor-inventory.html"
+            class="active"
+        >
+            Inventory
+        </a>
+
+
+        <a href="vendor-settings.html">
+            Settings
+        </a>
+
+    </nav>
+
+
+    <button
+        id="mobileLogout"
+        class="mobile-logout"
+        type="button"
+    >
+        Log out
+    </button>
+
+</aside>
+
+
+<div class="vendor-layout">
+
+
+    <aside class="vendor-sidebar">
+
+        <p class="sidebar-label">
+            VENDOR PANEL
+        </p>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="vendor-dashboard.html">
+                Dashboard
+            </a>
+
+
+            <a href="vendor-products.html">
+                Products
+            </a>
+
+
+            <a href="vendor-orders.html">
+                Orders
+            </a>
+
+
+            <a href="vendor-customers.html">
+                Customers
+            </a>
+
+
+            <a href="vendor-payments.html">
+                Payments
+            </a>
+
+
+            <a
+                href="vendor-inventory.html"
+                class="active"
+            >
+                Inventory
+            </a>
+
+
+            <a href="vendor-settings.html">
+                Settings
+            </a>
+
+        </nav>
+
+
+        <button
+            id="logoutButton"
+            class="logout-button"
+            type="button"
+        >
+            Log out
+        </button>
+
+    </aside>
+
+
+    <main class="vendor-main">
+
+
+        <section class="page-heading">
+
+            <p>
+                STOCK MANAGEMENT
+            </p>
+
+
+            <h2>
+                Inventory
+            </h2>
+
+
+            <span>
+                Monitor product quantities and keep THREADLY stock up to date.
+            </span>
+
+        </section>
+
+
+        <section class="inventory-stats">
+
+
+            <div class="inventory-stat">
+
+                <span>
+                    TOTAL PRODUCTS
+                </span>
+
+
+                <strong id="totalProducts">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="inventory-stat">
+
+                <span>
+                    TOTAL STOCK
+                </span>
+
+
+                <strong id="totalStock">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="inventory-stat">
+
+                <span>
+                    LOW STOCK
+                </span>
+
+
+                <strong id="lowStock">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="inventory-stat">
+
+                <span>
+                    OUT OF STOCK
+                </span>
+
+
+                <strong id="outOfStock">
+                    0
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <div class="inventory-tools">
+
+
+            <div class="inventory-search">
+
+                <input
+                    id="inventorySearch"
+                    type="text"
+                    placeholder="Search product or product ID..."
+                >
+
+            </div>
+
+
+            <select id="inventoryFilter">
+
+                <option value="all">
+                    All Stock
+                </option>
+
+
+                <option value="in-stock">
+                    In Stock
+                </option>
+
+
+                <option value="low-stock">
+                    Low Stock
+                </option>
+
+
+                <option value="out-of-stock">
+                    Out of Stock
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            id="inventoryCount"
+            class="inventory-count"
+        >
+            Loading inventory...
+        </div>
+
+
+        <section class="inventory-container">
+
+
+            <div class="inventory-head">
+
+                <div>
+                    PRODUCT
+                </div>
+
+
+                <div>
+                    CATEGORY
+                </div>
+
+
+                <div>
+                    PRICE
+                </div>
+
+
+                <div>
+                    SIZES
+                </div>
+
+
+                <div>
+                    STOCK
+                </div>
+
+
+                <div>
+                    ACTION
+                </div>
+
+            </div>
+
+
+            <div id="inventoryList">
+
+                <div class="inventory-message">
+                    Loading inventory...
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-client.js"></script>
+<script>
+
+(function () {
+
+    const savedTheme =
+        localStorage.getItem(
+            "threadlyVendorTheme"
+        ) || "light";
+
+    if (
+        savedTheme === "dark"
+    ) {
+
+        document.documentElement.classList.add(
+            "dark-mode"
+        );
+
+    }
+
+})();
+
+</script>
+
+<script>
+
+(function () {
+
+    const db =
+        window.threadlySupabase;
+
+
+    let allProducts = [];
+
+
+    const vendorName =
+        document.getElementById(
+            "vendorName"
+        );
+
+
+    const inventoryList =
+        document.getElementById(
+            "inventoryList"
+        );
+
+
+    const inventoryCount =
+        document.getElementById(
+            "inventoryCount"
+        );
+
+
+    const inventorySearch =
+        document.getElementById(
+            "inventorySearch"
+        );
+
+
+    const inventoryFilter =
+        document.getElementById(
+            "inventoryFilter"
+        );
+
+
+    const totalProducts =
+        document.getElementById(
+            "totalProducts"
+        );
+
+
+    const totalStock =
+        document.getElementById(
+            "totalStock"
+        );
+
+
+    const lowStock =
+        document.getElementById(
+            "lowStock"
+        );
+
+
+    const outOfStock =
+        document.getElementById(
+            "outOfStock"
+        );
+
+
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
+
+
+    const closeMobileMenu =
+        document.getElementById(
+            "closeMobileMenu"
+        );
+
+
+    const mobileSidebar =
+        document.getElementById(
+            "mobileSidebar"
+        );
+
+
+    const mobileOverlay =
+        document.getElementById(
+            "mobileOverlay"
+        );
+
+
+    const logoutButton =
+        document.getElementById(
+            "logoutButton"
+        );
+
+
+    const mobileLogout =
+        document.getElementById(
+            "mobileLogout"
+        );
+
+
+    function openMobileMenu() {
+
+        mobileSidebar.classList.add(
+            "active"
+        );
+
+
+        mobileOverlay.classList.add(
+            "active"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeMenu() {
+
+        mobileSidebar.classList.remove(
+            "active"
+        );
+
+
+        mobileOverlay.classList.remove(
+            "active"
+        );
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    if (menuButton) {
+
+        menuButton.addEventListener(
+            "click",
+            openMobileMenu
+        );
+
+    }
+
+
+    if (closeMobileMenu) {
+
+        closeMobileMenu.addEventListener(
+            "click",
+            closeMenu
+        );
+
+    }
+
+
+    if (mobileOverlay) {
+
+        mobileOverlay.addEventListener(
+            "click",
+            closeMenu
+        );
+
+    }
+
+
+    async function logout() {
+
+        await db.auth.signOut();
+
+
+        localStorage.removeItem(
+            "threadlyLoggedIn"
+        );
+
+
+        localStorage.removeItem(
+            "threadlyUser"
+        );
+
+
+        window.location.href =
+            "login.html";
+
+    }
+
+
+    if (logoutButton) {
+
+        logoutButton.addEventListener(
+            "click",
+            logout
+        );
+
+    }
+
+
+    if (mobileLogout) {
+
+        mobileLogout.addEventListener(
+            "click",
+            logout
+        );
+
+    }
+
+
+    function getStockStatus(
+        quantity
+    ) {
+
+        const stock =
+            Number(quantity) || 0;
+
+
+        if (stock <= 0) {
+
+            return "out-of-stock";
+
+        }
+
+
+        if (stock <= 3) {
+
+            return "low-stock";
+
+        }
+
+
+        return "in-stock";
+
+    }
+
+
+    function getStockLabel(
+        quantity
+    ) {
+
+        const status =
+            getStockStatus(
+                quantity
+            );
+
+
+        if (
+            status ===
+            "out-of-stock"
+        ) {
+
+            return "Out of Stock";
+
+        }
+
+
+        if (
+            status ===
+            "low-stock"
+        ) {
+
+            return "Low Stock";
+
+        }
+
+
+        return "In Stock";
+
+    }
+
+
+    function formatMoney(
+        amount
+    ) {
+
+        return "₦" +
+            Number(
+                amount || 0
+            ).toLocaleString(
+                "en-NG"
+            );
+
+    }
+
+
+    async function checkVendor() {
+
+        try {
+
+            if (!db) {
+
+                throw new Error(
+                    "Supabase could not be loaded."
+                );
+
+            }
+
+
+            const {
+                data:
+                    sessionData,
+
+                error:
+                    sessionError
+
+            } =
+                await db.auth.getSession();
+
+
+            if (sessionError) {
+
+                throw sessionError;
+
+            }
+
+
+            if (
+                !sessionData ||
+                !sessionData.session ||
+                !sessionData.session.user
+            ) {
+
+                window.location.href =
+                    "login.html";
+
+                return false;
+
+            }
+
+
+            const user =
+                sessionData.session.user;
+
+
+            const {
+                data:
+                    profile,
+
+                error:
+                    profileError
+
+            } =
+                await db
+                    .from("profiles")
+                    .select(
+                        "full_name, role"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
+
+
+            if (profileError) {
+
+                throw profileError;
+
+            }
+
+
+            if (
+                !profile ||
+                (
+                    profile.role !== "vendor" &&
+                    profile.role !== "admin"
+                )
+            ) {
+
+                window.location.href =
+                    "login.html";
+
+                return false;
+
+            }
+
+
+            if (vendorName) {
+
+                vendorName.textContent =
+                    profile.full_name ||
+                    "Vendor";
+
+            }
+
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "Vendor check error:",
+                error
+            );
+
+
+            inventoryList.innerHTML = `
+                <div class="inventory-message">
+                    ${error.message}
+                </div>
+            `;
+
+
+            return false;
+
+        }
+
+    }
+
+
+    async function loadInventory() {
+
+        inventoryList.innerHTML = `
+            <div class="inventory-message">
+                Loading inventory...
+            </div>
+        `;
+
+
+        const {
+            data,
+            error
+        } =
+            await db
+                .from("products")
+                .select(`
+                    id,
+                    name,
+                    category,
+                    price,
+                    image,
+                    in_stock,
+                    quantity,
+                    sizes
+                `)
+                .order(
+                    "created_at",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Inventory error:",
+                error
+            );
+
+
+            inventoryList.innerHTML = `
+                <div class="inventory-message">
+                    ${error.message}
+                </div>
+            `;
+
+
+            return;
+
+        }
+
+
+        allProducts =
+            Array.isArray(data)
+                ? data
+                : [];
+
+
+        updateStats();
+
+        renderInventory();
+
+    }
+
+
+    function updateStats() {
+
+        totalProducts.textContent =
+            allProducts.length;
+
+
+        let stock = 0;
+
+
+        allProducts.forEach(
+            function (product) {
+
+                stock +=
+                    Number(
+                        product.quantity
+                    ) || 0;
+
+            }
+        );
+
+
+        totalStock.textContent =
+            stock;
+
+
+        lowStock.textContent =
+            allProducts.filter(
+                function (product) {
+
+                    const quantity =
+                        Number(
+                            product.quantity
+                        ) || 0;
+
+
+                    return (
+                        quantity > 0 &&
+                        quantity <= 3
+                    );
+
+                }
+            ).length;
+
+
+        outOfStock.textContent =
+            allProducts.filter(
+                function (product) {
+
+                    return (
+                        Number(
+                            product.quantity
+                        ) || 0
+                    ) <= 0;
+
+                }
+            ).length;
+
+    }
+
+
+    function getSizes(
+        sizes
+    ) {
+
+        if (
+            Array.isArray(sizes) &&
+            sizes.length
+        ) {
+
+            return sizes;
+
+        }
+
+
+        return [];
+
+    }
+
+
+    function renderInventory() {
+
+        const search =
+            inventorySearch.value
+                .trim()
+                .toLowerCase();
+
+
+        const selectedFilter =
+            inventoryFilter.value;
+
+
+        const filtered =
+            allProducts.filter(
+                function (product) {
+
+                    const name =
+                        String(
+                            product.name || ""
+                        ).toLowerCase();
+
+
+                    const id =
+                        String(
+                            product.id || ""
+                        ).toLowerCase();
+
+
+                    const quantity =
+                        Number(
+                            product.quantity
+                        ) || 0;
+
+
+                    const status =
+                        getStockStatus(
+                            quantity
+                        );
+
+
+                    const matchesSearch =
+                        !search ||
+                        name.includes(
+                            search
+                        ) ||
+                        id.includes(
+                            search
+                        );
+
+
+                    const matchesFilter =
+                        selectedFilter ===
+                            "all" ||
+                        selectedFilter ===
+                            status;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesFilter
+                    );
+
+                }
+            );
+
+
+        inventoryCount.textContent =
+            filtered.length +
+            " product" +
+            (
+                filtered.length === 1
+                    ? ""
+                    : "s"
+            );
+
+
+        if (
+            filtered.length === 0
+        ) {
+
+            inventoryList.innerHTML = `
+                <div class="inventory-message">
+                    No products found.
+                </div>
+            `;
+
+
+            return;
+
+        }
+
+
+        inventoryList.innerHTML =
+            filtered.map(
+                function (product) {
+
+                    const quantity =
+                        Number(
+                            product.quantity
+                        ) || 0;
+
+
+                    const status =
+                        getStockStatus(
+                            quantity
+                        );
+
+
+                    const statusLabel =
+                        getStockLabel(
+                            quantity
+                        );
+
+
+                    const sizes =
+                        getSizes(
+                            product.sizes
+                        );
+
+
+                    let sizesHtml =
+                        '<span class="no-sizes">One size</span>';
+
+
+                    if (
+                        sizes.length
+                    ) {
+
+                        sizesHtml =
+                            `
+                                <div class="size-list">
+
+                                    ${
+                                        sizes.map(
+                                            function (size) {
+
+                                                return `
+                                                    <span class="size-item">
+                                                        ${size}
+                                                    </span>
+                                                `;
+
+                                            }
+                                        ).join("")
+                                    }
+
+                                </div>
+                            `;
+
+                    }
+
+
+                    return `
+
+                        <div
+                            class="inventory-row"
+                            data-id="${product.id}"
+                        >
+
+
+                            <div class="product-info">
+
+
+                                <img
+                                    class="product-image"
+                                    src="${product.image || "images/hoodie-001.jpg"}"
+                                    alt="${product.name || "Product"}"
+                                >
+
+
+                                <div class="product-details">
+
+                                    <strong>
+                                        ${product.name || "Unnamed Product"}
+                                    </strong>
+
+
+                                    <span>
+                                        ${product.id}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="product-category">
+
+                                ${product.category || "Uncategorized"}
+
+                            </div>
+
+
+                            <div class="product-price">
+
+                                ${formatMoney(product.price)}
+
+                            </div>
+
+
+                            <div>
+
+                                ${sizesHtml}
+
+                            </div>
+
+
+                            <div>
+
+                                <span
+                                    class="stock-badge ${status}"
+                                >
+                                    ${statusLabel}
+                                </span>
+
+
+                                <div style="margin-top: 8px; color: #737373; font-size: 11px;">
+                                    Current: ${quantity}
+                                </div>
+
+                            </div>
+
+
+                            <div>
+
+
+                                <input
+                                    class="stock-input"
+                                    type="number"
+                                    min="0"
+                                    value="${quantity}"
+                                    data-id="${product.id}"
+                                >
+
+
+                                <button
+                                    type="button"
+                                    class="save-stock-button"
+                                    data-id="${product.id}"
+                                >
+                                    SAVE
+                                </button>
+
+                            </div>
+
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        attachSaveButtons();
+
+    }
+
+
+    function attachSaveButtons() {
+
+        const buttons =
+            document.querySelectorAll(
+                ".save-stock-button"
+            );
+
+
+        buttons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    async function () {
+
+                        const productId =
+                            button.dataset.id;
+
+
+                        const row =
+                            button.closest(
+                                ".inventory-row"
+                            );
+
+
+                        if (!row) {
+
+                            return;
+
+                        }
+
+
+                        const input =
+                            row.querySelector(
+                                ".stock-input"
+                            );
+
+
+                        let quantity =
+                            Number(
+                                input.value
+                            );
+
+
+                        if (
+                            !Number.isFinite(
+                                quantity
+                            ) ||
+                            quantity < 0
+                        ) {
+
+                            alert(
+                                "Enter a valid stock quantity."
+                            );
+
+                            input.focus();
+
+                            return;
+
+                        }
+
+
+                        quantity =
+                            Math.floor(
+                                quantity
+                            );
+
+
+                        button.disabled =
+                            true;
+
+
+                        button.textContent =
+                            "SAVING...";
+
+
+                        const {
+                            data,
+                            error
+                        } =
+                            await db
+                                .from("products")
+                                .update({
+
+                                    quantity:
+                                        quantity,
+
+                                    in_stock:
+                                        quantity > 0
+
+                                })
+                                .eq(
+                                    "id",
+                                    productId
+                                )
+                                .select(
+                                    `
+                                        id,
+                                        quantity,
+                                        in_stock
+                                    `
+                                )
+                                .maybeSingle();
+
+
+                        if (error) {
+
+                            console.error(
+                                "Stock update error:",
+                                error
+                            );
+
+
+                            button.disabled =
+                                false;
+
+
+                            button.textContent =
+                                "SAVE";
+
+
+                            alert(
+                                error.message
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        if (!data) {
+
+                            button.disabled =
+                                false;
+
+
+                            button.textContent =
+                                "SAVE";
+
+
+                            alert(
+                                "The product was not updated. Check the products update policy in Supabase."
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        const product =
+                            allProducts.find(
+                                function (item) {
+
+                                    return (
+                                        item.id ===
+                                        productId
+                                    );
+
+                                }
+                            );
+
+
+                        if (product) {
+
+                            product.quantity =
+                                data.quantity;
+
+
+                            product.in_stock =
+                                data.in_stock;
+
+                        }
+
+
+                        updateStats();
+
+
+                        button.textContent =
+                            "SAVED ✓";
+
+
+                        button.classList.add(
+                            "saved"
+                        );
+
+
+                        setTimeout(
+                            function () {
+
+                                button.disabled =
+                                    false;
+
+
+                                button.textContent =
+                                    "SAVE";
+
+
+                                button.classList.remove(
+                                    "saved"
+                                );
+
+
+                                renderInventory();
+
+                            },
+                            1000
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    inventorySearch.addEventListener(
+        "input",
+        renderInventory
+    );
+
+
+    inventoryFilter.addEventListener(
+        "change",
+        renderInventory
+    );
+
+
+    async function startPage() {
+
+        const allowed =
+            await checkVendor();
+
+
+        if (!allowed) {
+
+            return;
+
+        }
+
+
+        await loadInventory();
+
+    }
+
+
+    startPage();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>

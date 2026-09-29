@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Orders | THREADLY Vendor</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <script>
+
+        (function () {
+
+            const savedTheme =
+                localStorage.getItem(
+                    "threadlyVendorTheme"
+                ) || "light";
+
+
+            if (
+                savedTheme === "dark"
+            ) {
+
+                document.documentElement.classList.add(
+                    "threadly-vendor-dark"
+                );
+
+            }
+
+        })();
+
+    </script>
+
+    <style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    html,
+    body {
+        min-height: 100%;
+    }
+
+
+    html {
+        background: #f7f5f2;
+    }
+
+
+    html.threadly-vendor-dark {
+        background: #111;
+    }
+
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        background: #f7f5f2;
+        color: #171717;
+    }
+
+
+    html.threadly-vendor-dark body {
+        background: #111;
+        color: #f5f5f5;
+    }
+
+
+    .header {
+        height: 70px;
+        background: #fff;
+        border-bottom: 1px solid #dedbd6;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+
+    html.threadly-vendor-dark body .header {
+        background: #1b1b1b;
+        border-color: #333;
+    }
+
+
+    .logo {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+
+    .vendor-name {
+        font-size: 14px;
+        color: #737373;
+    }
+
+
+    .menu-button {
+        display: none;
+        border: none;
+        background: none;
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+
+    .sidebar {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        bottom: 0;
+        width: 230px;
+        background: #fff;
+        border-right: 1px solid #dedbd6;
+        padding: 25px 15px;
+        z-index: 900;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+
+    html.threadly-vendor-dark body .sidebar {
+        background: #1b1b1b;
+        border-color: #333;
+    }
+
+
+    .vendor-label {
+        font-size: 11px;
+        color: #737373;
+        letter-spacing: 1px;
+        margin: 0 12px 15px;
+    }
+
+
+    .vendor-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        padding: 13px 12px;
+        border-radius: 6px;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+
+    .vendor-link:hover,
+    .vendor-link.active {
+        background: #f2efeb;
+        color: #7d2638;
+    }
+
+
+    html.threadly-vendor-dark body .vendor-link:hover,
+    html.threadly-vendor-dark body .vendor-link.active {
+        background: #282828;
+        color: #c45a70;
+    }
+
+
+    .logout-link {
+        margin-top: 20px;
+        color: #7d2638;
+        cursor: pointer;
+    }
+
+
+    .main {
+        margin-left: 230px;
+        min-height: 100vh;
+        padding: 100px 35px 40px;
+    }
+
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+
+    .page-title {
+        margin: 0;
+        font-size: 28px;
+    }
+
+
+    .page-subtitle {
+        margin: 7px 0 0;
+        color: #737373;
+        font-size: 14px;
+    }
+
+
+    .filters {
+        background: #fff;
+        border: 1px solid #dedbd6;
+        padding: 18px;
+        border-radius: 10px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+
+    html.threadly-vendor-dark body .filters {
+        background: #1b1b1b;
+        border-color: #333;
+    }
+
+
+    .search {
+        flex: 1;
+        min-width: 220px;
+        padding: 12px 14px;
+        border: 1px solid #dedbd6;
+        border-radius: 6px;
+        background: #fff;
+        color: #171717;
+        outline: none;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+
+    html.threadly-vendor-dark body .search {
+        background: #111;
+        color: #f5f5f5;
+        border-color: #333;
+    }
+
+
+    select {
+        padding: 12px 14px;
+        border: 1px solid #dedbd6;
+        border-radius: 6px;
+        background: #fff;
+        color: #171717;
+        min-width: 170px;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+
+    html.threadly-vendor-dark body select {
+        background: #111;
+        color: #f5f5f5;
+        border-color: #333;
+    }
+
+
+    .order-count {
+        color: #737373;
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+
+    .orders-container {
+        background: #fff;
+        border: 1px solid #dedbd6;
+        border-radius: 10px;
+        overflow: hidden;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+
+    html.threadly-vendor-dark body .orders-container {
+        background: #1b1b1b;
+        border-color: #333;
+    }
+
+
+    .order-row {
+        padding: 20px;
+        border-bottom: 1px solid #dedbd6;
+        display: grid;
+        grid-template-columns: 1.1fr 1.5fr 1fr 1fr 1fr 100px;
+        gap: 20px;
+        align-items: center;
+
+        background: #fff;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+
+    html.threadly-vendor-dark body .order-row {
+        background: #1b1b1b;
+        border-color: #333;
+    }
+
+
+    .order-row:last-child {
+        border-bottom: none;
+    }
+
+
+    .order-heading {
+        background: #f7f5f2;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: #737373;
+    }
+
+
+    html.threadly-vendor-dark body .order-heading {
+        background: #111;
+    }
+
+
+    .order-number {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+
+    .customer-name {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+
+    .customer-info {
+        font-size: 12px;
+        color: #737373;
+        line-height: 1.5;
+    }
+
+
+    .total {
+        font-weight: 700;
+    }
+
+
+    .status {
+        display: inline-block;
+        padding: 6px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        text-transform: capitalize;
+    }
+
+
+    .status.paid {
+        background: #e7f5eb;
+        color: #23743d;
+    }
+
+
+    .status.pending {
+        background: #fff3d9;
+        color: #936500;
+    }
+
+
+    .status.failed {
+        background: #f9e3e3;
+        color: #9a2929;
+    }
+
+
+    .status.processing {
+        background: #eee7f8;
+        color: #633b91;
+    }
+
+
+    .status.shipped {
+        background: #e4eef8;
+        color: #285c91;
+    }
+
+
+    .status.delivered {
+        background: #e7f5eb;
+        color: #23743d;
+    }
+
+
+    .view-button {
+        border: none;
+        background: #7d2638;
+        color: #fff;
+        padding: 9px 13px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+
+    .view-button:hover {
+        opacity: .9;
+    }
+
+
+    .empty-message {
+        padding: 50px 20px;
+        text-align: center;
+        color: #737373;
+        background: #fff;
+
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease;
+    }
+
+
+    html.threadly-vendor-dark body .empty-message {
+        background: #1b1b1b;
+        color: #a3a3a3;
+    }
+
+
+    .mobile-overlay {
+        display: none;
+    }
+
+
+    .order-details {
+        display: none;
+    }
+
+
+    @media (max-width: 900px) {
+
+        .menu-button {
+            display: block;
+        }
+
+
+        .header {
+            padding: 0 18px;
+        }
+
+
+        .sidebar {
+            transform: translateX(-100%);
+            transition: .25s ease;
+        }
+
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+
+        .mobile-overlay {
+            position: fixed;
+            inset: 70px 0 0;
+            background: rgba(0,0,0,.4);
+            z-index: 800;
+        }
+
+
+        .mobile-overlay.open {
+            display: block;
+        }
+
+
+        .main {
+            margin-left: 0;
+            min-height: 100vh;
+            padding: 95px 18px 30px;
+        }
+
+
+        .order-heading {
+            display: none;
+        }
+
+
+        .order-row {
+            display: block;
+            padding: 20px;
+        }
+
+
+        .order-row > div {
+            margin-bottom: 13px;
+        }
+
+
+        .order-row > div:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .view-button {
+            width: 100%;
+            padding: 11px;
+        }
+
+    }
+
+
+    @media (max-width: 500px) {
+
+        .vendor-name {
+            display: none;
+        }
+
+
+        .page-title {
+            font-size: 24px;
+        }
+
+
+        .filters {
+            padding: 14px;
+        }
+
+
+        .search,
+        select {
+            width: 100%;
+            min-width: 0;
+        }
+
+    }
+
+
+    html.threadly-vendor-dark .menu-button {
+        color: #f5f5f5;
+    }
+
+</style>
+
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="logo">
+            THREADLY
+        </div>
+
+        <div
+            class="vendor-name"
+            id="vendorName"
+        >
+            Vendor
+        </div>
+
+        <button
+            class="menu-button"
+            id="menuButton"
+        >
+            ☰
+        </button>
+
+    </header>
+
+
+    <aside
+        class="sidebar"
+        id="vendorSidebar"
+    >
+
+        <div class="vendor-label">
+            VENDOR PANEL
+        </div>
+
+        <a
+            href="vendor-dashboard.html"
+            class="vendor-link"
+        >
+            Dashboard
+        </a>
+
+        <a
+            href="vendor-products.html"
+            class="vendor-link"
+        >
+            Products
+        </a>
+
+        <a
+            href="vendor-orders.html"
+            class="vendor-link active"
+        >
+            Orders
+        </a>
+
+        <a
+            href="vendor-customers.html"
+            class="vendor-link"
+        >
+            Customers
+        </a>
+
+        <a
+            href="vendor-payments.html"
+            class="vendor-link"
+        >
+            Payments
+        </a>
+
+        <a
+            href="vendor-inventory.html"
+            class="vendor-link"
+        >
+            Inventory
+        </a>
+
+        <a
+            href="vendor-settings.html"
+            class="vendor-link"
+        >
+            Settings
+        </a>
+
+        <a
+            href="#"
+            class="vendor-link logout-link"
+            id="logoutButton"
+        >
+            Log out
+        </a>
+
+    </aside>
+
+
+    <div
+        class="mobile-overlay"
+        id="mobileOverlay"
+    ></div>
+
+
+    <main class="main">
+
+        <div class="page-header">
+
+            <div>
+
+                <h1 class="page-title">
+                    Orders
+                </h1>
+
+                <p class="page-subtitle">
+                    Manage customer orders and delivery status.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="filters">
+
+            <input
+                type="text"
+                id="orderSearch"
+                class="search"
+                placeholder="Search order number or customer..."
+            >
+
+            <select id="paymentFilter">
+
+                <option value="all">
+                    All payment status
+                </option>
+
+                <option value="Paid">
+                    Paid
+                </option>
+
+                <option value="pending">
+                    Pending
+                </option>
+
+                <option value="failed">
+                    Failed
+                </option>
+
+            </select>
+
+
+            <select id="deliveryFilter">
+
+                <option value="all">
+                    All delivery status
+                </option>
+
+                <option value="processing">
+                    Processing
+                </option>
+
+                <option value="shipped">
+                    Shipped
+                </option>
+
+                <option value="delivered">
+                    Delivered
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            class="order-count"
+            id="orderCount"
+        >
+            Loading orders...
+        </div>
+
+
+        <section class="orders-container">
+
+            <div class="order-row order-heading">
+
+                <div>
+                    Order
+                </div>
+
+                <div>
+                    Customer
+                </div>
+
+                <div>
+                    Total
+                </div>
+
+                <div>
+                    Payment
+                </div>
+
+                <div>
+                    Delivery
+                </div>
+
+                <div>
+                    Action
+                </div>
+
+            </div>
+
+
+            <div id="ordersList">
+
+                <div class="empty-message">
+                    Loading orders...
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        (async function () {
+
+            const vendorName =
+                document.getElementById("vendorName");
+
+            const menuButton =
+                document.getElementById("menuButton");
+
+            const vendorSidebar =
+                document.getElementById("vendorSidebar");
+
+            const mobileOverlay =
+                document.getElementById("mobileOverlay");
+
+            const logoutButton =
+                document.getElementById("logoutButton");
+
+            const orderSearch =
+                document.getElementById("orderSearch");
+
+            const paymentFilter =
+                document.getElementById("paymentFilter");
+
+            const deliveryFilter =
+                document.getElementById("deliveryFilter");
+
+            const orderCount =
+                document.getElementById("orderCount");
+
+            const ordersList =
+                document.getElementById("ordersList");
+
+
+            let orders = [];
+
+
+            function closeMenu() {
+
+                vendorSidebar.classList.remove("open");
+
+                mobileOverlay.classList.remove("open");
+
+            }
+
+
+            menuButton.addEventListener(
+                "click",
+                function () {
+
+                    vendorSidebar.classList.toggle("open");
+
+                    mobileOverlay.classList.toggle("open");
+
+                }
+            );
+
+
+            mobileOverlay.addEventListener(
+                "click",
+                closeMenu
+            );
+
+
+            document
+                .querySelectorAll(".vendor-link")
+                .forEach(
+                    function (link) {
+
+                        link.addEventListener(
+                            "click",
+                            closeMenu
+                        );
+
+                    }
+                );
+
+
+            const supabase =
+                window.threadlySupabase;
+
+
+            if (!supabase) {
+
+                ordersList.innerHTML =
+                    `
+                    <div class="empty-message">
+                        Authentication service is unavailable.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            const {
+                data: sessionData,
+                error: sessionError
+            } =
+                await supabase.auth.getSession();
+
+
+            if (
+                sessionError ||
+                !sessionData ||
+                !sessionData.session ||
+                !sessionData.session.user
+            ) {
+
+                window.location.replace(
+                    "login.html"
+                );
+
+                return;
+
+            }
+
+
+            const user =
+                sessionData.session.user;
+
+
+            const {
+                data: profile,
+                error: profileError
+            } =
+                await supabase
+                    .from("profiles")
+                    .select("full_name, role")
+                    .eq("id", user.id)
+                    .single();
+
+
+            if (
+                profileError ||
+                !profile
+            ) {
+
+                ordersList.innerHTML =
+                    `
+                    <div class="empty-message">
+                        Your vendor profile could not be loaded.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            if (
+                profile.role !== "vendor" &&
+                profile.role !== "admin"
+            ) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+
+            }
+
+
+            vendorName.textContent =
+                profile.full_name ||
+                "Vendor";
+
+
+            async function loadOrders() {
+
+                ordersList.innerHTML =
+                    `
+                    <div class="empty-message">
+                        Loading orders...
+                    </div>
+                    `;
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabase
+                        .from("orders")
+                        .select(`
+                            id,
+                            order_number,
+                            customer,
+                            items,
+                            total,
+                            payment_status,
+                            delivery_status,
+                            created_at
+                        `)
+                        .order(
+                            "created_at",
+                            {
+                                ascending: false
+                            }
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Orders loading error:",
+                        error
+                    );
+
+                    ordersList.innerHTML =
+                        `
+                        <div class="empty-message">
+                            Orders could not be loaded.
+                        </div>
+                        `;
+
+                    return;
+
+                }
+
+
+                orders =
+                    data || [];
+
+                renderOrders();
+
+            }
+
+
+            function renderOrders() {
+
+                const search =
+                    orderSearch.value
+                        .trim()
+                        .toLowerCase();
+
+                const payment =
+                    paymentFilter.value;
+
+                const delivery =
+                    deliveryFilter.value;
+
+
+                const filteredOrders =
+                    orders.filter(
+                        function (order) {
+
+                            const customer =
+                                order.customer ||
+                                {};
+
+                            const customerName =
+                                customer.fullName ||
+                                "";
+
+                            const matchesSearch =
+                                (
+                                    order.order_number ||
+                                    ""
+                                )
+                                    .toLowerCase()
+                                    .includes(search)
+                                ||
+                                customerName
+                                    .toLowerCase()
+                                    .includes(search);
+
+
+                            const matchesPayment =
+                                payment === "all" ||
+                                order.payment_status === payment;
+
+
+                            const matchesDelivery =
+                                delivery === "all" ||
+                                order.delivery_status === delivery;
+
+
+                            return (
+                                matchesSearch &&
+                                matchesPayment &&
+                                matchesDelivery
+                            );
+
+                        }
+                    );
+
+
+                orderCount.textContent =
+                    filteredOrders.length +
+                    " order" +
+                    (
+                        filteredOrders.length === 1
+                            ? ""
+                            : "s"
+                    );
+
+
+                ordersList.innerHTML = "";
+
+
+                if (!filteredOrders.length) {
+
+                    ordersList.innerHTML =
+                        `
+                        <div class="empty-message">
+                            No orders found.
+                        </div>
+                        `;
+
+                    return;
+
+                }
+
+
+                filteredOrders.forEach(
+                    function (order) {
+
+                        const customer =
+                            order.customer ||
+                            {};
+
+
+                        const paymentClass =
+                            String(
+                                order.payment_status ||
+                                ""
+                            )
+                                .toLowerCase()
+                                .replace(
+                                    /[^a-z]/g,
+                                    ""
+                                );
+
+
+                        const deliveryClass =
+                            String(
+                                order.delivery_status ||
+                                ""
+                            )
+                                .toLowerCase()
+                                .replace(
+                                    /[^a-z]/g,
+                                    ""
+                                );
+
+
+                        const date =
+                            new Date(
+                                order.created_at
+                            );
+
+
+                        const formattedDate =
+                            date.toLocaleDateString(
+                                "en-NG",
+                                {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "numeric"
+                                }
+                            );
+
+
+                        const row =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        row.className =
+                            "order-row";
+
+
+                        row.innerHTML =
+                            `
+
+                            <div>
+
+                                <div class="order-number">
+                                    ${order.order_number || "-"}
+                                </div>
+
+                                <div class="customer-info">
+                                    ${formattedDate}
+                                </div>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="customer-name">
+                                    ${customer.fullName || "-"}
+                                </div>
+
+                                <div class="customer-info">
+                                    ${customer.phone || "-"}
+                                    <br>
+                                    ${customer.email || "-"}
+                                </div>
+
+                            </div>
+
+
+                            <div class="total">
+                                ₦${Number(
+                                    order.total || 0
+                                ).toLocaleString()}
+                            </div>
+
+
+                            <div>
+
+                                <span
+                                    class="status ${paymentClass}"
+                                >
+                                    ${order.payment_status || "-"}
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <span
+                                    class="status ${deliveryClass}"
+                                >
+                                    ${order.delivery_status || "-"}
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <button
+                                    class="view-button"
+                                    data-id="${order.id}"
+                                >
+                                    View
+                                </button>
+
+                            </div>
+
+                        `;
+
+
+                        ordersList.appendChild(
+                            row
+                        );
+
+                    }
+                );
+
+
+                document
+                    .querySelectorAll(".view-button")
+                    .forEach(
+                        function (button) {
+
+                            button.addEventListener(
+                                "click",
+                                function () {
+
+                                    const id =
+                                        this.dataset.id;
+
+                                    window.location.href =
+                                        "order-view.html?id=" +
+                                        encodeURIComponent(id);
+
+                                }
+                            );
+
+                        }
+                    );
+
+            }
+
+
+            orderSearch.addEventListener(
+                "input",
+                renderOrders
+            );
+
+
+            paymentFilter.addEventListener(
+                "change",
+                renderOrders
+            );
+
+
+            deliveryFilter.addEventListener(
+                "change",
+                renderOrders
+            );
+
+
+            logoutButton.addEventListener(
+                "click",
+                async function (event) {
+
+                    event.preventDefault();
+
+                    await supabase.auth.signOut();
+
+                    localStorage.removeItem(
+                        "threadlyLoggedIn"
+                    );
+
+                    localStorage.removeItem(
+                        "threadlyUser"
+                    );
+
+                    window.location.replace(
+                        "login.html"
+                    );
+
+                }
+            );
+
+
+            await loadOrders();
+
+        })();
+
+    </script>
+
+</body>
+</html>
