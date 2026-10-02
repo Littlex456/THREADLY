@@ -1459,13 +1459,19 @@
             products.find(
                 function (item) {
 
-                    return item.id === id;
+                    return String(item.id) === String(id);
 
                 }
             );
 
 
-        if (!product) return;
+        if (!product) {
+
+            alert("Product not found.");
+
+            return;
+
+        }
 
 
         const confirmed =
@@ -1479,33 +1485,128 @@
         if (!confirmed) return;
 
 
-        const {
-            error
-        } = await supabase
-            .from("products")
-            .delete()
-            .eq("id", id);
+        const button =
+            document.querySelector(
+                `.delete-button[data-id="${CSS.escape(String(id))}"]`
+            );
 
 
-        if (error) {
+        if (button) {
+
+            button.disabled = true;
+
+            button.textContent =
+                "Deleting...";
+
+        }
+
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabase
+                .from("products")
+                .delete()
+                .eq("id", id)
+                .select("id");
+
+
+            if (error) {
+
+                console.error(
+                    "Product delete error:",
+                    error
+                );
+
+
+                alert(
+                    "The product could not be deleted.\n\n" +
+                    error.message
+                );
+
+
+                if (button) {
+
+                    button.disabled = false;
+
+                    button.textContent =
+                        "Delete";
+
+                }
+
+
+                return;
+
+            }
+
+
+            if (!data || data.length === 0) {
+
+                console.error(
+                    "No product was deleted."
+                );
+
+
+                alert(
+                    "The product was not deleted. " +
+                    "Supabase did not return a deleted product."
+                );
+
+
+                if (button) {
+
+                    button.disabled = false;
+
+                    button.textContent =
+                        "Delete";
+
+                }
+
+
+                return;
+
+            }
+
+
+            products =
+                products.filter(
+                    function (item) {
+
+                        return String(item.id) !==
+                            String(id);
+
+                    }
+                );
+
+
+            renderProducts();
+
+
+        } catch (error) {
 
             console.error(
-                "Product delete error:",
+                "Unexpected delete error:",
                 error
             );
 
 
             alert(
-                "The product could not be deleted."
+                "Something went wrong while deleting the product."
             );
 
 
-            return;
+            if (button) {
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Delete";
+
+            }
 
         }
-
-
-        await loadProducts();
 
     }
 

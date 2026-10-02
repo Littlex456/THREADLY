@@ -1,85 +1,2106 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta charset="UTF-8">
 
-    <title>Cart | THREADLY</title>
-    <script>
-(function () {
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    const savedTheme =
-        localStorage.getItem("threadlyTheme") ||
-        "system";
+<meta
+    name="description"
+    content="Review your selected THREADLY products and proceed to checkout."
+>
 
-    const prefersDark =
-        window.matchMedia &&
-        window.matchMedia(
-            "(prefers-color-scheme: dark)"
-        ).matches;
+<meta
+    name="robots"
+    content="noindex, nofollow"
+>
 
-    const shouldUseDark =
-        savedTheme === "dark" ||
-        (
-            savedTheme === "system" &&
-            prefersDark
-        );
+<meta
+    name="theme-color"
+    content="#f6f3ef"
+>
 
-    if (shouldUseDark) {
-        document.documentElement.classList.add(
-            "threadly-dark"
-        );
-    }
+<title>Cart | THREADLY</title>
 
-})();
+
+<!-- =====================================================
+     EARLY THEME
+====================================================== -->
+
+<script>
+
+    (function () {
+
+        const savedTheme =
+            localStorage.getItem(
+                "threadlyTheme"
+            ) || "system";
+
+
+        const prefersDark =
+            window.matchMedia &&
+            window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            ).matches;
+
+
+        const shouldUseDark =
+            savedTheme === "dark" ||
+            (
+                savedTheme === "system" &&
+                prefersDark
+            );
+
+
+        if (shouldUseDark) {
+
+            document.documentElement.classList.add(
+                "threadly-dark"
+            );
+
+        }
+
+    })();
+
 </script>
 
-<link rel="stylesheet" href="style.css">
 
-    <link rel="stylesheet" href="style.css">
+<!-- =====================================================
+     INLINE CART CSS
+====================================================== -->
+
+<style>
+
+    /* =====================================================
+       THREADLY DESIGN VARIABLES
+    ====================================================== */
+
+    :root {
+
+        --bg:
+            #f6f3ef;
+
+        --surface:
+            #ffffff;
+
+        --surface-2:
+            #eeebe6;
+
+        --text:
+            #171717;
+
+        --muted:
+            #747474;
+
+        --accent:
+            #7b2639;
+
+        --accent-dark:
+            #641d2d;
+
+        --accent-soft:
+            #f1e2e6;
+
+        --border:
+            #ded9d3;
+
+        --shadow:
+            0 18px 45px
+            rgba(0, 0, 0, 0.07);
+
+        --shadow-small:
+            0 8px 25px
+            rgba(0, 0, 0, 0.06);
+
+        --max-width:
+            1280px;
+
+        --transition:
+            0.28s ease;
+
+        color-scheme:
+            light;
+    }
+
+
+    /* =====================================================
+       DARK MODE
+    ====================================================== */
+
+    body.dark-mode {
+
+        --bg:
+            #111111;
+
+        --surface:
+            #1a1a1a;
+
+        --surface-2:
+            #232323;
+
+        --text:
+            #f5f3f0;
+
+        --muted:
+            #a4a4a4;
+
+        --accent:
+            #c65b72;
+
+        --accent-dark:
+            #a74359;
+
+        --accent-soft:
+            #321d23;
+
+        --border:
+            #303030;
+
+        --shadow:
+            0 18px 45px
+            rgba(0, 0, 0, 0.28);
+
+        --shadow-small:
+            0 8px 25px
+            rgba(0, 0, 0, 0.22);
+
+        color-scheme:
+            dark;
+    }
+
+
+    /* =====================================================
+       RESET
+    ====================================================== */
+
+    html {
+
+        scroll-behavior:
+            smooth;
+
+        box-sizing:
+            border-box;
+
+        background:
+            var(--bg);
+
+        max-width:
+            100%;
+
+        overflow-x:
+            hidden;
+    }
+
+
+    *,
+    *::before,
+    *::after {
+
+        box-sizing:
+            inherit;
+    }
+
+
+    body {
+
+        margin:
+            0;
+
+        width:
+            100%;
+
+        min-height:
+            100vh;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+        background:
+            var(--bg);
+
+        color:
+            var(--text);
+
+        line-height:
+            1.6;
+
+        transition:
+            background-color var(--transition),
+            color var(--transition);
+
+        overflow-x:
+            hidden;
+    }
+
+
+    body.menu-open {
+
+        overflow:
+            hidden;
+    }
+
+
+    a {
+
+        color:
+            inherit;
+
+        text-decoration:
+            none;
+    }
+
+
+    button {
+
+        font:
+            inherit;
+
+        cursor:
+            pointer;
+    }
+
+
+    img {
+
+        display:
+            block;
+
+        width:
+            100%;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ====================================================== */
+
+    .skip-link {
+
+        position:
+            fixed;
+
+        top:
+            12px;
+
+        left:
+            12px;
+
+        z-index:
+            2000;
+
+        padding:
+            10px 15px;
+
+        border-radius:
+            7px;
+
+        background:
+            var(--accent);
+
+        color:
+            #ffffff;
+
+        font-size:
+            13px;
+
+        font-weight:
+            700;
+
+        transform:
+            translateY(-150%);
+
+        transition:
+            transform var(--transition);
+    }
+
+
+    .skip-link:focus {
+
+        transform:
+            translateY(0);
+    }
+
+
+    a:focus-visible,
+    button:focus-visible {
+
+        outline:
+            2px solid
+            var(--accent);
+
+        outline-offset:
+            4px;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ====================================================== */
+
+    .site-header {
+
+        position:
+            sticky;
+
+        top:
+            0;
+
+        z-index:
+            1000;
+
+        width:
+            100%;
+
+        padding:
+            0 30px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        height:
+            76px;
+
+        background:
+            rgba(246, 243, 239, 0.94);
+
+        border-bottom:
+            1px solid
+            var(--border);
+
+        backdrop-filter:
+            blur(16px);
+
+        -webkit-backdrop-filter:
+            blur(16px);
+    }
+
+
+    body.dark-mode .site-header {
+
+        background:
+            rgba(17, 17, 17, 0.94);
+    }
+
+
+    .logo {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        color:
+            var(--text);
+
+        font-size:
+            22px;
+
+        font-weight:
+            800;
+
+        letter-spacing:
+            4px;
+
+        transition:
+            opacity var(--transition);
+    }
+
+
+    .logo:hover {
+
+        opacity:
+            0.65;
+    }
+
+
+    .desktop-nav {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            30px;
+
+        margin-left:
+            auto;
+
+        margin-right:
+            35px;
+    }
+
+
+    .desktop-nav a {
+
+        position:
+            relative;
+
+        color:
+            var(--text);
+
+        font-size:
+            13px;
+
+        font-weight:
+            600;
+
+        letter-spacing:
+            0.4px;
+    }
+
+
+    .desktop-nav a::after {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        left:
+            0;
+
+        bottom:
+            -8px;
+
+        width:
+            0;
+
+        height:
+            1.5px;
+
+        background:
+            var(--accent);
+
+        transition:
+            width var(--transition);
+    }
+
+
+    .desktop-nav a:hover,
+    .desktop-nav a.active {
+
+        color:
+            var(--accent);
+    }
+
+
+    .desktop-nav a:hover::after,
+    .desktop-nav a.active::after {
+
+        width:
+            100%;
+    }
+
+
+    .header-actions {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+    }
+
+
+    .menu-button {
+
+        width:
+            43px;
+
+        height:
+            43px;
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        gap:
+            4px;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            50%;
+
+        background:
+            var(--surface);
+
+        color:
+            var(--text);
+    }
+
+
+    .menu-button:hover {
+
+        background:
+            var(--accent);
+
+        border-color:
+            var(--accent);
+
+        color:
+            #ffffff;
+    }
+
+
+    .menu-button span {
+
+        display:
+            block;
+
+        width:
+            16px;
+
+        height:
+            1.5px;
+
+        background:
+            currentColor;
+
+        border-radius:
+            2px;
+    }
+
+
+    /* =====================================================
+       MOBILE MENU
+    ====================================================== */
+
+    .menu-overlay {
+
+        position:
+            fixed;
+
+        inset:
+            0;
+
+        z-index:
+            1090;
+
+        background:
+            rgba(0, 0, 0, 0.45);
+
+        opacity:
+            0;
+
+        visibility:
+            hidden;
+
+        pointer-events:
+            none;
+
+        transition:
+            opacity var(--transition),
+            visibility var(--transition);
+    }
+
+
+    .menu-overlay.active {
+
+        opacity:
+            1;
+
+        visibility:
+            visible;
+
+        pointer-events:
+            auto;
+    }
+
+
+    .mobile-menu {
+
+        position:
+            fixed;
+
+        top:
+            0;
+
+        right:
+            0;
+
+        z-index:
+            1100;
+
+        width:
+            min(360px, 88vw);
+
+        height:
+            100vh;
+
+        padding:
+            0;
+
+        background:
+            var(--surface);
+
+        color:
+            var(--text);
+
+        border-left:
+            1px solid
+            var(--border);
+
+        transform:
+            translateX(100%);
+
+        visibility:
+            hidden;
+
+        opacity:
+            0;
+
+        transition:
+            transform 0.3s ease,
+            opacity 0.3s ease,
+            visibility 0.3s ease;
+
+        overflow-y:
+            auto;
+    }
+
+
+    .mobile-menu.active {
+
+        transform:
+            translateX(0);
+
+        visibility:
+            visible;
+
+        opacity:
+            1;
+    }
+
+
+    .mobile-menu-header {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        padding:
+            24px;
+
+        border-bottom:
+            1px solid
+            var(--border);
+    }
+
+
+    .mobile-menu-header span {
+
+        font-size:
+            20px;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            3px;
+    }
+
+
+    .close-menu {
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            50%;
+
+        background:
+            var(--surface);
+
+        color:
+            var(--text);
+
+        font-size:
+            25px;
+    }
+
+
+    .close-menu:hover {
+
+        background:
+            var(--accent);
+
+        border-color:
+            var(--accent);
+
+        color:
+            #ffffff;
+    }
+
+
+    .mobile-nav {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        padding:
+            12px 20px 30px;
+    }
+
+
+    .mobile-nav a {
+
+        display:
+            block;
+
+        padding:
+            15px 4px;
+
+        border-bottom:
+            1px solid
+            transparent;
+
+        color:
+            var(--text);
+
+        transition:
+            color var(--transition);
+    }
+
+
+    .mobile-nav a:hover,
+    .mobile-nav a.active {
+
+        color:
+            var(--accent);
+    }
+
+
+    .mobile-menu-divider {
+
+        width:
+            100%;
+
+        height:
+            1px;
+
+        margin:
+            10px 0;
+
+        background:
+            var(--border);
+    }
+
+
+    /* =====================================================
+       CART PAGE
+    ====================================================== */
+
+    .cart-page {
+
+        width:
+            min(1200px, 92%);
+
+        margin:
+            0 auto;
+
+        padding:
+            55px
+            0
+            90px;
+    }
+
+
+    .cart-intro {
+
+        margin-bottom:
+            55px;
+    }
+
+
+    .cart-intro .section-label {
+
+        margin:
+            0 0 12px;
+
+        color:
+            var(--accent);
+
+        font-size:
+            0.7rem;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            0.13em;
+    }
+
+
+    .cart-intro h1 {
+
+        margin:
+            0;
+
+        color:
+            var(--text);
+
+        font-size:
+            clamp(
+                2.4rem,
+                5vw,
+                4rem
+            );
+
+        line-height:
+            1;
+
+        letter-spacing:
+            -0.04em;
+    }
+
+
+    .cart-intro > p:last-child {
+
+        margin:
+            18px 0 0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.9rem;
+
+        line-height:
+            1.6;
+    }
+
+
+    .cart-layout {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            minmax(0, 1.5fr)
+            minmax(320px, 0.7fr);
+
+        gap:
+            70px;
+
+        align-items:
+            start;
+    }
+
+
+    .cart-items {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        gap:
+            16px;
+    }
+
+
+    /* =====================================================
+       CART ITEM
+    ====================================================== */
+
+    .cart-item {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            120px
+            minmax(0, 1fr)
+            auto;
+
+        gap:
+            22px;
+
+        padding:
+            16px;
+
+        background:
+            var(--surface);
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            14px;
+
+        animation:
+            cartItemEnter
+            0.5s
+            ease
+            both;
+    }
+
+
+    .cart-item-image {
+
+        width:
+            120px;
+
+        height:
+            145px;
+
+        overflow:
+            hidden;
+
+        border-radius:
+            9px;
+
+        background:
+            var(--surface-2);
+    }
+
+
+    .cart-item-image img {
+
+        width:
+            100%;
+
+        height:
+            100%;
+
+        object-fit:
+            cover;
+
+        transition:
+            transform
+            0.4s
+            ease;
+    }
+
+
+    .cart-item:hover
+    .cart-item-image img {
+
+        transform:
+            scale(1.04);
+    }
+
+
+    .cart-item-info {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        justify-content:
+            center;
+
+        min-width:
+            0;
+    }
+
+
+    .cart-item-category {
+
+        margin:
+            0 0 7px;
+
+        color:
+            var(--accent);
+
+        font-size:
+            0.65rem;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            0.1em;
+    }
+
+
+    .cart-item-name {
+
+        margin:
+            0;
+
+        color:
+            var(--text);
+
+        font-size:
+            1rem;
+
+        line-height:
+            1.3;
+    }
+
+
+    .cart-item-size {
+
+        margin:
+            8px 0 0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.75rem;
+    }
+
+
+    .cart-item-price {
+
+        margin:
+            14px 0 0;
+
+        color:
+            var(--text);
+
+        font-size:
+            0.9rem;
+
+        font-weight:
+            700;
+    }
+
+
+    .cart-item-controls {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        gap:
+            15px;
+    }
+
+
+    .cart-quantity {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            7px;
+
+        overflow:
+            hidden;
+    }
+
+
+    .cart-quantity button {
+
+        width:
+            35px;
+
+        height:
+            35px;
+
+        border:
+            0;
+
+        background:
+            transparent;
+
+        color:
+            var(--text);
+
+        font-size:
+            1rem;
+    }
+
+
+    .cart-quantity button:hover {
+
+        background:
+            var(--accent-soft);
+
+        color:
+            var(--accent);
+    }
+
+
+    .cart-quantity button:disabled {
+
+        opacity:
+            0.35;
+
+        cursor:
+            not-allowed;
+    }
+
+
+    .cart-quantity span {
+
+        width:
+            35px;
+
+        text-align:
+            center;
+
+        color:
+            var(--text);
+
+        font-size:
+            0.75rem;
+
+        font-weight:
+            600;
+    }
+
+
+    .cart-remove {
+
+        border:
+            0;
+
+        background:
+            transparent;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.7rem;
+
+        font-weight:
+            600;
+
+        padding:
+            6px 0;
+    }
+
+
+    .cart-remove:hover {
+
+        color:
+            var(--accent);
+    }
+
+
+    /* =====================================================
+       CART SUMMARY
+    ====================================================== */
+
+    .cart-summary {
+
+        position:
+            sticky;
+
+        top:
+            30px;
+
+        padding:
+            30px;
+
+        background:
+            var(--surface);
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            16px;
+    }
+
+
+    .cart-summary .section-label {
+
+        margin:
+            0 0 10px;
+
+        color:
+            var(--accent);
+
+        font-size:
+            0.68rem;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            0.12em;
+    }
+
+
+    .cart-summary h2 {
+
+        margin:
+            0 0 30px;
+
+        color:
+            var(--text);
+
+        font-size:
+            1.5rem;
+    }
+
+
+    .summary-row {
+
+        display:
+            flex;
+
+        justify-content:
+            space-between;
+
+        gap:
+            20px;
+
+        margin-bottom:
+            17px;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.82rem;
+    }
+
+
+    .summary-row span:last-child {
+
+        color:
+            var(--text);
+
+        font-weight:
+            600;
+    }
+
+
+    .summary-divider {
+
+        width:
+            100%;
+
+        height:
+            1px;
+
+        margin:
+            22px 0;
+
+        background:
+            var(--border);
+    }
+
+
+    .summary-total {
+
+        display:
+            flex;
+
+        justify-content:
+            space-between;
+
+        gap:
+            20px;
+
+        margin-bottom:
+            25px;
+
+        color:
+            var(--text);
+
+        font-size:
+            1rem;
+
+        font-weight:
+            700;
+    }
+
+
+    .summary-total span:last-child {
+
+        color:
+            var(--accent);
+    }
+
+
+    .checkout-button {
+
+        width:
+            100%;
+
+        min-height:
+            54px;
+
+        padding:
+            0 20px;
+
+        border:
+            0;
+
+        border-radius:
+            8px;
+
+        background:
+            var(--accent);
+
+        color:
+            #ffffff;
+
+        font-size:
+            0.72rem;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            0.08em;
+
+        transition:
+            background var(--transition),
+            transform var(--transition);
+    }
+
+
+    .checkout-button:hover {
+
+        background:
+            var(--accent-dark);
+
+        transform:
+            translateY(-2px);
+    }
+
+
+    .checkout-button:disabled {
+
+        opacity:
+            0.5;
+
+        cursor:
+            not-allowed;
+
+        transform:
+            none;
+    }
+
+
+    .cart-summary-note {
+
+        margin:
+            17px 0 0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.68rem;
+
+        line-height:
+            1.6;
+
+        text-align:
+            center;
+    }
+
+
+    /* =====================================================
+       EMPTY CART
+    ====================================================== */
+
+    .empty-cart {
+
+        padding:
+            70px 25px;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            14px;
+
+        background:
+            var(--surface);
+
+        text-align:
+            center;
+    }
+
+
+    .empty-cart-icon {
+
+        width:
+            48px;
+
+        height:
+            48px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        margin:
+            0 auto 20px;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            50%;
+
+        color:
+            var(--accent);
+
+        font-size:
+            1.4rem;
+    }
+
+
+    .empty-cart h2 {
+
+        margin:
+            0;
+
+        color:
+            var(--text);
+
+        font-size:
+            1.3rem;
+    }
+
+
+    .empty-cart p {
+
+        max-width:
+            360px;
+
+        margin:
+            12px auto 25px;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.82rem;
+
+        line-height:
+            1.7;
+    }
+
+
+    .empty-cart-button {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        min-width:
+            180px;
+
+        min-height:
+            48px;
+
+        padding:
+            0 22px;
+
+        border-radius:
+            8px;
+
+        background:
+            var(--accent);
+
+        color:
+            #ffffff;
+
+        font-size:
+            0.7rem;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            0.07em;
+    }
+
+
+    .continue-shopping {
+
+        display:
+            inline-block;
+
+        margin-top:
+            25px;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.8rem;
+
+        font-weight:
+            600;
+
+        transition:
+            color var(--transition),
+            transform var(--transition);
+    }
+
+
+    .continue-shopping:hover {
+
+        color:
+            var(--accent);
+
+        transform:
+            translateX(-3px);
+    }
+
+
+    /* =====================================================
+       CART STATUS
+    ====================================================== */
+
+    .cart-status {
+
+        margin:
+            0 0 15px;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.78rem;
+
+        min-height:
+            20px;
+    }
+
+
+    .cart-status.error {
+
+        color:
+            #b33a50;
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ====================================================== */
+
+    .site-footer {
+
+        border-top:
+            1px solid
+            var(--border);
+
+        padding:
+            55px 30px 25px;
+
+        background:
+            var(--surface);
+    }
+
+
+    .footer-brand h2 {
+
+        margin:
+            0;
+
+        font-size:
+            20px;
+
+        letter-spacing:
+            4px;
+    }
+
+
+    .footer-brand p {
+
+        margin:
+            7px 0 0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+    }
+
+
+    .footer-links {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap:
+            40px;
+
+        margin-top:
+            35px;
+    }
+
+
+    .footer-links h3 {
+
+        margin:
+            0 0 12px;
+
+        font-size:
+            11px;
+
+        letter-spacing:
+            2px;
+
+        color:
+            var(--accent);
+    }
+
+
+    .footer-links a {
+
+        display:
+            block;
+
+        margin-bottom:
+            8px;
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+    }
+
+
+    .footer-links a:hover {
+
+        color:
+            var(--accent);
+    }
+
+
+    .footer-bottom {
+
+        margin-top:
+            40px;
+
+        padding-top:
+            20px;
+
+        border-top:
+            1px solid
+            var(--border);
+
+        color:
+            var(--muted);
+
+        font-size:
+            12px;
+    }
+
+
+    /* =====================================================
+       CART ANIMATION
+    ====================================================== */
+
+    @keyframes cartItemEnter {
+
+        from {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(12px);
+        }
+
+        to {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+        }
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ====================================================== */
+
+    @media (max-width: 800px) {
+
+        .site-header {
+
+            height:
+                70px;
+
+            padding:
+                0 5%;
+        }
+
+
+        .desktop-nav {
+
+            display:
+                none;
+        }
+
+
+        .logo {
+
+            font-size:
+                20px;
+
+            letter-spacing:
+                3px;
+        }
+
+
+        .menu-button {
+
+            width:
+                40px;
+
+            height:
+                40px;
+        }
+
+
+        .cart-page {
+
+            width:
+                94%;
+
+            padding:
+                35px 0 60px;
+        }
+
+
+        .cart-intro {
+
+            margin-bottom:
+                35px;
+        }
+
+
+        .cart-intro h1 {
+
+            font-size:
+                2.5rem;
+        }
+
+
+        .cart-layout {
+
+            grid-template-columns:
+                1fr;
+
+            gap:
+                35px;
+        }
+
+
+        .cart-summary {
+
+            position:
+                static;
+
+            padding:
+                23px;
+        }
+
+
+        .cart-item {
+
+            grid-template-columns:
+                82px
+                minmax(0, 1fr);
+
+            gap:
+                14px;
+
+            padding:
+                11px;
+        }
+
+
+        .cart-item-image {
+
+            width:
+                82px;
+
+            height:
+                105px;
+        }
+
+
+        .cart-item-info {
+
+            min-height:
+                105px;
+        }
+
+
+        .cart-item-name {
+
+            font-size:
+                0.88rem;
+        }
+
+
+        .cart-item-price {
+
+            margin-top:
+                9px;
+
+            font-size:
+                0.82rem;
+        }
+
+
+        .cart-item-controls {
+
+            grid-column:
+                1 / -1;
+
+            justify-content:
+                space-between;
+
+            padding-top:
+                10px;
+
+            border-top:
+                1px solid
+                var(--border);
+        }
+
+
+        .cart-quantity button {
+
+            width:
+                38px;
+
+            height:
+                38px;
+        }
+
+
+        .cart-quantity span {
+
+            width:
+                38px;
+        }
+
+
+        .cart-remove {
+
+            padding:
+                8px 0;
+        }
+
+
+        .footer-links {
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap:
+                15px;
+        }
+
+    }
+
+
+    @media (max-width: 420px) {
+
+        .mobile-menu {
+
+            width:
+                92vw;
+        }
+
+
+        .cart-intro h1 {
+
+            font-size:
+                2.2rem;
+        }
+
+
+        .cart-item-name {
+
+            font-size:
+                0.82rem;
+        }
+
+
+        .cart-item-category {
+
+            font-size:
+                0.58rem;
+        }
+
+    }
+
+</style>
+
 </head>
 
 <body>
 
+<!-- =====================================================
+     ACCESSIBILITY
+====================================================== -->
+
+<a
+    href="#main-content"
+    class="skip-link"
+>
+    Skip to main content
+</a>
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
 <header class="site-header">
 
-    <a href="index.html" class="logo">
+    <a
+        href="index.html"
+        class="logo"
+        aria-label="THREADLY home"
+    >
         THREADLY
     </a>
 
-    <nav class="desktop-nav">
 
-        <a href="index.html">Home</a>
+    <nav
+        class="desktop-nav"
+        aria-label="Main navigation"
+    >
 
-        <a href="shop.html">Shop</a>
+        <a href="index.html">
+            Home
+        </a>
 
-        <a href="shop.html?category=men">Men</a>
+        <a href="shop.html">
+            Shop
+        </a>
 
-        <a href="shop.html?category=women">Women</a>
+        <a href="shop.html?category=men">
+            Men
+        </a>
 
-        <a href="shop.html?category=shoes">Shoes</a>
+        <a href="shop.html?category=women">
+            Women
+        </a>
 
-        <a href="cart.html" class="active">Cart</a>
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
+
+        <a
+            href="cart.html"
+            class="active"
+            aria-current="page"
+        >
+            Cart
+        </a>
 
     </nav>
 
-    <div class="header-actions">
 
-        
+    <div class="header-actions">
 
         <button
             id="menuButton"
             class="menu-button"
-            aria-label="Open menu"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-controls="mobileMenu"
+            aria-expanded="false"
         >
+
             <span></span>
             <span></span>
             <span></span>
+
         </button>
 
     </div>
@@ -87,60 +2108,118 @@
 </header>
 
 
-<!-- MOBILE MENU -->
+<!-- =====================================================
+     MOBILE MENU
+====================================================== -->
 
-<div id="menuOverlay" class="menu-overlay"></div>
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+    aria-hidden="true"
+></div>
 
-<aside id="mobileMenu" class="mobile-menu">
+
+<aside
+    id="mobileMenu"
+    class="mobile-menu"
+    aria-label="Mobile navigation"
+>
 
     <div class="mobile-menu-header">
 
-        <span>MENU</span>
+        <span>
+            MENU
+        </span>
+
 
         <button
             id="closeMenu"
             class="close-menu"
-            aria-label="Close menu"
+            type="button"
+            aria-label="Close navigation menu"
         >
             ×
         </button>
 
     </div>
 
-    <nav class="mobile-nav">
 
-        <a href="index.html">Home</a>
+    <nav
+        class="mobile-nav"
+        aria-label="Mobile navigation links"
+    >
 
-        <a href="shop.html">Shop</a>
+        <a href="index.html">
+            Home
+        </a>
 
-        <a href="shop.html?category=men">Men</a>
+        <a href="shop.html">
+            Shop
+        </a>
 
-        <a href="shop.html?category=women">Women</a>
+        <a href="shop.html?category=men">
+            Men
+        </a>
 
-        <a href="shop.html?category=shoes">Shoes</a>
+        <a href="shop.html?category=women">
+            Women
+        </a>
+
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
 
         <div class="mobile-menu-divider"></div>
 
-        <a href="account.html">My Account</a>
+        <a href="account.html">
+            My Account
+        </a>
 
-        <a href="cart.html">My Cart</a>
+        <a
+            href="cart.html"
+            class="active"
+            aria-current="page"
+        >
+            My Cart
+        </a>
 
-        <a href="saved.html">Saved Items</a>
+        <a href="saved.html">
+            Saved Items
+        </a>
 
-        <a href="orders.html">My Orders</a>
+        <a href="orders.html">
+            My Orders
+        </a>
 
-        <a href="settings.html">Settings</a>
+        <div class="mobile-menu-divider"></div>
 
-        <a href="help.html">Help &amp; Support</a>
+        <a href="settings.html">
+            Settings
+        </a>
 
-        <a href="about.html">About THREADLY</a>
+        <a href="help.html">
+            Help &amp; Support
+        </a>
+
+        <a href="about.html">
+            About THREADLY
+        </a>
 
     </nav>
 
 </aside>
 
 
-<main class="cart-page">
+<!-- =====================================================
+     CART PAGE
+====================================================== -->
+
+<main
+    id="main-content"
+    class="cart-page"
+    tabindex="-1"
+>
+
 
     <!-- PAGE INTRO -->
 
@@ -161,9 +2240,22 @@
     </section>
 
 
+    <!-- CART STATUS -->
+
+    <p
+        id="cartStatus"
+        class="cart-status"
+        aria-live="polite"
+    ></p>
+
+
     <!-- CART CONTENT -->
 
-    <section class="cart-layout">
+    <section
+        class="cart-layout"
+        aria-label="Shopping cart"
+    >
+
 
         <!-- PRODUCTS -->
 
@@ -172,6 +2264,8 @@
             <div
                 id="cartItems"
                 class="cart-items"
+                aria-live="polite"
+                aria-busy="true"
             ></div>
 
 
@@ -183,7 +2277,10 @@
                 style="display: none;"
             >
 
-                <div class="empty-cart-icon">
+                <div
+                    class="empty-cart-icon"
+                    aria-hidden="true"
+                >
                     +
                 </div>
 
@@ -198,7 +2295,7 @@
 
                 <a
                     href="shop.html"
-                    class="primary-button empty-cart-button"
+                    class="empty-cart-button"
                 >
                     START SHOPPING
                 </a>
@@ -218,7 +2315,10 @@
 
         <!-- ORDER SUMMARY -->
 
-        <aside class="cart-summary">
+        <aside
+            class="cart-summary"
+            aria-label="Order summary"
+        >
 
             <p class="section-label">
                 ORDER SUMMARY
@@ -235,7 +2335,10 @@
                     Subtotal
                 </span>
 
-                <span id="cartSubtotal">
+                <span
+                    id="cartSubtotal"
+                    aria-live="polite"
+                >
                     ₦0
                 </span>
 
@@ -248,14 +2351,20 @@
                     Delivery
                 </span>
 
-                <span id="cartDelivery">
+                <span
+                    id="cartDelivery"
+                    aria-live="polite"
+                >
                     ₦0
                 </span>
 
             </div>
 
 
-            <div class="summary-divider"></div>
+            <div
+                class="summary-divider"
+                aria-hidden="true"
+            ></div>
 
 
             <div class="summary-total">
@@ -264,7 +2373,10 @@
                     Total
                 </span>
 
-                <span id="cartTotal">
+                <span
+                    id="cartTotal"
+                    aria-live="polite"
+                >
                     ₦0
                 </span>
 
@@ -273,16 +2385,18 @@
 
             <button
                 id="checkoutButton"
-                class="primary-button checkout-button"
+                class="checkout-button"
                 type="button"
+                disabled
             >
                 PROCEED TO CHECKOUT
             </button>
 
 
             <p class="cart-summary-note">
-                Delivery charges may vary depending on
-                your location.
+                Standard delivery is currently
+                ₦2,500. Final delivery options are
+                selected during checkout.
             </p>
 
         </aside>
@@ -292,11 +2406,17 @@
 </main>
 
 
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
 <footer class="site-footer">
 
     <div class="footer-brand">
 
-        <h2>THREADLY</h2>
+        <h2>
+            THREADLY
+        </h2>
 
         <p>
             Wear your thread.
@@ -309,7 +2429,9 @@
 
         <div>
 
-            <h3>SHOP</h3>
+            <h3>
+                SHOP
+            </h3>
 
             <a href="shop.html">
                 All Products
@@ -332,7 +2454,9 @@
 
         <div>
 
-            <h3>HELP</h3>
+            <h3>
+                HELP
+            </h3>
 
             <a href="help.html">
                 Contact
@@ -366,7 +2490,1573 @@
 </footer>
 
 
-<script src="app.js"></script>
+<!-- =====================================================
+     SUPABASE
+====================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="auth-guard.js"></script>
+<!-- =====================================================
+     STANDALONE CART JAVASCRIPT
+     NO app.js
+====================================================== -->
+
+<script>
+
+    (function () {
+
+        "use strict";
+
+
+        /* =================================================
+           CONFIGURATION
+        ================================================= */
+
+        const LOGIN_PAGE =
+            "login.html";
+
+
+        const CART_KEY =
+            "threadlyCart";
+
+
+        const THEME_KEY =
+            "threadlyTheme";
+
+
+        const STANDARD_DELIVERY =
+            2500;
+
+
+        let supabase =
+            null;
+
+
+        let currentUser =
+            null;
+
+
+        /* =================================================
+           SUPABASE
+        ================================================= */
+
+        async function getSupabaseClient() {
+
+            if (
+                window.threadlySupabase
+            ) {
+
+                return window.threadlySupabase;
+
+            }
+
+
+            if (
+                !window.supabase
+            ) {
+
+                throw new Error(
+                    "Supabase library is unavailable."
+                );
+
+            }
+
+
+            throw new Error(
+                "THREADLY Supabase client could not be found."
+            );
+
+        }
+
+
+        /* =================================================
+           AUTHENTICATION
+        ================================================= */
+
+        async function checkAuthentication() {
+
+            try {
+
+                supabase =
+                    await getSupabaseClient();
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabase
+                        .auth
+                        .getSession();
+
+
+                if (
+                    error
+                ) {
+
+                    throw error;
+
+                }
+
+
+                currentUser =
+                    data.session?.user ||
+                    null;
+
+
+                if (
+                    !currentUser
+                ) {
+
+                    const requestedPage =
+                        "cart.html" +
+                        window.location.search;
+
+
+                    window.location.replace(
+                        LOGIN_PAGE +
+                        "?redirect=" +
+                        encodeURIComponent(
+                            requestedPage
+                        )
+                    );
+
+
+                    return false;
+
+                }
+
+
+                localStorage.setItem(
+                    "threadlyLoggedIn",
+                    "true"
+                );
+
+
+                return true;
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY cart authentication error:",
+                    error
+                );
+
+
+                window.location.replace(
+                    LOGIN_PAGE +
+                    "?redirect=cart.html"
+                );
+
+
+                return false;
+
+            }
+
+        }
+
+
+        /* =================================================
+           AUTH STATE
+        ================================================= */
+
+        async function initializeAuthState() {
+
+            try {
+
+                if (
+                    !supabase
+                ) {
+
+                    return;
+
+                }
+
+
+                supabase
+                    .auth
+                    .onAuthStateChange(
+                        function (
+                            event,
+                            session
+                        ) {
+
+                            currentUser =
+                                session?.user ||
+                                null;
+
+
+                            if (
+                                currentUser
+                            ) {
+
+                                localStorage.setItem(
+                                    "threadlyLoggedIn",
+                                    "true"
+                                );
+
+                            } else {
+
+                                localStorage.removeItem(
+                                    "threadlyLoggedIn"
+                                );
+
+                            }
+
+                        }
+                    );
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY auth state error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           CACHE PROTECTION
+        ================================================= */
+
+        function protectPageCache() {
+
+            const metaCache =
+                document.createElement(
+                    "meta"
+                );
+
+
+            metaCache.httpEquiv =
+                "Cache-Control";
+
+
+            metaCache.content =
+                "no-store, no-cache, must-revalidate, max-age=0";
+
+
+            document.head.appendChild(
+                metaCache
+            );
+
+
+            const metaPragma =
+                document.createElement(
+                    "meta"
+                );
+
+
+            metaPragma.httpEquiv =
+                "Pragma";
+
+
+            metaPragma.content =
+                "no-cache";
+
+
+            document.head.appendChild(
+                metaPragma
+            );
+
+
+            const metaExpires =
+                document.createElement(
+                    "meta"
+                );
+
+
+            metaExpires.httpEquiv =
+                "Expires";
+
+
+            metaExpires.content =
+                "0";
+
+
+            document.head.appendChild(
+                metaExpires
+            );
+
+        }
+
+
+        /* =================================================
+           BROWSER BACK / FORWARD PROTECTION
+        ================================================= */
+
+        function protectBrowserHistory() {
+
+            window.history.replaceState(
+                null,
+                "",
+                window.location.href
+            );
+
+
+            window.addEventListener(
+                "pageshow",
+                async function (
+                    event
+                ) {
+
+                    if (
+                        !event.persisted &&
+                        performance.getEntriesByType(
+                            "navigation"
+                        )[0]?.type !==
+                        "back_forward"
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const loggedIn =
+                        await checkSessionOnly();
+
+
+                    if (
+                        !loggedIn
+                    ) {
+
+                        window.location.replace(
+                            LOGIN_PAGE
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        async function checkSessionOnly() {
+
+            try {
+
+                const client =
+                    await getSupabaseClient();
+
+
+                const {
+                    data
+                } =
+                    await client
+                        .auth
+                        .getSession();
+
+
+                return !!data.session;
+
+            } catch (error) {
+
+                return false;
+
+            }
+
+        }
+
+
+        /* =================================================
+           THEME
+        ================================================= */
+
+        function getSystemTheme() {
+
+            if (
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches
+            ) {
+
+                return "dark";
+
+            }
+
+
+            return "light";
+
+        }
+
+
+        function applyTheme(
+            theme
+        ) {
+
+            let selectedTheme =
+                theme;
+
+
+            if (
+                selectedTheme !== "light" &&
+                selectedTheme !== "dark" &&
+                selectedTheme !== "system"
+            ) {
+
+                selectedTheme =
+                    "system";
+
+            }
+
+
+            const actualTheme =
+                selectedTheme === "system"
+
+                    ? getSystemTheme()
+
+                    : selectedTheme;
+
+
+            document.body.classList.toggle(
+                "dark-mode",
+                actualTheme === "dark"
+            );
+
+
+            document.documentElement.classList.toggle(
+                "threadly-dark",
+                actualTheme === "dark"
+            );
+
+
+            localStorage.setItem(
+                THEME_KEY,
+                selectedTheme
+            );
+
+        }
+
+
+        function initializeTheme() {
+
+            const savedTheme =
+                localStorage.getItem(
+                    THEME_KEY
+                ) || "system";
+
+
+            applyTheme(
+                savedTheme
+            );
+
+        }
+
+
+        /* =================================================
+           MOBILE MENU
+        ================================================= */
+
+        function initializeMobileMenu() {
+
+            const menuButton =
+                document.getElementById(
+                    "menuButton"
+                );
+
+
+            const closeMenu =
+                document.getElementById(
+                    "closeMenu"
+                );
+
+
+            const mobileMenu =
+                document.getElementById(
+                    "mobileMenu"
+                );
+
+
+            const menuOverlay =
+                document.getElementById(
+                    "menuOverlay"
+                );
+
+
+            if (
+                !menuButton ||
+                !mobileMenu
+            ) {
+
+                return;
+
+            }
+
+
+            function openMenu() {
+
+                mobileMenu.classList.add(
+                    "active"
+                );
+
+
+                if (
+                    menuOverlay
+                ) {
+
+                    menuOverlay.classList.add(
+                        "active"
+                    );
+
+                    menuOverlay.setAttribute(
+                        "aria-hidden",
+                        "false"
+                    );
+
+                }
+
+
+                document.body.classList.add(
+                    "menu-open"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-label",
+                    "Close navigation menu"
+                );
+
+            }
+
+
+            function closeMobileMenu() {
+
+                mobileMenu.classList.remove(
+                    "active"
+                );
+
+
+                if (
+                    menuOverlay
+                ) {
+
+                    menuOverlay.classList.remove(
+                        "active"
+                    );
+
+                    menuOverlay.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+                }
+
+
+                document.body.classList.remove(
+                    "menu-open"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
+
+            }
+
+
+            menuButton.addEventListener(
+                "click",
+                function (
+                    event
+                ) {
+
+                    event.preventDefault();
+
+
+                    if (
+                        mobileMenu.classList.contains(
+                            "active"
+                        )
+                    ) {
+
+                        closeMobileMenu();
+
+                    } else {
+
+                        openMenu();
+
+                    }
+
+                }
+            );
+
+
+            if (
+                closeMenu
+            ) {
+
+                closeMenu.addEventListener(
+                    "click",
+                    function (
+                        event
+                    ) {
+
+                        event.preventDefault();
+
+                        closeMobileMenu();
+
+                    }
+                );
+
+            }
+
+
+            if (
+                menuOverlay
+            ) {
+
+                menuOverlay.addEventListener(
+                    "click",
+                    closeMobileMenu
+                );
+
+            }
+
+
+            mobileMenu
+                .querySelectorAll(
+                    "a"
+                )
+                .forEach(
+                    function (
+                        link
+                    ) {
+
+                        link.addEventListener(
+                            "click",
+                            closeMobileMenu
+                        );
+
+                    }
+                );
+
+
+            document.addEventListener(
+                "keydown",
+                function (
+                    event
+                ) {
+
+                    if (
+                        event.key ===
+                        "Escape"
+                    ) {
+
+                        closeMobileMenu();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           CART STORAGE
+        ================================================= */
+
+        function getCart() {
+
+            try {
+
+                const cart =
+                    JSON.parse(
+                        localStorage.getItem(
+                            CART_KEY
+                        )
+                    );
+
+
+                return Array.isArray(
+                    cart
+                )
+                    ? cart
+                    : [];
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY cart storage error:",
+                    error
+                );
+
+
+                return [];
+
+            }
+
+        }
+
+
+        function saveCart(
+            cart
+        ) {
+
+            localStorage.setItem(
+                CART_KEY,
+                JSON.stringify(
+                    cart
+                )
+            );
+
+        }
+
+
+        /* =================================================
+           PRICE
+        ================================================= */
+
+        function formatPrice(
+            price
+        ) {
+
+            return (
+                "₦" +
+                Number(
+                    price || 0
+                ).toLocaleString(
+                    "en-NG"
+                )
+            );
+
+        }
+
+
+        /* =================================================
+           SAFE HTML
+        ================================================= */
+
+        function escapeHTML(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =================================================
+           CART ELEMENTS
+        ================================================= */
+
+        const cartContainer =
+            document.getElementById(
+                "cartItems"
+            );
+
+
+        const emptyCart =
+            document.getElementById(
+                "emptyCart"
+            );
+
+
+        const subtotalElement =
+            document.getElementById(
+                "cartSubtotal"
+            );
+
+
+        const deliveryElement =
+            document.getElementById(
+                "cartDelivery"
+            );
+
+
+        const totalElement =
+            document.getElementById(
+                "cartTotal"
+            );
+
+
+        const checkoutButton =
+            document.getElementById(
+                "checkoutButton"
+            );
+
+
+        const cartStatus =
+            document.getElementById(
+                "cartStatus"
+            );
+
+
+        /* =================================================
+           STATUS
+        ================================================= */
+
+        function setStatus(
+            message,
+            type
+        ) {
+
+            if (
+                !cartStatus
+            ) {
+
+                return;
+
+            }
+
+
+            cartStatus.textContent =
+                message || "";
+
+
+            cartStatus.classList.toggle(
+                "error",
+                type === "error"
+            );
+
+        }
+
+
+        /* =================================================
+           RENDER EMPTY STATE
+        ================================================= */
+
+        function showEmptyCart() {
+
+            if (
+                cartContainer
+            ) {
+
+                cartContainer.innerHTML =
+                    "";
+
+                cartContainer.setAttribute(
+                    "aria-busy",
+                    "false"
+                );
+
+            }
+
+
+            if (
+                emptyCart
+            ) {
+
+                emptyCart.style.display =
+                    "block";
+
+            }
+
+
+            if (
+                subtotalElement
+            ) {
+
+                subtotalElement.textContent =
+                    formatPrice(
+                        0
+                    );
+
+            }
+
+
+            if (
+                deliveryElement
+            ) {
+
+                deliveryElement.textContent =
+                    formatPrice(
+                        0
+                    );
+
+            }
+
+
+            if (
+                totalElement
+            ) {
+
+                totalElement.textContent =
+                    formatPrice(
+                        0
+                    );
+
+            }
+
+
+            if (
+                checkoutButton
+            ) {
+
+                checkoutButton.disabled =
+                    true;
+
+            }
+
+        }
+
+
+        /* =================================================
+           RENDER CART
+        ================================================= */
+
+        function renderCart() {
+
+            const cart =
+                getCart();
+
+
+            if (
+                !cartContainer
+            ) {
+
+                return;
+
+            }
+
+
+            cartContainer.innerHTML =
+                "";
+
+
+            if (
+                !cart.length
+            ) {
+
+                showEmptyCart();
+
+                return;
+
+            }
+
+
+            if (
+                emptyCart
+            ) {
+
+                emptyCart.style.display =
+                    "none";
+
+            }
+
+
+            let subtotal =
+                0;
+
+
+            cart.forEach(
+                function (
+                    item,
+                    index
+                ) {
+
+                    const quantity =
+                        Math.max(
+                            1,
+                            Number(
+                                item.quantity ||
+                                1
+                            )
+                        );
+
+
+                    const price =
+                        Math.max(
+                            0,
+                            Number(
+                                item.price ||
+                                0
+                            )
+                        );
+
+
+                    subtotal +=
+                        price *
+                        quantity;
+
+
+                    const article =
+                        document.createElement(
+                            "article"
+                        );
+
+
+                    article.className =
+                        "cart-item";
+
+
+                    const safeId =
+                        encodeURIComponent(
+                            item.id ||
+                            ""
+                        );
+
+
+                    article.innerHTML = `
+
+                        <div class="cart-item-image">
+
+                            <a
+                                href="product.html?id=${safeId}"
+                                aria-label="View ${escapeHTML(item.name || "Product")}"
+                            >
+
+                                <img
+                                    src="${escapeHTML(item.image || "")}"
+                                    alt="${escapeHTML(item.name || "Product")}"
+                                >
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="cart-item-info">
+
+                            <p class="cart-item-category">
+                                THREADLY
+                            </p>
+
+                            <h3 class="cart-item-name">
+                                ${escapeHTML(item.name || "Product")}
+                            </h3>
+
+                            <p class="cart-item-size">
+                                Size:
+                                ${escapeHTML(item.size || "One size")}
+                            </p>
+
+                            <strong class="cart-item-price">
+                                ${formatPrice(price)}
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="cart-item-controls"
+                            aria-label="Cart controls"
+                        >
+
+                            <div
+                                class="cart-quantity"
+                                aria-label="Quantity controls"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="cart-quantity-minus"
+                                    data-index="${index}"
+                                    aria-label="Decrease quantity"
+                                    ${quantity <= 1 ? "disabled" : ""}
+                                >
+                                    −
+                                </button>
+
+                                <span
+                                    aria-label="Quantity ${quantity}"
+                                >
+                                    ${quantity}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    class="cart-quantity-plus"
+                                    data-index="${index}"
+                                    aria-label="Increase quantity"
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="cart-remove"
+                                data-index="${index}"
+                                aria-label="Remove ${escapeHTML(item.name || "product")} from cart"
+                            >
+                                REMOVE
+                            </button>
+
+                        </div>
+
+                    `;
+
+
+                    cartContainer.appendChild(
+                        article
+                    );
+
+                }
+            );
+
+
+            /* =============================================
+               DECREASE QUANTITY
+            ============================================= */
+
+            cartContainer
+                .querySelectorAll(
+                    ".cart-quantity-minus"
+                )
+                .forEach(
+                    function (
+                        button
+                    ) {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const index =
+                                    Number(
+                                        button.dataset.index
+                                    );
+
+
+                                const updatedCart =
+                                    getCart();
+
+
+                                if (
+                                    !updatedCart[index]
+                                ) {
+
+                                    return;
+
+                                }
+
+
+                                const currentQuantity =
+                                    Number(
+                                        updatedCart[index]
+                                            .quantity ||
+                                        1
+                                    );
+
+
+                                if (
+                                    currentQuantity <=
+                                    1
+                                ) {
+
+                                    return;
+
+                                }
+
+
+                                updatedCart[index]
+                                    .quantity =
+                                    currentQuantity -
+                                    1;
+
+
+                                saveCart(
+                                    updatedCart
+                                );
+
+
+                                renderCart();
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            /* =============================================
+               INCREASE QUANTITY
+            ============================================= */
+
+            cartContainer
+                .querySelectorAll(
+                    ".cart-quantity-plus"
+                )
+                .forEach(
+                    function (
+                        button
+                    ) {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const index =
+                                    Number(
+                                        button.dataset.index
+                                    );
+
+
+                                const updatedCart =
+                                    getCart();
+
+
+                                if (
+                                    !updatedCart[index]
+                                ) {
+
+                                    return;
+
+                                }
+
+
+                                const currentQuantity =
+                                    Number(
+                                        updatedCart[index]
+                                            .quantity ||
+                                        1
+                                    );
+
+
+                                updatedCart[index]
+                                    .quantity =
+                                    currentQuantity +
+                                    1;
+
+
+                                saveCart(
+                                    updatedCart
+                                );
+
+
+                                renderCart();
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            /* =============================================
+               REMOVE ITEM
+            ============================================= */
+
+            cartContainer
+                .querySelectorAll(
+                    ".cart-remove"
+                )
+                .forEach(
+                    function (
+                        button
+                    ) {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const index =
+                                    Number(
+                                        button.dataset.index
+                                    );
+
+
+                                const updatedCart =
+                                    getCart();
+
+
+                                if (
+                                    !updatedCart[index]
+                                ) {
+
+                                    return;
+
+                                }
+
+
+                                updatedCart.splice(
+                                    index,
+                                    1
+                                );
+
+
+                                saveCart(
+                                    updatedCart
+                                );
+
+
+                                renderCart();
+
+
+                                setStatus(
+                                    "Item removed from your cart."
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            const delivery =
+                STANDARD_DELIVERY;
+
+
+            const total =
+                subtotal +
+                delivery;
+
+
+            if (
+                subtotalElement
+            ) {
+
+                subtotalElement.textContent =
+                    formatPrice(
+                        subtotal
+                    );
+
+            }
+
+
+            if (
+                deliveryElement
+            ) {
+
+                deliveryElement.textContent =
+                    formatPrice(
+                        delivery
+                    );
+
+            }
+
+
+            if (
+                totalElement
+            ) {
+
+                totalElement.textContent =
+                    formatPrice(
+                        total
+                    );
+
+            }
+
+
+            if (
+                checkoutButton
+            ) {
+
+                checkoutButton.disabled =
+                    false;
+
+            }
+
+
+            cartContainer.setAttribute(
+                "aria-busy",
+                "false"
+            );
+
+        }
+
+
+        /* =================================================
+           CHECKOUT
+        ================================================= */
+
+        function initializeCheckout() {
+
+            if (
+                !checkoutButton
+            ) {
+
+                return;
+
+            }
+
+
+            checkoutButton.addEventListener(
+                "click",
+                async function () {
+
+                    const cart =
+                        getCart();
+
+
+                    if (
+                        !cart.length
+                    ) {
+
+                        showEmptyCart();
+
+                        return;
+
+                    }
+
+
+                    checkoutButton.disabled =
+                        true;
+
+
+                    checkoutButton.textContent =
+                        "CHECKING...";
+
+
+                    try {
+
+                        const loggedIn =
+                            await checkSessionOnly();
+
+
+                        if (
+                            !loggedIn
+                        ) {
+
+                            window.location.replace(
+                                LOGIN_PAGE +
+                                "?redirect=checkout.html"
+                            );
+
+                            return;
+
+                        }
+
+
+                        window.location.href =
+                            "checkout.html";
+
+                    } catch (error) {
+
+                        console.error(
+                            "THREADLY checkout navigation error:",
+                            error
+                        );
+
+
+                        checkoutButton.disabled =
+                            false;
+
+
+                        checkoutButton.textContent =
+                            "PROCEED TO CHECKOUT";
+
+
+                        setStatus(
+                            "Checkout could not be opened. Please try again.",
+                            "error"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           MAIN INITIALIZATION
+        ================================================= */
+
+        async function initializeCartPage() {
+
+            initializeTheme();
+
+
+            initializeMobileMenu();
+
+
+            protectPageCache();
+
+
+            protectBrowserHistory();
+
+
+            const authenticated =
+                await checkAuthentication();
+
+
+            if (
+                !authenticated
+            ) {
+
+                return;
+
+            }
+
+
+            await initializeAuthState();
+
+
+            initializeCheckout();
+
+
+            renderCart();
+
+
+            setStatus(
+                ""
+            );
+
+        }
+
+
+        if (
+            document.readyState ===
+            "loading"
+        ) {
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                initializeCartPage,
+                {
+                    once:
+                        true
+                }
+            );
+
+        } else {
+
+            initializeCartPage();
+
+        }
+
+    })();
+
+</script>
+
 
 </body>
+
 </html>

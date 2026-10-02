@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -2200,6 +2201,27 @@
 
                     <div class="form-group">
 
+                        <label for="storeWhatsApp">
+                            WHATSAPP NUMBER
+                        </label>
+
+
+                        <input
+                            type="tel"
+                            id="storeWhatsApp"
+                            placeholder="2348000000000"
+                        >
+
+
+                        <span class="field-help">
+                            Use your WhatsApp number with the country code.
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
                         <label for="storeState">
                             STATE
                         </label>
@@ -2794,6 +2816,12 @@
         );
 
 
+    const storeWhatsApp =
+        document.getElementById(
+            "storeWhatsApp"
+        );
+
+
     const storeState =
         document.getElementById(
             "storeState"
@@ -3229,6 +3257,7 @@
                     store_name,
                     store_email,
                     store_phone,
+                    store_whatsapp,
                     store_address,
                     store_city,
                     store_state,
@@ -3265,6 +3294,9 @@
                 store_phone:
                     "",
 
+                store_whatsapp:
+                    "",
+
                 store_address:
                     "",
 
@@ -3299,6 +3331,11 @@
 
         storePhone.value =
             currentSettings.store_phone ||
+            "";
+
+
+        storeWhatsApp.value =
+            currentSettings.store_whatsapp ||
             "";
 
 
@@ -3365,6 +3402,9 @@
 
                     store_phone:
                         storePhone.value.trim(),
+
+                    store_whatsapp:
+                        storeWhatsApp.value.trim(),
 
                     store_address:
                         storeAddress.value.trim(),
@@ -3465,6 +3505,10 @@
 
                                 store_phone:
                                     storePhone.value
+                                        .trim(),
+
+                                store_whatsapp:
+                                    storeWhatsApp.value
                                         .trim(),
 
                                 store_address:
@@ -4061,3 +4105,4 @@
 </body>
 
 </html>
+

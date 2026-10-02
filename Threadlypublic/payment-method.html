@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -10,47 +11,1603 @@
     >
 
     <title>Payment Method | THREADLY</title>
+
     <script>
-(function () {
 
-    const savedTheme =
-        localStorage.getItem("threadlyTheme") ||
-        "system";
+        (function () {
 
-    const prefersDark =
-        window.matchMedia &&
-        window.matchMedia(
-            "(prefers-color-scheme: dark)"
-        ).matches;
+            const savedTheme =
+                localStorage.getItem("threadlyTheme");
 
-    const shouldUseDark =
-        savedTheme === "dark" ||
-        (
-            savedTheme === "system" &&
-            prefersDark
-        );
+            if (savedTheme === "dark") {
 
-    if (shouldUseDark) {
-        document.documentElement.classList.add(
-            "threadly-dark"
-        );
-    }
+                document.documentElement.classList.add(
+                    "dark-mode"
+                );
 
-})();
-</script>
+            }
 
-<link rel="stylesheet" href="style.css">
+        })();
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    </script>
+
+
+    <style>
+
+        :root {
+
+            --bg: #f6f3ef;
+            --surface: #ffffff;
+            --surface-2: #eeebe6;
+
+            --text: #171717;
+            --muted: #747474;
+
+            --accent: #7b2639;
+            --accent-dark: #641d2d;
+            --accent-soft: #f1e2e6;
+
+            --border: #ded9d3;
+
+            --radius: 14px;
+            --radius-small: 9px;
+
+            --max-width: 1280px;
+
+            --transition: .28s ease;
+
+        }
+
+
+        html.dark-mode,
+        body.dark-mode {
+
+            --bg: #111111;
+            --surface: #1a1a1a;
+            --surface-2: #222222;
+
+            --text: #f5f5f5;
+            --muted: #a3a3a3;
+
+            --accent: #c65b72;
+            --accent-dark: #a9485d;
+            --accent-soft: #321d24;
+
+            --border: #333333;
+
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+
+            scroll-behavior: smooth;
+            background: var(--bg);
+
+        }
+
+
+        body {
+
+            margin: 0;
+
+            width: 100%;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: var(--bg);
+            color: var(--text);
+
+            line-height: 1.6;
+
+            overflow-x: hidden;
+
+            transition:
+                background-color var(--transition),
+                color var(--transition);
+
+        }
+
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+
+        a {
+
+            color: inherit;
+            text-decoration: none;
+
+        }
+
+
+        button {
+
+            font: inherit;
+            cursor: pointer;
+
+        }
+
+
+        img {
+
+            display: block;
+            max-width: 100%;
+
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .site-header {
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            width: 100%;
+            height: 76px;
+
+            padding:
+                0 30px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr auto 1fr;
+
+            align-items: center;
+
+            background:
+                rgba(246, 243, 239, 0.94);
+
+            border-bottom:
+                1px solid var(--border);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            transition:
+                background-color var(--transition),
+                border-color var(--transition);
+
+        }
+
+
+        body.dark-mode .site-header {
+
+            background:
+                rgba(17, 17, 17, 0.94);
+
+        }
+
+
+        .logo {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-self: start;
+
+            font-size: 22px;
+            font-weight: 800;
+
+            letter-spacing: 4px;
+
+            color: var(--text);
+
+            transition:
+                opacity var(--transition);
+
+        }
+
+
+        .logo:hover {
+
+            opacity: .65;
+
+        }
+
+
+        /* =========================================
+           DESKTOP NAVIGATION
+        ========================================= */
+
+        .desktop-nav {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 30px;
+
+            justify-self: center;
+
+        }
+
+
+        .desktop-nav a {
+
+            position: relative;
+
+            color: var(--text);
+
+            font-size: 13px;
+            font-weight: 600;
+
+            letter-spacing: .4px;
+
+            transition:
+                color var(--transition);
+
+        }
+
+
+        .desktop-nav a::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            bottom: -8px;
+
+            width: 0;
+            height: 1.5px;
+
+            background:
+                var(--accent);
+
+            transition:
+                width var(--transition);
+
+        }
+
+
+        .desktop-nav a:hover {
+
+            color:
+                var(--accent);
+
+        }
+
+
+        .desktop-nav a:hover::after {
+
+            width: 100%;
+
+        }
+
+
+        /* =========================================
+           HEADER ACTIONS
+        ========================================= */
+
+        .header-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            justify-self: end;
+
+        }
+
+
+        .menu-button {
+
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-direction: column;
+
+            gap: 4px;
+
+            padding: 0;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 50%;
+
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
+
+            transition:
+                background-color var(--transition),
+                color var(--transition),
+                border-color var(--transition),
+                transform var(--transition);
+
+        }
+
+
+        .menu-button:hover {
+
+            background:
+                var(--accent);
+
+            border-color:
+                var(--accent);
+
+            color:
+                #ffffff;
+
+            transform:
+                rotate(8deg);
+
+        }
+
+
+        .menu-button span {
+
+            display: block;
+
+            width: 17px;
+            height: 1.5px;
+
+            background:
+                currentColor;
+
+        }
+
+
+        /* =========================================
+           MOBILE MENU
+        ========================================= */
+
+        .menu-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 1100;
+
+            background:
+                rgba(0, 0, 0, .45);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition:
+                opacity var(--transition),
+                visibility var(--transition);
+
+        }
+
+
+        .menu-overlay.active {
+
+            opacity: 1;
+            visibility: visible;
+
+        }
+
+
+        .mobile-menu {
+
+            position: fixed;
+
+            top: 0;
+            right: 0;
+
+            z-index: 1200;
+
+            width:
+                min(360px, 88vw);
+
+            height: 100vh;
+
+            background:
+                var(--surface);
+
+            border-left:
+                1px solid var(--border);
+
+            transform:
+                translateX(100%);
+
+            visibility: hidden;
+            opacity: 0;
+
+            overflow-y: auto;
+
+            transition:
+                transform var(--transition),
+                visibility var(--transition),
+                opacity var(--transition);
+
+        }
+
+
+        .mobile-menu.active {
+
+            transform:
+                translateX(0);
+
+            visibility: visible;
+            opacity: 1;
+
+        }
+
+
+        .mobile-menu-header {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 24px;
+
+            border-bottom:
+                1px solid var(--border);
+
+        }
+
+
+        .mobile-menu-header span {
+
+            color:
+                var(--text);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+        }
+
+
+        .close-menu {
+
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 50%;
+
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
+
+            font-size: 25px;
+            line-height: 1;
+
+            transition:
+                background var(--transition),
+                border-color var(--transition),
+                color var(--transition);
+
+        }
+
+
+        .close-menu:hover {
+
+            background:
+                var(--accent);
+
+            border-color:
+                var(--accent);
+
+            color:
+                #ffffff;
+
+        }
+
+
+        .mobile-nav {
+
+            display: flex;
+
+            flex-direction: column;
+
+            padding:
+                12px 20px 30px;
+
+        }
+
+
+        .mobile-nav a {
+
+            display: block;
+
+            padding:
+                15px 4px;
+
+            color:
+                var(--text);
+
+            border-bottom:
+                1px solid transparent;
+
+            transition:
+                color var(--transition);
+
+        }
+
+
+        .mobile-nav a:hover {
+
+            color:
+                var(--accent);
+
+        }
+
+
+        .menu-divider {
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                var(--border);
+
+            margin:
+                10px 0;
+
+        }
+
+
+        /* =========================================
+           PAYMENT PAGE
+        ========================================= */
+
+        .payment-page {
+
+            width:
+                min(1180px, 92%);
+
+            margin:
+                0 auto;
+
+            padding:
+                70px 0 100px;
+
+        }
+
+
+        .payment-top {
+
+            margin-bottom: 50px;
+
+        }
+
+
+        .back-to-checkout {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color:
+                var(--muted);
+
+            font-size: 13px;
+
+            transition:
+                color var(--transition);
+
+        }
+
+
+        .back-to-checkout:hover {
+
+            color:
+                var(--accent);
+
+        }
+
+
+        .payment-heading {
+
+            max-width: 720px;
+
+            margin-top: 28px;
+
+        }
+
+
+        .section-label {
+
+            margin: 0;
+
+            color:
+                var(--accent);
+
+            font-size: .72rem;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+        }
+
+
+        .payment-heading h1 {
+
+            margin:
+                8px 0 14px;
+
+            font-size:
+                clamp(2.2rem, 5vw, 4rem);
+
+            line-height: 1;
+
+            letter-spacing:
+                -.05em;
+
+        }
+
+
+        .payment-heading p:last-child {
+
+            margin: 0;
+
+            color:
+                var(--muted);
+
+            line-height: 1.7;
+
+        }
+
+
+        .payment-layout {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.35fr)
+                minmax(320px, .65fr);
+
+            gap: 35px;
+
+            align-items: start;
+
+        }
+
+
+        .payment-methods-card,
+        .payment-summary-card {
+
+            background:
+                var(--surface);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                16px;
+
+        }
+
+
+        .payment-methods-card {
+
+            padding:
+                34px;
+
+        }
+
+
+        .payment-summary-card {
+
+            padding:
+                28px;
+
+            position:
+                sticky;
+
+            top:
+                25px;
+
+        }
+
+
+        .payment-methods-card > h2,
+        .payment-summary-card > h2 {
+
+            margin:
+                0 0 28px;
+
+            font-size:
+                1.2rem;
+
+        }
+
+
+        .payment-methods {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+
+        }
+
+
+        .payment-method-option {
+
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns:
+                48px
+                minmax(0, 1fr)
+                auto;
+
+            gap: 16px;
+
+            align-items: center;
+
+            padding: 18px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                12px;
+
+            background:
+                var(--surface-2);
+
+            color:
+                var(--text);
+
+            text-align: left;
+
+            transition:
+                transform var(--transition),
+                border-color var(--transition),
+                background var(--transition),
+                box-shadow var(--transition);
+
+        }
+
+
+        .payment-method-option:hover {
+
+            transform:
+                translateY(-2px);
+
+            border-color:
+                var(--accent);
+
+        }
+
+
+        .payment-method-option.active {
+
+            border-color:
+                var(--accent);
+
+            background:
+                var(--accent-soft);
+
+            box-shadow:
+                0 0 0 1px var(--accent);
+
+        }
+
+
+        .payment-method-option.disabled {
+
+            opacity: .65;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        .payment-method-option.disabled:hover {
+
+            transform: none;
+
+            border-color:
+                var(--border);
+
+        }
+
+
+        .payment-method-icon {
+
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                var(--accent);
+
+            color:
+                #ffffff;
+
+            font-weight: 800;
+
+        }
+
+
+        .payment-method-content h3 {
+
+            margin:
+                0 0 5px;
+
+            font-size:
+                1rem;
+
+        }
+
+
+        .payment-method-content p {
+
+            margin: 0;
+
+            color:
+                var(--muted);
+
+            font-size:
+                .82rem;
+
+            line-height:
+                1.6;
+
+        }
+
+
+        .payment-method-arrow {
+
+            color:
+                var(--accent);
+
+            font-size:
+                1.2rem;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .payment-status {
+
+            padding:
+                5px 9px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                999px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                .62rem;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                .1em;
+
+        }
+
+
+        .selected-payment-box {
+
+            margin-top:
+                24px;
+
+            padding:
+                24px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                12px;
+
+            background:
+                var(--surface-2);
+
+        }
+
+
+        .selected-payment-box h2 {
+
+            margin:
+                0 0 10px;
+
+            font-size:
+                1.2rem;
+
+        }
+
+
+        .selected-payment-box p {
+
+            margin:
+                0 0 22px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                .9rem;
+
+            line-height:
+                1.7;
+
+        }
+
+
+        .continue-button {
+
+            width:
+                100%;
+
+            min-height:
+                52px;
+
+            padding:
+                14px 18px;
+
+            border: none;
+
+            border-radius:
+                9px;
+
+            background:
+                var(--accent);
+
+            color:
+                #ffffff;
+
+            font-weight:
+                700;
+
+            transition:
+                background var(--transition),
+                transform var(--transition);
+
+        }
+
+
+        .continue-button:hover {
+
+            background:
+                var(--accent-dark);
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        .continue-button:disabled {
+
+            opacity:
+                .55;
+
+            cursor:
+                not-allowed;
+
+            transform:
+                none;
+
+        }
+
+
+        /* =========================================
+           ORDER SUMMARY
+        ========================================= */
+
+        .payment-order-items {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 16px;
+
+            max-height:
+                450px;
+
+            overflow-y:
+                auto;
+
+        }
+
+
+        .payment-order-item {
+
+            display: grid;
+
+            grid-template-columns:
+                64px 1fr;
+
+            gap:
+                12px;
+
+            align-items:
+                center;
+
+        }
+
+
+        .payment-order-item img {
+
+            width:
+                64px;
+
+            height:
+                78px;
+
+            object-fit:
+                cover;
+
+            border-radius:
+                8px;
+
+            background:
+                var(--surface-2);
+
+        }
+
+
+        .payment-order-item h4 {
+
+            margin:
+                0 0 5px;
+
+            font-size:
+                .88rem;
+
+        }
+
+
+        .payment-order-item p {
+
+            margin: 0;
+
+            color:
+                var(--muted);
+
+            font-size:
+                .76rem;
+
+            line-height:
+                1.5;
+
+        }
+
+
+        .summary-divider {
+
+            height:
+                1px;
+
+            margin:
+                24px 0;
+
+            background:
+                var(--border);
+
+        }
+
+
+        .summary-row {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom:
+                14px;
+
+        }
+
+
+        .summary-row span:first-child {
+
+            color:
+                var(--muted);
+
+            font-size:
+                .86rem;
+
+        }
+
+
+        .summary-row span:last-child {
+
+            font-size:
+                .86rem;
+
+            font-weight:
+                600;
+
+        }
+
+
+        .summary-total {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding-top:
+                18px;
+
+            border-top:
+                1px solid var(--border);
+
+        }
+
+
+        .summary-total span:first-child {
+
+            font-size:
+                .95rem;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .summary-total span:last-child {
+
+            color:
+                var(--accent);
+
+            font-size:
+                1.2rem;
+
+            font-weight:
+                800;
+
+        }
+
+
+        /* =========================================
+           MESSAGE
+        ========================================= */
+
+        .payment-message {
+
+            margin:
+                0 0 18px;
+
+            padding:
+                12px 14px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                8px;
+
+            background:
+                var(--surface-2);
+
+            color:
+                var(--muted);
+
+            font-size:
+                .85rem;
+
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        .site-footer {
+
+            border-top:
+                1px solid var(--border);
+
+            padding:
+                55px 30px 25px;
+
+            background:
+                var(--surface);
+
+        }
+
+
+        .footer-inner {
+
+            max-width:
+                var(--max-width);
+
+            margin:
+                0 auto;
+
+        }
+
+
+        .footer-brand {
+
+            margin:
+                0;
+
+            font-size:
+                20px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                4px;
+
+        }
+
+
+        .footer-tagline {
+
+            margin:
+                8px 0 0;
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+        }
+
+
+        .footer-links {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                25px;
+
+            margin-top:
+                25px;
+
+        }
+
+
+        .footer-links a {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+            transition:
+                color var(--transition);
+
+        }
+
+
+        .footer-links a:hover {
+
+            color:
+                var(--accent);
+
+        }
+
+
+        .footer-bottom {
+
+            margin-top:
+                45px;
+
+            padding-top:
+                20px;
+
+            border-top:
+                1px solid var(--border);
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+
+        }
+
+
+        /* =========================================
+           TABLET
+        ========================================= */
+
+        @media (max-width: 950px) {
+
+            .payment-layout {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .payment-summary-card {
+
+                position:
+                    static;
+
+            }
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 768px) {
+
+            .site-header {
+
+                height:
+                    68px;
+
+                padding:
+                    0 18px;
+
+                grid-template-columns:
+                    1fr auto;
+
+            }
+
+
+            .desktop-nav {
+
+                display:
+                    none;
+
+            }
+
+
+            .logo {
+
+                font-size:
+                    19px;
+
+                letter-spacing:
+                    3px;
+
+            }
+
+
+            .header-actions {
+
+                justify-self:
+                    end;
+
+            }
+
+
+            .menu-button {
+
+                width:
+                    40px;
+
+                height:
+                    40px;
+
+            }
+
+
+            .payment-page {
+
+                width:
+                    min(92%, 100%);
+
+                padding:
+                    48px 0 70px;
+
+            }
+
+
+            .payment-top {
+
+                margin-bottom:
+                    35px;
+
+            }
+
+
+            .payment-heading {
+
+                margin-top:
+                    22px;
+
+            }
+
+
+            .payment-heading h1 {
+
+                font-size:
+                    2.25rem;
+
+            }
+
+
+            .payment-layout {
+
+                gap:
+                    18px;
+
+            }
+
+
+            .payment-methods-card,
+            .payment-summary-card {
+
+                border-radius:
+                    12px;
+
+            }
+
+
+            .payment-methods-card {
+
+                padding:
+                    22px 17px;
+
+            }
+
+
+            .payment-summary-card {
+
+                padding:
+                    20px 17px;
+
+            }
+
+
+            .payment-method-option {
+
+                grid-template-columns:
+                    42px
+                    minmax(0, 1fr)
+                    auto;
+
+                gap:
+                    12px;
+
+                padding:
+                    15px;
+
+            }
+
+
+            .payment-method-icon {
+
+                width:
+                    42px;
+
+                height:
+                    42px;
+
+            }
+
+
+            .payment-method-content h3 {
+
+                font-size:
+                    .92rem;
+
+            }
+
+
+            .payment-method-content p {
+
+                font-size:
+                    .75rem;
+
+            }
+
+
+            .selected-payment-box {
+
+                padding:
+                    19px;
+
+            }
+
+
+            .site-footer {
+
+                padding:
+                    45px 18px 22px;
+
+            }
+
+
+            .footer-links {
+
+                display:
+                    grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap:
+                    16px;
+
+            }
+
+
+            .footer-bottom {
+
+                margin-top:
+                    35px;
+
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
 
     <header class="site-header">
 
@@ -93,18 +1650,17 @@
 
         <div class="header-actions">
 
-           
-
-
             <button
                 id="menuButton"
                 class="menu-button"
                 type="button"
                 aria-label="Open menu"
             >
+
                 <span></span>
                 <span></span>
                 <span></span>
+
             </button>
 
         </div>
@@ -112,7 +1668,9 @@
     </header>
 
 
-    <!-- ================= MOBILE MENU ================= -->
+    <!-- =========================================
+         MOBILE MENU
+    ========================================== -->
 
     <div
         id="menuOverlay"
@@ -130,6 +1688,7 @@
             <span>
                 MENU
             </span>
+
 
             <button
                 id="closeMenu"
@@ -166,7 +1725,7 @@
             </a>
 
 
-            <div class="mobile-menu-divider"></div>
+            <div class="menu-divider"></div>
 
 
             <a href="account.html">
@@ -202,32 +1761,38 @@
     </aside>
 
 
-    <!-- ================= MAIN ================= -->
+    <!-- =========================================
+         MAIN
+    ========================================== -->
 
     <main class="payment-page">
 
+
         <div class="payment-top">
+
 
             <a
                 href="checkout.html"
-                class="back-to-shop"
+                class="back-to-checkout"
             >
-                ← Back to Checkout
+                ← Back to checkout
             </a>
 
 
             <div class="payment-heading">
 
                 <p class="section-label">
-                    THREADLY PAYMENT
+                    CHECKOUT
                 </p>
 
+
                 <h1>
-                    Choose how you'd like to pay.
+                    Choose your payment method.
                 </h1>
 
+
                 <p>
-                    Select a payment method to continue with your order.
+                    Select how you would like to pay for your THREADLY order.
                 </p>
 
             </div>
@@ -235,35 +1800,32 @@
         </div>
 
 
-        <section class="payment-layout">
+        <div class="payment-layout">
 
 
-            <!-- ================= PAYMENT METHODS ================= -->
+            <!-- PAYMENT METHODS -->
 
-            <div class="payment-methods-card">
+            <section class="payment-methods-card">
 
-                <div class="payment-card-heading">
-
-                    <p class="section-label">
-                        PAYMENT METHOD
-                    </p>
-
-                    <h2>
-                        Select a method
-                    </h2>
-
-                </div>
+                <h2>
+                    Payment method
+                </h2>
 
 
-                <div class="payment-method-options">
+                <div
+                    id="paymentMessage"
+                    class="payment-message"
+                    hidden
+                ></div>
 
 
-                    <!-- BANK TRANSFER -->
+                <div class="payment-methods">
+
 
                     <button
                         type="button"
-                        class="payment-method-option active"
                         id="bankTransferOption"
+                        class="payment-method-option active"
                     >
 
                         <div class="payment-method-icon">
@@ -278,7 +1840,7 @@
                             </h3>
 
                             <p>
-                                Transfer directly to the THREADLY account and upload your receipt for verification.
+                                Pay securely through direct bank transfer.
                             </p>
 
                         </div>
@@ -291,16 +1853,14 @@
                     </button>
 
 
-                    <!-- CARD / ONLINE PAYMENT -->
-
                     <button
                         type="button"
                         class="payment-method-option disabled"
-                        type="button"
+                        disabled
                     >
 
                         <div class="payment-method-icon">
-                            #
+                            $
                         </div>
 
 
@@ -311,13 +1871,13 @@
                             </h3>
 
                             <p>
-                                Online payment will be available soon.
+                                Card and online payment will be available soon.
                             </p>
 
                         </div>
 
 
-                        <span class="payment-method-status">
+                        <span class="payment-status">
                             SOON
                         </span>
 
@@ -326,59 +1886,43 @@
                 </div>
 
 
-                <!-- ================= SELECTED METHOD ================= -->
-
                 <div
+                    id="selectedPaymentBox"
                     class="selected-payment-box"
-                    id="bankTransferDetails"
                 >
 
-                    <div class="selected-payment-heading">
-
-                        <p class="section-label">
-                            SELECTED
-                        </p>
-
-                        <h2>
-                            Bank Transfer
-                        </h2>
-
-                    </div>
+                    <h2>
+                        Bank transfer selected
+                    </h2>
 
 
                     <p>
-                        You will receive our bank details on the next step. After making your transfer, upload the receipt so the THREADLY team can verify your payment.
+                        Continue to view the transfer details for your order.
+                        After payment, you will submit your transfer information
+                        for verification.
                     </p>
 
 
                     <button
-                        type="button"
-                        class="primary-button payment-continue-button"
                         id="continueBankTransfer"
+                        type="button"
+                        class="continue-button"
                     >
-                        CONTINUE
+                        Continue to bank transfer
                     </button>
 
                 </div>
 
-            </div>
+            </section>
 
 
-            <!-- ================= ORDER SUMMARY ================= -->
+            <!-- ORDER SUMMARY -->
 
             <aside class="payment-summary-card">
 
-                <div class="payment-card-heading">
-
-                    <p class="section-label">
-                        YOUR ORDER
-                    </p>
-
-                    <h2>
-                        Order Summary
-                    </h2>
-
-                </div>
+                <h2>
+                    Order summary
+                </h2>
 
 
                 <div
@@ -387,81 +1931,76 @@
                 ></div>
 
 
-                <div class="payment-summary-divider"></div>
+                <div class="summary-divider"></div>
 
 
-                <div class="payment-summary-row">
+                <div class="summary-row">
 
                     <span>
                         Subtotal
                     </span>
 
-                    <strong id="paymentSubtotal">
+                    <span id="paymentSubtotal">
                         ₦0
-                    </strong>
+                    </span>
 
                 </div>
 
 
-                <div class="payment-summary-row">
+                <div class="summary-row">
 
                     <span>
                         Delivery
                     </span>
 
-                    <strong id="paymentDelivery">
+                    <span id="paymentDelivery">
                         ₦0
-                    </strong>
+                    </span>
 
                 </div>
 
 
-                <div class="payment-summary-total">
+                <div class="summary-total">
 
                     <span>
                         Total
                     </span>
 
-                    <strong id="paymentTotal">
+                    <span id="paymentTotal">
                         ₦0
-                    </strong>
+                    </span>
 
                 </div>
 
             </aside>
 
-        </section>
+        </div>
 
     </main>
 
 
-    <!-- ================= FOOTER ================= -->
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
 
     <footer class="site-footer">
 
-        <div class="footer-brand">
+        <div class="footer-inner">
 
-            <h2>
+            <h2 class="footer-brand">
                 THREADLY
             </h2>
 
-            <p>
+
+            <p class="footer-tagline">
                 Wear your thread.
             </p>
 
-        </div>
 
-
-        <div class="footer-links">
-
-            <div>
-
-                <h3>
-                    SHOP
-                </h3>
+            <div class="footer-links">
 
                 <a href="shop.html">
-                    All Products
+                    Shop
                 </a>
 
                 <a href="shop.html?category=men">
@@ -476,48 +2015,621 @@
                     Shoes
                 </a>
 
-            </div>
-
-
-            <div>
-
-                <h3>
-                    HELP
-                </h3>
+                <a href="orders.html">
+                    My Orders
+                </a>
 
                 <a href="help.html">
-                    Contact
-                </a>
-
-                <a href="delivery.html">
-                    Delivery
-                </a>
-
-                <a href="returns.html">
-                    Returns
-                </a>
-
-                <a href="help.html#faq">
-                    FAQ
+                    Help
                 </a>
 
             </div>
 
-        </div>
 
+            <div class="footer-bottom">
 
-        <div class="footer-bottom">
+                © 2026 THREADLY. All rights reserved.
 
-            <p>
-                © 2026 THREADLY. All rights reserved to the AWOJIDE AND FATUSA Family.
-            </p>
+            </div>
 
         </div>
 
     </footer>
 
 
-    <script src="app.js"></script>
+    <!-- =========================================
+         SUPABASE
+    ========================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-client.js"></script>
+
+    <script src="auth-guard.js"></script>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* =====================================
+                   THEME
+                ====================================== */
+
+                const savedTheme =
+                    localStorage.getItem(
+                        "threadlyTheme"
+                    );
+
+
+                if (savedTheme === "dark") {
+
+                    document.body.classList.add(
+                        "dark-mode"
+                    );
+
+                } else {
+
+                    document.body.classList.remove(
+                        "dark-mode"
+                    );
+
+                }
+
+
+                /* =====================================
+                   MOBILE MENU
+                ====================================== */
+
+                const menuButton =
+                    document.getElementById(
+                        "menuButton"
+                    );
+
+
+                const closeMenu =
+                    document.getElementById(
+                        "closeMenu"
+                    );
+
+
+                const mobileMenu =
+                    document.getElementById(
+                        "mobileMenu"
+                    );
+
+
+                const menuOverlay =
+                    document.getElementById(
+                        "menuOverlay"
+                    );
+
+
+                function openMobileMenu() {
+
+                    mobileMenu.classList.add(
+                        "active"
+                    );
+
+                    menuOverlay.classList.add(
+                        "active"
+                    );
+
+                    document.body.classList.add(
+                        "menu-open"
+                    );
+
+                }
+
+
+                function closeMobileMenu() {
+
+                    mobileMenu.classList.remove(
+                        "active"
+                    );
+
+                    menuOverlay.classList.remove(
+                        "active"
+                    );
+
+                    document.body.classList.remove(
+                        "menu-open"
+                    );
+
+                }
+
+
+                menuButton.addEventListener(
+                    "click",
+                    openMobileMenu
+                );
+
+
+                closeMenu.addEventListener(
+                    "click",
+                    closeMobileMenu
+                );
+
+
+                menuOverlay.addEventListener(
+                    "click",
+                    closeMobileMenu
+                );
+
+
+                mobileMenu
+                    .querySelectorAll("a")
+                    .forEach(
+                        function (link) {
+
+                            link.addEventListener(
+                                "click",
+                                closeMobileMenu
+                            );
+
+                        }
+                    );
+
+
+                /* =====================================
+                   PAYMENT ELEMENTS
+                ====================================== */
+
+                const paymentMessage =
+                    document.getElementById(
+                        "paymentMessage"
+                    );
+
+
+                const paymentOrderItems =
+                    document.getElementById(
+                        "paymentOrderItems"
+                    );
+
+
+                const paymentSubtotal =
+                    document.getElementById(
+                        "paymentSubtotal"
+                    );
+
+
+                const paymentDelivery =
+                    document.getElementById(
+                        "paymentDelivery"
+                    );
+
+
+                const paymentTotal =
+                    document.getElementById(
+                        "paymentTotal"
+                    );
+
+
+                const continueBankTransfer =
+                    document.getElementById(
+                        "continueBankTransfer"
+                    );
+
+
+                function showPaymentMessage(message) {
+
+                    paymentMessage.textContent =
+                        message;
+
+                    paymentMessage.hidden =
+                        false;
+
+                }
+
+
+                function formatPrice(amount) {
+
+                    return "₦" +
+                        Number(
+                            amount || 0
+                        ).toLocaleString(
+                            "en-NG"
+                        );
+
+                }
+
+
+                function getItemImage(item) {
+
+                    return (
+                        item.image ||
+                        item.product_image ||
+                        item.productImage ||
+                        "images/hoodie-001.jpg"
+                    );
+
+                }
+
+
+                function getItemName(item) {
+
+                    return (
+                        item.name ||
+                        item.product_name ||
+                        item.productName ||
+                        "THREADLY Product"
+                    );
+
+                }
+
+
+                function getItemPrice(item) {
+
+                    return Number(
+                        item.price ||
+                        item.product_price ||
+                        0
+                    );
+
+                }
+
+
+                function getItemQuantity(item) {
+
+                    return Number(
+                        item.quantity || 1
+                    );
+
+                }
+
+
+                function getItemSize(item) {
+
+                    return (
+                        item.size ||
+                        item.selected_size ||
+                        item.selectedSize ||
+                        ""
+                    );
+
+                }
+
+
+                const pendingOrder =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "threadlyPendingOrder"
+                        ) || "null"
+                    );
+
+
+                if (
+                    !pendingOrder ||
+                    !Array.isArray(
+                        pendingOrder.items
+                    ) ||
+                    pendingOrder.items.length === 0
+                ) {
+
+                    showPaymentMessage(
+                        "No pending order was found."
+                    );
+
+                    continueBankTransfer.disabled =
+                        true;
+
+                    return;
+
+                }
+
+
+                const items =
+                    pendingOrder.items;
+
+
+                const deliveryMethod =
+                    pendingOrder.delivery_method ||
+                    pendingOrder.deliveryMethod ||
+                    localStorage.getItem(
+                        "threadlyDeliveryMethod"
+                    ) ||
+                    "standard";
+
+
+                let deliveryFee =
+                    Number(
+                        pendingOrder.delivery_fee ||
+                        pendingOrder.deliveryFee ||
+                        0
+                    );
+
+
+                if (!deliveryFee) {
+
+                    deliveryFee =
+                        deliveryMethod === "express"
+                            ? 4500
+                            : 2500;
+
+                }
+
+
+                let subtotal = 0;
+
+
+                if (
+                    pendingOrder.subtotal !== undefined &&
+                    pendingOrder.subtotal !== null &&
+                    pendingOrder.subtotal !== ""
+                ) {
+
+                    subtotal =
+                        Number(
+                            pendingOrder.subtotal
+                        );
+
+                } else {
+
+                    items.forEach(
+                        function (item) {
+
+                            subtotal +=
+                                getItemPrice(item) *
+                                getItemQuantity(item);
+
+                        }
+                    );
+
+                }
+
+
+                const total =
+                    pendingOrder.total !== undefined &&
+                    pendingOrder.total !== null &&
+                    pendingOrder.total !== ""
+                        ? Number(
+                            pendingOrder.total
+                        )
+                        : subtotal + deliveryFee;
+
+
+                const orderReference =
+                    pendingOrder.order_number ||
+                    pendingOrder.orderNumber ||
+                    pendingOrder.orderId ||
+                    pendingOrder.id ||
+                    "";
+
+
+                /* =====================================
+                   RENDER ITEMS
+                ====================================== */
+
+                paymentOrderItems.innerHTML = "";
+
+
+                items.forEach(
+                    function (item) {
+
+                        const itemElement =
+                            document.createElement(
+                                "div"
+                            );
+
+                        itemElement.className =
+                            "payment-order-item";
+
+
+                        const image =
+                            document.createElement(
+                                "img"
+                            );
+
+
+                        image.src =
+                            getItemImage(item);
+
+
+                        image.alt =
+                            getItemName(item);
+
+
+                        image.onerror =
+                            function () {
+
+                                this.src =
+                                    "images/hoodie-001.jpg";
+
+                            };
+
+
+                        const details =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        const name =
+                            document.createElement(
+                                "h4"
+                            );
+
+
+                        name.textContent =
+                            getItemName(item);
+
+
+                        const quantity =
+                            getItemQuantity(item);
+
+
+                        const size =
+                            getItemSize(item);
+
+
+                        const info =
+                            document.createElement(
+                                "p"
+                            );
+
+
+                        let infoText =
+                            "Qty: " +
+                            quantity;
+
+
+                        if (size) {
+
+                            infoText +=
+                                " · Size: " +
+                                size;
+
+                        }
+
+
+                        infoText +=
+                            " · " +
+                            formatPrice(
+                                getItemPrice(item) *
+                                quantity
+                            );
+
+
+                        info.textContent =
+                            infoText;
+
+
+                        details.appendChild(
+                            name
+                        );
+
+
+                        details.appendChild(
+                            info
+                        );
+
+
+                        itemElement.appendChild(
+                            image
+                        );
+
+
+                        itemElement.appendChild(
+                            details
+                        );
+
+
+                        paymentOrderItems.appendChild(
+                            itemElement
+                        );
+
+                    }
+                );
+
+
+                /* =====================================
+                   SUMMARY
+                ====================================== */
+
+                paymentSubtotal.textContent =
+                    formatPrice(
+                        subtotal
+                    );
+
+
+                paymentDelivery.textContent =
+                    formatPrice(
+                        deliveryFee
+                    );
+
+
+                paymentTotal.textContent =
+                    formatPrice(
+                        total
+                    );
+
+
+                /* =====================================
+                   CONTINUE
+                ====================================== */
+
+                continueBankTransfer.addEventListener(
+                    "click",
+                    function () {
+
+                        if (!orderReference) {
+
+                            showPaymentMessage(
+                                "Your order reference is missing. Please return to checkout and try again."
+                            );
+
+                            return;
+
+                        }
+
+
+                        localStorage.setItem(
+                            "threadlyOrderReference",
+                            orderReference
+                        );
+
+
+                        localStorage.setItem(
+                            "threadlyPaymentAmount",
+                            String(total)
+                        );
+
+
+                        localStorage.setItem(
+                            "threadlyPaymentMethod",
+                            "transfer"
+                        );
+
+
+                        pendingOrder.payment_method =
+                            "transfer";
+
+
+                        pendingOrder.paymentMethod =
+                            "transfer";
+
+
+                        if (
+                            !pendingOrder.payment_status &&
+                            !pendingOrder.paymentStatus
+                        ) {
+
+                            pendingOrder.payment_status =
+                                "pending";
+
+
+                            pendingOrder.paymentStatus =
+                                "pending";
+
+                        }
+
+
+                        localStorage.setItem(
+                            "threadlyPendingOrder",
+                            JSON.stringify(
+                                pendingOrder
+                            )
+                        );
+
+
+                        window.location.href =
+                            "transfer.html";
+
+                    }
+                );
+
+            }
+
+        );
+
+    </script>
 
 </body>
 

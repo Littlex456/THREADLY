@@ -11,6 +11,36 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="description"
+        content="Learn about THREADLY, an online fashion store for clothing and shoes designed to make everyday shopping simple."
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <meta
+        property="og:title"
+        content="About THREADLY"
+    >
+
+    <meta
+        property="og:description"
+        content="Discover the story, shopping experience and vision behind THREADLY."
+    >
+
+    <meta
+        property="og:type"
+        content="website"
+    >
+
+    <meta
+        name="theme-color"
+        content="#f6f3ef"
+    >
+
     <title>About THREADLY</title>
 
 
@@ -37,9 +67,11 @@
                 );
 
             if (darkMode) {
+
                 document.documentElement.classList.add(
                     "dark-mode"
                 );
+
             }
 
         })();
@@ -54,71 +86,651 @@
         href="style.css"
     >
 
+
+    <!-- ABOUT PAGE MASTER CSS -->
+
+    <style>
+
+        /* =========================================================
+           ACCESSIBILITY
+           ========================================================= */
+
+        .skip-link {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+
+            z-index: 2000;
+
+            padding: 10px 15px;
+
+            border-radius: 7px;
+
+            background: var(--accent);
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transform: translateY(-150%);
+
+            transition:
+                transform var(--transition);
+        }
+
+        .skip-link:focus {
+            transform: translateY(0);
+        }
+
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+
+        /* =========================================================
+           ABOUT PAGE
+           ========================================================= */
+
+        .about-page {
+            width: 100%;
+        }
+
+
+        /* =========================================================
+           ABOUT CONTAINER
+           ========================================================= */
+
+        .about-container {
+            width: min(1100px, 92%);
+            margin: 0 auto;
+        }
+
+
+        /* =========================================================
+           ABOUT HERO
+           ========================================================= */
+
+        .about-hero {
+            padding: 75px 0 70px;
+            text-align: center;
+        }
+
+        .about-eyebrow {
+            margin: 0 0 14px;
+            color: #7d2638;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .about-hero h1 {
+            margin: 0 0 18px;
+            font-size: 48px;
+            line-height: 1.05;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+        }
+
+        .about-intro {
+            max-width: 650px;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.7;
+            opacity: 0.68;
+        }
+
+
+        /* =========================================================
+           GENERAL SECTIONS
+           ========================================================= */
+
+        .about-section {
+            padding: 70px 0;
+        }
+
+        .about-section-alt {
+            background: rgba(125, 38, 56, 0.035);
+        }
+
+        .about-content {
+            max-width: 760px;
+        }
+
+        .about-section-label {
+            margin-bottom: 12px;
+            color: #7d2638;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .about-content h2,
+        .about-section-heading h2,
+        .about-experience-text h2 {
+            margin: 0 0 18px;
+            font-size: 32px;
+            line-height: 1.2;
+            font-weight: 700;
+            letter-spacing: -0.7px;
+        }
+
+        .about-content p,
+        .about-experience-text p {
+            margin: 0 0 14px;
+            max-width: 720px;
+            font-size: 15px;
+            line-height: 1.8;
+            opacity: 0.68;
+        }
+
+        .about-content p:last-child,
+        .about-experience-text p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================================
+           SECTION HEADING
+           ========================================================= */
+
+        .about-section-heading {
+            margin-bottom: 30px;
+        }
+
+        .about-section-heading h2 {
+            max-width: 650px;
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================================
+           FEATURE CARDS
+           ========================================================= */
+
+        .about-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .about-feature-card {
+            min-height: 220px;
+            padding: 26px;
+
+            border: 1px solid rgba(125, 38, 56, 0.14);
+            border-radius: 14px;
+
+            background: rgba(125, 38, 56, 0.025);
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .about-feature-card:hover {
+            transform: translateY(-4px);
+
+            border-color: rgba(125, 38, 56, 0.35);
+
+            background: rgba(125, 38, 56, 0.055);
+        }
+
+        .about-feature-number {
+            margin-bottom: 35px;
+
+            color: #7d2638;
+
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .about-feature-card h3 {
+            margin: 0 0 10px;
+
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .about-feature-card p {
+            margin: 0;
+
+            font-size: 14px;
+            line-height: 1.7;
+
+            opacity: 0.65;
+        }
+
+
+        /* =========================================================
+           EXPERIENCE
+           ========================================================= */
+
+        .about-experience {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 70px;
+
+            align-items: start;
+        }
+
+        .about-experience-text {
+            max-width: 540px;
+        }
+
+        .about-experience-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .about-experience-item {
+            display: flex;
+
+            gap: 18px;
+
+            padding: 20px 0;
+
+            border-bottom:
+                1px solid rgba(125, 38, 56, 0.13);
+        }
+
+        .about-experience-item:first-child {
+            padding-top: 0;
+        }
+
+        .about-experience-item:last-child {
+            border-bottom: none;
+        }
+
+        .about-experience-item > span {
+            flex-shrink: 0;
+
+            color: #7d2638;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            padding-top: 2px;
+        }
+
+        .about-experience-item strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-size: 15px;
+        }
+
+        .about-experience-item p {
+            margin: 0;
+
+            font-size: 13px;
+            line-height: 1.6;
+
+            opacity: 0.65;
+        }
+
+
+        /* =========================================================
+           BRAND STATEMENT
+           ========================================================= */
+
+        .about-statement {
+            padding: 75px 0;
+
+            background: #7d2638;
+
+            color: #ffffff;
+        }
+
+        .about-statement-inner {
+            text-align: center;
+
+            max-width: 800px;
+
+            margin: 0 auto;
+        }
+
+        .about-statement-inner p {
+            margin: 0 0 14px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 3px;
+
+            opacity: 0.8;
+        }
+
+        .about-statement-inner h2 {
+            margin: 0;
+
+            font-size: 38px;
+            line-height: 1.25;
+            font-weight: 700;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        /* =========================================================
+           ABOUT QUICK LINKS
+           ========================================================= */
+
+        .about-links {
+            display: flex;
+            flex-direction: column;
+
+            border-top:
+                1px solid rgba(125, 38, 56, 0.14);
+        }
+
+        .about-link {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 20px 4px;
+
+            border-bottom:
+                1px solid rgba(125, 38, 56, 0.14);
+
+            color: inherit;
+            text-decoration: none;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            transition:
+                padding 0.25s ease,
+                color 0.25s ease;
+        }
+
+        .about-link:hover {
+            padding-left: 10px;
+            padding-right: 10px;
+
+            color: #7d2638;
+        }
+
+        .about-link span:last-child {
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+
+        /* =========================================================
+           DARK MODE
+           ========================================================= */
+
+        body.dark-mode .about-eyebrow,
+        body.dark-mode .about-section-label,
+        body.dark-mode .about-feature-number,
+        body.dark-mode .about-experience-item > span {
+            color: #c45a70;
+        }
+
+        body.dark-mode .about-section-alt {
+            background: rgba(196, 90, 112, 0.045);
+        }
+
+        body.dark-mode .about-feature-card {
+            border-color:
+                rgba(196, 90, 112, 0.18);
+
+            background:
+                rgba(196, 90, 112, 0.035);
+        }
+
+        body.dark-mode .about-feature-card:hover {
+            border-color:
+                rgba(196, 90, 112, 0.4);
+
+            background:
+                rgba(196, 90, 112, 0.07);
+        }
+
+        body.dark-mode .about-experience-item,
+        body.dark-mode .about-links,
+        body.dark-mode .about-link {
+            border-color:
+                rgba(196, 90, 112, 0.16);
+        }
+
+        body.dark-mode .about-link:hover {
+            color: #c45a70;
+        }
+
+        body.dark-mode .about-statement {
+            background: #c45a70;
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           TABLET
+           ========================================================= */
+
+        @media (max-width: 850px) {
+
+            .about-feature-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-feature-card:last-child {
+                grid-column: 1 / -1;
+            }
+
+            .about-experience {
+                grid-template-columns: 1fr;
+
+                gap: 40px;
+            }
+
+        }
+
+
+        /* =========================================================
+           MOBILE
+           ========================================================= */
+
+        @media (max-width: 768px) {
+
+            .about-container {
+                width: 92%;
+            }
+
+            .about-hero {
+                padding: 50px 0 45px;
+            }
+
+            .about-hero h1 {
+                font-size: 35px;
+
+                letter-spacing: -1px;
+            }
+
+            .about-intro {
+                font-size: 14px;
+                line-height: 1.7;
+            }
+
+            .about-section {
+                padding: 50px 0;
+            }
+
+            .about-content h2,
+            .about-section-heading h2,
+            .about-experience-text h2 {
+                font-size: 27px;
+            }
+
+            .about-content p,
+            .about-experience-text p {
+                font-size: 14px;
+            }
+
+            .about-feature-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .about-feature-card:last-child {
+                grid-column: auto;
+            }
+
+            .about-feature-card {
+                min-height: auto;
+                padding: 22px;
+            }
+
+            .about-feature-number {
+                margin-bottom: 25px;
+            }
+
+            .about-experience {
+                gap: 35px;
+            }
+
+            .about-statement {
+                padding: 55px 0;
+            }
+
+            .about-statement-inner h2 {
+                font-size: 29px;
+            }
+
+        }
+
+
+        /* =========================================================
+           SMALL PHONES
+           ========================================================= */
+
+        @media (max-width: 420px) {
+
+            .about-hero {
+                padding: 42px 0 38px;
+            }
+
+            .about-hero h1 {
+                font-size: 30px;
+            }
+
+            .about-section {
+                padding: 42px 0;
+            }
+
+            .about-content h2,
+            .about-section-heading h2,
+            .about-experience-text h2 {
+                font-size: 24px;
+            }
+
+            .about-statement-inner h2 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
 <body>
 
 
+    <!-- ACCESSIBILITY -->
+
+    <a
+        href="#main-content"
+        class="skip-link"
+    >
+        Skip to main content
+    </a>
+
+
     <!-- HEADER -->
 
     <header class="site-header">
 
-    <a
-        href="index.html"
-        class="logo-link"
-    >
-        <h1>THREADLY</h1>
-    </a>
-
-
-    <nav class="desktop-nav">
-
-        <a href="index.html">
-            Home
+        <a
+            href="index.html"
+            class="logo-link"
+            aria-label="THREADLY home"
+        >
+            <h1 data-store-name>
+                THREADLY
+            </h1>
         </a>
 
-        <a href="shop.html">
-            Shop
-        </a>
 
-        <a href="shop.html?category=men">
-            Men
-        </a>
-
-        <a href="shop.html?category=women">
-            Women
-        </a>
-
-        <a href="shop.html?category=shoes">
-            Shoes
-        </a>
-
-        <a href="cart.html">
-            Cart
-        </a>
-
-    </nav>
-
-
-    <div class="header-actions">
-
-
-        <button
-            id="menuButton"
-            class="menu-button"
-            aria-label="Open menu"
+        <nav
+            class="desktop-nav"
+            aria-label="Main navigation"
         >
 
-            <span></span>
-            <span></span>
-            <span></span>
+            <a href="index.html">
+                Home
+            </a>
 
-        </button>
+            <a href="shop.html">
+                Shop
+            </a>
 
-    </div>
+            <a href="shop.html?category=men">
+                Men
+            </a>
 
-</header>
+            <a href="shop.html?category=women">
+                Women
+            </a>
+
+            <a href="shop.html?category=shoes">
+                Shoes
+            </a>
+
+            <a href="cart.html">
+                Cart
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+
+            <button
+                id="menuButton"
+                class="menu-button"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-controls="mobileMenu"
+                aria-expanded="false"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+    </header>
 
 
     <!-- MOBILE MENU -->
@@ -126,12 +738,14 @@
     <div
         id="menuOverlay"
         class="menu-overlay"
+        aria-hidden="true"
     ></div>
 
 
     <aside
         id="mobileMenu"
         class="mobile-menu"
+        aria-label="Mobile navigation"
     >
 
         <div class="mobile-menu-header">
@@ -144,7 +758,7 @@
                 type="button"
                 id="closeMenu"
                 class="close-menu"
-                aria-label="Close menu"
+                aria-label="Close navigation menu"
             >
                 ×
             </button>
@@ -152,7 +766,10 @@
         </div>
 
 
-        <nav class="mobile-nav">
+        <nav
+            class="mobile-nav"
+            aria-label="Mobile navigation links"
+        >
 
             <a href="index.html">
                 Home
@@ -201,6 +818,7 @@
             <a
                 href="about.html"
                 class="active"
+                aria-current="page"
             >
                 About THREADLY
             </a>
@@ -220,12 +838,19 @@
 
     <!-- ABOUT PAGE -->
 
-    <main class="about-page">
+    <main
+        id="main-content"
+        class="about-page"
+        tabindex="-1"
+    >
 
 
         <!-- HERO -->
 
-        <section class="about-hero">
+        <section
+            class="about-hero"
+            aria-labelledby="about-title"
+        >
 
             <div class="about-container">
 
@@ -233,7 +858,7 @@
                     THE THREADLY STORY
                 </p>
 
-                <h1>
+                <h1 id="about-title">
                     ABOUT THREADLY
                 </h1>
 
@@ -250,7 +875,10 @@
 
         <!-- INTRODUCTION -->
 
-        <section class="about-section">
+        <section
+            class="about-section"
+            aria-labelledby="who-we-are-title"
+        >
 
             <div class="about-container">
 
@@ -260,7 +888,7 @@
                         WHO WE ARE
                     </div>
 
-                    <h2>
+                    <h2 id="who-we-are-title">
                         Fashion made simple.
                     </h2>
 
@@ -288,7 +916,10 @@
 
         <!-- WHAT WE OFFER -->
 
-        <section class="about-section about-section-alt">
+        <section
+            class="about-section about-section-alt"
+            aria-labelledby="what-we-offer-title"
+        >
 
             <div class="about-container">
 
@@ -300,7 +931,7 @@
                             WHAT WE OFFER
                         </div>
 
-                        <h2>
+                        <h2 id="what-we-offer-title">
                             Everything starts with what
                             you want to wear.
                         </h2>
@@ -385,7 +1016,10 @@
 
         <!-- SHOPPING EXPERIENCE -->
 
-        <section class="about-section">
+        <section
+            class="about-section"
+            aria-labelledby="experience-title"
+        >
 
             <div class="about-container">
 
@@ -397,7 +1031,7 @@
                             THE THREADLY EXPERIENCE
                         </div>
 
-                        <h2>
+                        <h2 id="experience-title">
                             Built around the way
                             you shop.
                         </h2>
@@ -424,7 +1058,7 @@
 
                         <div class="about-experience-item">
 
-                            <span>
+                            <span aria-hidden="true">
                                 01
                             </span>
 
@@ -446,7 +1080,7 @@
 
                         <div class="about-experience-item">
 
-                            <span>
+                            <span aria-hidden="true">
                                 02
                             </span>
 
@@ -468,7 +1102,7 @@
 
                         <div class="about-experience-item">
 
-                            <span>
+                            <span aria-hidden="true">
                                 03
                             </span>
 
@@ -499,13 +1133,16 @@
 
         <!-- BRAND STATEMENT -->
 
-        <section class="about-statement">
+        <section
+            class="about-statement"
+            aria-label="THREADLY brand statement"
+        >
 
             <div class="about-container">
 
                 <div class="about-statement-inner">
 
-                    <p>
+                    <p data-store-name>
                         THREADLY
                     </p>
 
@@ -525,7 +1162,10 @@
 
         <!-- QUICK LINKS -->
 
-        <section class="about-section">
+        <section
+            class="about-section"
+            aria-labelledby="explore-title"
+        >
 
             <div class="about-container">
 
@@ -537,7 +1177,7 @@
                             EXPLORE THREADLY
                         </div>
 
-                        <h2>
+                        <h2 id="explore-title">
                             Where would you like to go?
                         </h2>
 
@@ -557,7 +1197,7 @@
                             Shop
                         </span>
 
-                        <span>
+                        <span aria-hidden="true">
                             →
                         </span>
 
@@ -573,7 +1213,7 @@
                             My Account
                         </span>
 
-                        <span>
+                        <span aria-hidden="true">
                             →
                         </span>
 
@@ -589,7 +1229,7 @@
                             Help &amp; Support
                         </span>
 
-                        <span>
+                        <span aria-hidden="true">
                             →
                         </span>
 
@@ -614,7 +1254,7 @@
 
             <div class="footer-brand">
 
-                <strong>
+                <strong data-store-name>
                     THREADLY
                 </strong>
 
@@ -625,7 +1265,10 @@
             </div>
 
 
-            <div class="footer-links">
+            <nav
+                class="footer-links"
+                aria-label="Footer navigation"
+            >
 
                 <a href="help.html">
                     Contact
@@ -647,7 +1290,7 @@
                     About THREADLY
                 </a>
 
-            </div>
+            </nav>
 
         </div>
 
@@ -658,6 +1301,161 @@
     <!-- MAIN JAVASCRIPT -->
 
     <script src="app.js"></script>
+
+
+    <!-- ABOUT PAGE ACCESSIBILITY ENHANCEMENTS -->
+
+    <script>
+
+        (function () {
+
+            const menuButton =
+                document.getElementById(
+                    "menuButton"
+                );
+
+            const mobileMenu =
+                document.getElementById(
+                    "mobileMenu"
+                );
+
+            const menuOverlay =
+                document.getElementById(
+                    "menuOverlay"
+                );
+
+            const mainContent =
+                document.getElementById(
+                    "main-content"
+                );
+
+
+            /*
+             * Keep menu accessibility state
+             * synchronized with the shared
+             * THREADLY mobile-menu system.
+             */
+
+            if (
+                menuButton &&
+                mobileMenu
+            ) {
+
+                menuButton.setAttribute(
+                    "aria-controls",
+                    "mobileMenu"
+                );
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+
+                const menuObserver =
+                    new MutationObserver(
+                        function () {
+
+                            const isOpen =
+                                mobileMenu.classList.contains(
+                                    "active"
+                                );
+
+                            menuButton.setAttribute(
+                                "aria-expanded",
+                                isOpen
+                                    ? "true"
+                                    : "false"
+                            );
+
+                            menuButton.setAttribute(
+                                "aria-label",
+                                isOpen
+                                    ? "Close navigation menu"
+                                    : "Open navigation menu"
+                            );
+
+
+                            if (menuOverlay) {
+
+                                menuOverlay.setAttribute(
+                                    "aria-hidden",
+                                    isOpen
+                                        ? "false"
+                                        : "true"
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+                menuObserver.observe(
+                    mobileMenu,
+                    {
+                        attributes: true,
+                        attributeFilter: [
+                            "class"
+                        ]
+                    }
+                );
+
+            }
+
+
+            /*
+             * Return keyboard focus to the
+             * main content when the skip link
+             * is used.
+             */
+
+            const skipLink =
+                document.querySelector(
+                    ".skip-link"
+                );
+
+            if (skipLink && mainContent) {
+
+                skipLink.addEventListener(
+                    "click",
+                    function () {
+
+                        setTimeout(
+                            function () {
+
+                                mainContent.focus();
+
+                            },
+                            0
+                        );
+
+                    }
+                );
+
+            }
+
+        })();
+
+    </script>
+
+
+    <!-- ABOUT PAGE STRUCTURED DATA -->
+
+    <script type="application/ld+json">
+
+        {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "name": "About THREADLY",
+            "description": "Learn about THREADLY and its online fashion shopping experience.",
+            "isPartOf": {
+                "@type": "WebSite",
+                "name": "THREADLY"
+            }
+        }
+
+    </script>
 
 
 </body>

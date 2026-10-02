@@ -1,223 +1,2516 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+<meta charset="UTF-8">
 
-    <meta charset="UTF-8">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="description"
+    content="Learn how THREADLY delivery works, including order processing, delivery information and order tracking."
+>
 
-    <title>Delivery | THREADLY</title>
+<meta
+    name="robots"
+    content="index, follow"
+>
+
+<meta
+    name="theme-color"
+    content="#f6f3ef"
+>
+
+<title>Delivery | THREADLY</title>
 
 
-    <!-- Prevent theme flash -->
+<!-- =====================================================
+     EARLY THEME
+====================================================== -->
 
-    <script>
-        (function () {
+<script>
 
-            const savedTheme =
-                localStorage.getItem("threadlyTheme") ||
-                "system";
+    (function () {
 
-            const prefersDark =
-                window.matchMedia &&
-                window.matchMedia(
-                    "(prefers-color-scheme: dark)"
-                ).matches;
+        const savedTheme =
+            localStorage.getItem(
+                "threadlyTheme"
+            ) || "system";
 
-            const shouldUseDark =
-                savedTheme === "dark" ||
-                (
-                    savedTheme === "system" &&
-                    prefersDark
+
+        const prefersDark =
+            window.matchMedia &&
+            window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            ).matches;
+
+
+        const shouldUseDark =
+            savedTheme === "dark" ||
+            (
+                savedTheme === "system" &&
+                prefersDark
+            );
+
+
+        if (shouldUseDark) {
+
+            document.documentElement.classList.add(
+                "threadly-dark"
+            );
+
+        }
+
+    })();
+
+</script>
+
+
+<!-- =====================================================
+     INLINE THREADLY CSS
+====================================================== -->
+
+<style>
+
+    /* =====================================================
+       THREADLY VARIABLES
+    ====================================================== */
+
+    :root {
+
+        --bg:
+            #f6f3ef;
+
+        --surface:
+            #ffffff;
+
+        --surface-2:
+            #eeebe6;
+
+        --text:
+            #171717;
+
+        --muted:
+            #747474;
+
+        --accent:
+            #7b2639;
+
+        --accent-dark:
+            #641d2d;
+
+        --accent-soft:
+            #f1e2e6;
+
+        --border:
+            #ded9d3;
+
+        --shadow:
+            0 18px 45px
+            rgba(
+                0,
+                0,
+                0,
+                0.07
+            );
+
+        --shadow-small:
+            0 8px 25px
+            rgba(
+                0,
+                0,
+                0,
+                0.06
+            );
+
+        --max-width:
+            1280px;
+
+        --transition:
+            0.28s ease;
+
+        color-scheme:
+            light;
+    }
+
+
+    /* =====================================================
+       DARK MODE
+    ====================================================== */
+
+    html.threadly-dark,
+    body.dark-mode {
+
+        --bg:
+            #111111;
+
+        --surface:
+            #1a1a1a;
+
+        --surface-2:
+            #232323;
+
+        --text:
+            #f5f3f0;
+
+        --muted:
+            #a4a4a4;
+
+        --accent:
+            #c65b72;
+
+        --accent-dark:
+            #a74359;
+
+        --accent-soft:
+            #321d23;
+
+        --border:
+            #303030;
+
+        --shadow:
+            0 18px 45px
+            rgba(
+                0,
+                0,
+                0,
+                0.28
+            );
+
+        --shadow-small:
+            0 8px 25px
+            rgba(
+                0,
+                0,
+                0,
+                0.22
+            );
+
+        color-scheme:
+            dark;
+    }
+
+
+    /* =====================================================
+       RESET
+    ====================================================== */
+
+    html {
+
+        scroll-behavior:
+            smooth;
+
+        box-sizing:
+            border-box;
+
+        background:
+            var(--bg);
+
+        max-width:
+            100%;
+
+        overflow-x:
+            hidden;
+    }
+
+
+    *,
+    *::before,
+    *::after {
+
+        box-sizing:
+            inherit;
+    }
+
+
+    body {
+
+        margin:
+            0;
+
+        width:
+            100%;
+
+        min-height:
+            100vh;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+        background:
+            var(--bg);
+
+        color:
+            var(--text);
+
+        line-height:
+            1.6;
+
+        transition:
+            background-color var(--transition),
+            color var(--transition);
+
+        overflow-x:
+            hidden;
+    }
+
+
+    body.menu-open {
+
+        overflow:
+            hidden;
+    }
+
+
+    a {
+
+        color:
+            inherit;
+
+        text-decoration:
+            none;
+    }
+
+
+    button {
+
+        font:
+            inherit;
+
+        cursor:
+            pointer;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ====================================================== */
+
+    .skip-link {
+
+        position:
+            fixed;
+
+        top:
+            12px;
+
+        left:
+            12px;
+
+        z-index:
+            2000;
+
+        padding:
+            10px 15px;
+
+        border-radius:
+            7px;
+
+        background:
+            var(--accent);
+
+        color:
+            #ffffff;
+
+        font-size:
+            13px;
+
+        font-weight:
+            700;
+
+        text-decoration:
+            none;
+
+        transform:
+            translateY(-150%);
+
+        transition:
+            transform var(--transition);
+    }
+
+
+    .skip-link:focus {
+
+        transform:
+            translateY(0);
+    }
+
+
+    a:focus-visible,
+    button:focus-visible {
+
+        outline:
+            2px solid
+            var(--accent);
+
+        outline-offset:
+            4px;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ====================================================== */
+
+    .site-header {
+
+        position:
+            sticky;
+
+        top:
+            0;
+
+        z-index:
+            1000;
+
+        width:
+            100%;
+
+        padding:
+            0 30px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        height:
+            76px;
+
+        background:
+            rgba(
+                246,
+                243,
+                239,
+                0.94
+            );
+
+        border-bottom:
+            1px solid
+            var(--border);
+
+        backdrop-filter:
+            blur(16px);
+
+        -webkit-backdrop-filter:
+            blur(16px);
+    }
+
+
+    body.dark-mode .site-header {
+
+        background:
+            rgba(
+                17,
+                17,
+                17,
+                0.94
+            );
+    }
+
+
+    .logo-link {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        color:
+            var(--text);
+    }
+
+
+    .logo-link h1 {
+
+        margin:
+            0;
+
+        color:
+            inherit;
+
+        font-size:
+            22px;
+
+        font-weight:
+            800;
+
+        letter-spacing:
+            4px;
+    }
+
+
+    .desktop-nav {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            30px;
+
+        margin-left:
+            auto;
+
+        margin-right:
+            35px;
+    }
+
+
+    .desktop-nav a {
+
+        position:
+            relative;
+
+        color:
+            var(--text);
+
+        font-size:
+            13px;
+
+        font-weight:
+            600;
+
+        letter-spacing:
+            0.4px;
+    }
+
+
+    .desktop-nav a::after {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        left:
+            0;
+
+        bottom:
+            -8px;
+
+        width:
+            0;
+
+        height:
+            1.5px;
+
+        background:
+            var(--accent);
+
+        transition:
+            width var(--transition);
+    }
+
+
+    .desktop-nav a:hover {
+
+        color:
+            var(--accent);
+    }
+
+
+    .desktop-nav a:hover::after {
+
+        width:
+            100%;
+    }
+
+
+    .header-actions {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+    }
+
+
+    .menu-button {
+
+        position:
+            relative;
+
+        z-index:
+            1101;
+
+        width:
+            43px;
+
+        height:
+            43px;
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        gap:
+            4px;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            50%;
+
+        background:
+            var(--surface);
+
+        color:
+            var(--text);
+    }
+
+
+    .menu-button:hover {
+
+        background:
+            var(--accent);
+
+        border-color:
+            var(--accent);
+
+        color:
+            #ffffff;
+    }
+
+
+    .menu-button span {
+
+        display:
+            block;
+
+        width:
+            16px;
+
+        height:
+            1.5px;
+
+        background:
+            currentColor;
+
+        border-radius:
+            2px;
+    }
+
+
+    /* =====================================================
+       MOBILE MENU
+    ====================================================== */
+
+    .menu-overlay {
+
+        position:
+            fixed;
+
+        inset:
+            0;
+
+        z-index:
+            1090;
+
+        background:
+            rgba(
+                0,
+                0,
+                0,
+                0.45
+            );
+
+        opacity:
+            0;
+
+        visibility:
+            hidden;
+
+        pointer-events:
+            none;
+
+        transition:
+            opacity var(--transition),
+            visibility var(--transition);
+    }
+
+
+    .menu-overlay.active {
+
+        opacity:
+            1;
+
+        visibility:
+            visible;
+
+        pointer-events:
+            auto;
+    }
+
+
+    .mobile-menu {
+
+        position:
+            fixed;
+
+        top:
+            0;
+
+        right:
+            0;
+
+        z-index:
+            1100;
+
+        width:
+            min(
+                360px,
+                88vw
+            );
+
+        height:
+            100vh;
+
+        background:
+            var(--surface);
+
+        color:
+            var(--text);
+
+        border-left:
+            1px solid
+            var(--border);
+
+        transform:
+            translateX(100%);
+
+        visibility:
+            hidden;
+
+        opacity:
+            0;
+
+        transition:
+            transform 0.3s ease,
+            opacity 0.3s ease,
+            visibility 0.3s ease;
+
+        overflow-y:
+            auto;
+    }
+
+
+    .mobile-menu.active {
+
+        transform:
+            translateX(0);
+
+        visibility:
+            visible;
+
+        opacity:
+            1;
+    }
+
+
+    .mobile-menu-header {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        padding:
+            24px;
+
+        border-bottom:
+            1px solid
+            var(--border);
+    }
+
+
+    .mobile-menu-header h2 {
+
+        margin:
+            0;
+
+        color:
+            var(--text);
+
+        font-size:
+            20px;
+
+        letter-spacing:
+            3px;
+    }
+
+
+    .close-menu {
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            50%;
+
+        background:
+            var(--surface);
+
+        color:
+            var(--text);
+
+        font-size:
+            25px;
+    }
+
+
+    .close-menu:hover {
+
+        background:
+            var(--accent);
+
+        border-color:
+            var(--accent);
+
+        color:
+            #ffffff;
+    }
+
+
+    .mobile-nav {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        padding:
+            12px 20px 30px;
+    }
+
+
+    .mobile-nav a {
+
+        display:
+            block;
+
+        padding:
+            15px 4px;
+
+        color:
+            var(--text);
+
+        transition:
+            color var(--transition);
+    }
+
+
+    .mobile-nav a:hover {
+
+        color:
+            var(--accent);
+    }
+
+
+    .menu-divider {
+
+        width:
+            100%;
+
+        height:
+            1px;
+
+        margin:
+            10px 0;
+
+        background:
+            var(--border);
+    }
+
+
+    /* =====================================================
+       DELIVERY PAGE
+    ====================================================== */
+
+    .delivery-page {
+
+        width:
+            100%;
+
+        color:
+            var(--text);
+    }
+
+
+    .delivery-container {
+
+        width:
+            min(
+                1000px,
+                92%
+            );
+
+        margin:
+            0 auto;
+
+        padding:
+            60px 0 80px;
+    }
+
+
+    /* =====================================================
+       HERO
+    ====================================================== */
+
+    .delivery-hero {
+
+        text-align:
+            center;
+
+        margin-bottom:
+            55px;
+    }
+
+
+    .delivery-eyebrow {
+
+        margin:
+            0 0 12px;
+
+        color:
+            #7d2638;
+
+        font-size:
+            11px;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            2px;
+    }
+
+
+    .delivery-hero h2 {
+
+        margin:
+            0 0 14px;
+
+        color:
+            var(--text);
+
+        font-size:
+            44px;
+
+        letter-spacing:
+            -1px;
+    }
+
+
+    .delivery-hero > p:last-child {
+
+        max-width:
+            600px;
+
+        margin:
+            0 auto;
+
+        color:
+            var(--muted);
+
+        font-size:
+            15px;
+
+        line-height:
+            1.7;
+
+        opacity:
+            0.8;
+    }
+
+
+    /* =====================================================
+       SECTIONS
+    ====================================================== */
+
+    .delivery-section {
+
+        margin-bottom:
+            45px;
+    }
+
+
+    .delivery-section-heading {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            14px;
+
+        margin-bottom:
+            22px;
+    }
+
+
+    .delivery-heading-icon {
+
+        width:
+            42px;
+
+        height:
+            42px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        flex-shrink:
+            0;
+
+        border-radius:
+            50%;
+
+        background:
+            #7d2638;
+
+        color:
+            #ffffff;
+
+        font-size:
+            11px;
+
+        font-weight:
+            700;
+    }
+
+
+    .delivery-section-heading h3 {
+
+        margin:
+            0 0 4px;
+
+        color:
+            var(--text);
+
+        font-size:
+            21px;
+    }
+
+
+    .delivery-section-heading p {
+
+        margin:
+            0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+
+        opacity:
+            0.8;
+    }
+
+
+    /* =====================================================
+       DELIVERY STEPS
+    ====================================================== */
+
+    .delivery-steps {
+
+        border-top:
+            1px solid
+            rgba(
+                125,
+                38,
+                56,
+                0.14
+            );
+    }
+
+
+    .delivery-step {
+
+        display:
+            flex;
+
+        gap:
+            20px;
+
+        padding:
+            22px 4px;
+
+        border-bottom:
+            1px solid
+            rgba(
+                125,
+                38,
+                56,
+                0.14
+            );
+    }
+
+
+    .delivery-step > span {
+
+        flex-shrink:
+            0;
+
+        color:
+            #7d2638;
+
+        font-size:
+            12px;
+
+        font-weight:
+            700;
+    }
+
+
+    .delivery-step strong {
+
+        display:
+            block;
+
+        margin-bottom:
+            6px;
+
+        color:
+            var(--text);
+
+        font-size:
+            15px;
+    }
+
+
+    .delivery-step p {
+
+        margin:
+            0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+
+        line-height:
+            1.7;
+
+        opacity:
+            0.85;
+    }
+
+
+    /* =====================================================
+       DELIVERY INFORMATION
+    ====================================================== */
+
+    .delivery-info-grid {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap:
+            14px;
+    }
+
+
+    .delivery-info-card {
+
+        padding:
+            22px;
+
+        border:
+            1px solid
+            rgba(
+                125,
+                38,
+                56,
+                0.14
+            );
+
+        border-radius:
+            14px;
+
+        background:
+            rgba(
+                125,
+                38,
+                56,
+                0.035
+            );
+    }
+
+
+    .delivery-info-card strong {
+
+        display:
+            block;
+
+        margin-bottom:
+            9px;
+
+        color:
+            var(--text);
+
+        font-size:
+            15px;
+    }
+
+
+    .delivery-info-card p {
+
+        margin:
+            0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+
+        line-height:
+            1.7;
+
+        opacity:
+            0.85;
+    }
+
+
+    /* =====================================================
+       NOTICE
+    ====================================================== */
+
+    .delivery-notice {
+
+        display:
+            flex;
+
+        gap:
+            18px;
+
+        padding:
+            25px;
+
+        border:
+            1px solid
+            rgba(
+                125,
+                38,
+                56,
+                0.15
+            );
+
+        border-radius:
+            14px;
+
+        background:
+            rgba(
+                125,
+                38,
+                56,
+                0.045
+            );
+    }
+
+
+    .delivery-notice-icon {
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        min-width:
+            40px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            50%;
+
+        background:
+            #7d2638;
+
+        color:
+            #ffffff;
+
+        font-weight:
+            700;
+    }
+
+
+    .delivery-notice h3 {
+
+        margin:
+            0 0 8px;
+
+        color:
+            var(--text);
+
+        font-size:
+            17px;
+    }
+
+
+    .delivery-notice p {
+
+        margin:
+            0 0 17px;
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+
+        line-height:
+            1.7;
+    }
+
+
+    /* =====================================================
+       BUTTON
+    ====================================================== */
+
+    .delivery-button {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        min-height:
+            40px;
+
+        padding:
+            0 18px;
+
+        border-radius:
+            8px;
+
+        background:
+            #7d2638;
+
+        color:
+            #ffffff;
+
+        font-size:
+            13px;
+
+        font-weight:
+            600;
+
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease,
+            background var(--transition);
+    }
+
+
+    .delivery-button:hover {
+
+        transform:
+            translateY(-2px);
+
+        opacity:
+            0.9;
+    }
+
+
+    /* =====================================================
+       ORDER BOX
+    ====================================================== */
+
+    .delivery-order-box {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        gap:
+            30px;
+
+        padding:
+            28px;
+
+        border-radius:
+            14px;
+
+        background:
+            #7d2638;
+
+        color:
+            #ffffff;
+    }
+
+
+    .delivery-small-label {
+
+        margin:
+            0 0 8px;
+
+        font-size:
+            10px;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            1.5px;
+
+        opacity:
+            0.75;
+    }
+
+
+    .delivery-order-box h3 {
+
+        margin:
+            0 0 8px;
+
+        font-size:
+            20px;
+    }
+
+
+    .delivery-order-box p:last-child {
+
+        margin:
+            0;
+
+        max-width:
+            580px;
+
+        font-size:
+            13px;
+
+        line-height:
+            1.6;
+
+        opacity:
+            0.8;
+    }
+
+
+    .delivery-order-box .delivery-button {
+
+        flex-shrink:
+            0;
+
+        background:
+            #ffffff;
+
+        color:
+            #7d2638;
+    }
+
+
+    /* =====================================================
+       DARK MODE
+    ====================================================== */
+
+    body.dark-mode .delivery-eyebrow,
+    body.dark-mode .delivery-step > span {
+
+        color:
+            #c45a70;
+    }
+
+
+    body.dark-mode
+    .delivery-heading-icon,
+    body.dark-mode
+    .delivery-notice-icon {
+
+        background:
+            #c45a70;
+    }
+
+
+    body.dark-mode
+    .delivery-info-card,
+    body.dark-mode
+    .delivery-notice {
+
+        border-color:
+            rgba(
+                196,
+                90,
+                112,
+                0.18
+            );
+
+        background:
+            rgba(
+                196,
+                90,
+                112,
+                0.045
+            );
+    }
+
+
+    body.dark-mode
+    .delivery-steps,
+    body.dark-mode
+    .delivery-step {
+
+        border-color:
+            rgba(
+                196,
+                90,
+                112,
+                0.16
+            );
+    }
+
+
+    body.dark-mode
+    .delivery-button {
+
+        background:
+            #c45a70;
+    }
+
+
+    body.dark-mode
+    .delivery-order-box {
+
+        background:
+            #c45a70;
+    }
+
+
+    body.dark-mode
+    .delivery-order-box
+    .delivery-button {
+
+        background:
+            #ffffff;
+
+        color:
+            #c45a70;
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ====================================================== */
+
+    .site-footer {
+
+        border-top:
+            1px solid
+            var(--border);
+
+        padding:
+            55px 30px 25px;
+
+        background:
+            var(--surface);
+    }
+
+
+    .footer-inner {
+
+        max-width:
+            var(--max-width);
+
+        margin:
+            0 auto;
+    }
+
+
+    .footer-brand h3 {
+
+        margin:
+            0;
+
+        font-size:
+            20px;
+
+        font-weight:
+            800;
+
+        letter-spacing:
+            4px;
+    }
+
+
+    .footer-brand p {
+
+        margin:
+            7px 0 0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+    }
+
+
+    .footer-links {
+
+        display:
+            flex;
+
+        flex-wrap:
+            wrap;
+
+        gap:
+            25px;
+
+        margin-top:
+            25px;
+    }
+
+
+    .footer-links a {
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+
+        transition:
+            color var(--transition);
+    }
+
+
+    .footer-links a:hover {
+
+        color:
+            var(--accent);
+    }
+
+
+    .footer-bottom {
+
+        margin-top:
+            40px;
+
+        padding-top:
+            20px;
+
+        border-top:
+            1px solid
+            var(--border);
+
+        color:
+            var(--muted);
+
+        font-size:
+            12px;
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ====================================================== */
+
+    @media (max-width: 768px) {
+
+        .site-header {
+
+            height:
+                70px;
+
+            padding:
+                0 5%;
+        }
+
+
+        .desktop-nav {
+
+            display:
+                none;
+        }
+
+
+        .logo-link h1 {
+
+            font-size:
+                20px;
+
+            letter-spacing:
+                3px;
+        }
+
+
+        .menu-button {
+
+            width:
+                40px;
+
+            height:
+                40px;
+        }
+
+
+        .delivery-container {
+
+            width:
+                92%;
+
+            padding:
+                45px 0 60px;
+        }
+
+
+        .delivery-hero {
+
+            margin-bottom:
+                40px;
+        }
+
+
+        .delivery-hero h2 {
+
+            font-size:
+                34px;
+        }
+
+
+        .delivery-hero > p:last-child {
+
+            font-size:
+                14px;
+        }
+
+
+        .delivery-section {
+
+            margin-bottom:
+                35px;
+        }
+
+
+        .delivery-info-grid {
+
+            grid-template-columns:
+                1fr;
+        }
+
+
+        .delivery-notice {
+
+            padding:
+                20px;
+        }
+
+
+        .delivery-order-box {
+
+            align-items:
+                flex-start;
+
+            flex-direction:
+                column;
+
+            padding:
+                23px;
+        }
+
+
+        .delivery-order-box
+        .delivery-button {
+
+            width:
+                100%;
+        }
+
+
+        .footer-links {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    1fr
                 );
 
-            if (shouldUseDark) {
+            gap:
+                15px;
+        }
 
-                document.documentElement.classList.add(
-                    "threadly-dark"
-                );
-
-            }
-
-        })();
-    </script>
+    }
 
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    /* =====================================================
+       SMALL PHONES
+    ====================================================== */
+
+    @media (max-width: 420px) {
+
+        .mobile-menu {
+
+            width:
+                92vw;
+        }
+
+
+        .delivery-container {
+
+            padding-top:
+                38px;
+        }
+
+
+        .delivery-hero h2 {
+
+            font-size:
+                30px;
+        }
+
+
+        .delivery-section-heading h3 {
+
+            font-size:
+                18px;
+        }
+
+
+        .delivery-step {
+
+            gap:
+                14px;
+        }
+
+    }
+
+</style>
+
 
 </head>
-
 
 <body>
 
 
-    <!-- =========================
-         HEADER
-    ========================== -->
+<!-- =====================================================
+     ACCESSIBILITY
+====================================================== -->
 
-    <header class="site-header">
+<a
+    href="#main-content"
+    class="skip-link"
+>
+    Skip to main content
+</a>
 
-        <a
-            href="index.html"
-            class="logo-link"
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header class="site-header">
+
+    <a
+        href="index.html"
+        class="logo-link"
+        aria-label="THREADLY home"
+    >
+
+        <h1
+            data-store-name
         >
-            <h1>THREADLY</h1>
+            THREADLY
+        </h1>
+
+    </a>
+
+
+    <nav
+        class="desktop-nav"
+        aria-label="Main navigation"
+    >
+
+        <a href="index.html">
+            Home
         </a>
 
 
-        <nav class="desktop-nav">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="shop.html">
-                Shop
-            </a>
-
-            <a href="shop.html?category=men">
-                Men
-            </a>
-
-            <a href="shop.html?category=women">
-                Women
-            </a>
-
-            <a href="shop.html?category=shoes">
-                Shoes
-            </a>
-
-            <a href="cart.html">
-                Cart
-            </a>
-
-        </nav>
+        <a href="shop.html">
+            Shop
+        </a>
 
 
-        <div class="header-actions">
-
-           
-
-
-            <button
-                id="menuButton"
-                class="menu-button"
-                aria-label="Open menu"
-            >
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </button>
-
-        </div>
-
-    </header>
+        <a href="shop.html?category=men">
+            Men
+        </a>
 
 
+        <a href="shop.html?category=women">
+            Women
+        </a>
 
-    <!-- =========================
-         MOBILE MENU
-    ========================== -->
 
-    <div
-        id="mobileMenu"
-        class="mobile-menu"
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
+
+
+        <a href="cart.html">
+            Cart
+        </a>
+
+    </nav>
+
+
+    <div class="header-actions">
+
+        <button
+            id="menuButton"
+            class="menu-button"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-controls="mobileMenu"
+            aria-expanded="false"
+        >
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MOBILE MENU
+====================================================== -->
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+    aria-hidden="true"
+></div>
+
+
+<aside
+    id="mobileMenu"
+    class="mobile-menu"
+    aria-label="Mobile navigation"
+>
+
+    <div class="mobile-menu-header">
+
+        <h2>
+            MENU
+        </h2>
+
+
+        <button
+            id="closeMenu"
+            class="close-menu"
+            type="button"
+            aria-label="Close navigation menu"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <nav
+        class="mobile-nav"
+        aria-label="Mobile navigation"
     >
 
-        <div class="mobile-menu-header">
+        <a href="index.html">
+            Home
+        </a>
 
-            <h2>
-                MENU
+
+        <a href="shop.html">
+            Shop
+        </a>
+
+
+        <a href="shop.html?category=men">
+            Men
+        </a>
+
+
+        <a href="shop.html?category=women">
+            Women
+        </a>
+
+
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
+
+
+        <div class="menu-divider"></div>
+
+
+        <a href="account.html">
+            My Account
+        </a>
+
+
+        <a href="cart.html">
+            My Cart
+        </a>
+
+
+        <a href="saved.html">
+            Saved Items
+        </a>
+
+
+        <a href="orders.html">
+            My Orders
+        </a>
+
+
+        <a href="settings.html">
+            Settings
+        </a>
+
+
+        <a href="help.html">
+            Help &amp; Support
+        </a>
+
+
+        <a href="about.html">
+            About THREADLY
+        </a>
+
+
+        <div class="menu-divider"></div>
+
+
+        <a
+            href="login.html"
+            id="mobileLogout"
+        >
+            Log Out
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- =====================================================
+     DELIVERY PAGE
+====================================================== -->
+
+<main
+    class="delivery-page"
+    id="main-content"
+    tabindex="-1"
+>
+
+    <div class="delivery-container">
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section
+            class="delivery-hero"
+            aria-labelledby="delivery-title"
+        >
+
+            <p class="delivery-eyebrow">
+                THREADLY INFORMATION
+            </p>
+
+
+            <h2 id="delivery-title">
+                Delivery
             </h2>
 
 
-            <button
-                id="closeMenu"
-                class="close-menu"
-                aria-label="Close menu"
-            >
-                ×
-            </button>
+            <p>
+                Everything you need to know about
+                receiving your THREADLY order.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             HOW DELIVERY WORKS
+        ================================================== -->
+
+        <section
+            class="delivery-section"
+            aria-labelledby="delivery-process-title"
+        >
+
+            <div class="delivery-section-heading">
+
+                <div
+                    class="delivery-heading-icon"
+                    aria-hidden="true"
+                >
+                    01
+                </div>
+
+
+                <div>
+
+                    <h3 id="delivery-process-title">
+                        How Delivery Works
+                    </h3>
+
+
+                    <p>
+                        From checkout to your doorstep.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="delivery-steps">
+
+
+                <div class="delivery-step">
+
+                    <span aria-hidden="true">
+                        01
+                    </span>
+
+
+                    <div>
+
+                        <strong>
+                            Place Your Order
+                        </strong>
+
+
+                        <p>
+                            Choose your products, select
+                            your options and complete
+                            checkout.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="delivery-step">
+
+                    <span aria-hidden="true">
+                        02
+                    </span>
+
+
+                    <div>
+
+                        <strong>
+                            Order Processing
+                        </strong>
+
+
+                        <p>
+                            Your order is prepared and
+                            checked before it is sent
+                            for delivery.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="delivery-step">
+
+                    <span aria-hidden="true">
+                        03
+                    </span>
+
+
+                    <div>
+
+                        <strong>
+                            Order Shipped
+                        </strong>
+
+
+                        <p>
+                            Once your order is on its
+                            way, you can check its status
+                            from My Orders.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="delivery-step">
+
+                    <span aria-hidden="true">
+                        04
+                    </span>
+
+
+                    <div>
+
+                        <strong>
+                            Delivered
+                        </strong>
+
+
+                        <p>
+                            Your order arrives at the
+                            delivery address provided
+                            during checkout.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DELIVERY INFORMATION
+        ================================================== -->
+
+        <section
+            class="delivery-section"
+            aria-labelledby="delivery-info-title"
+        >
+
+            <div class="delivery-section-heading">
+
+                <div
+                    class="delivery-heading-icon"
+                    aria-hidden="true"
+                >
+                    02
+                </div>
+
+
+                <div>
+
+                    <h3 id="delivery-info-title">
+                        Delivery Information
+                    </h3>
+
+
+                    <p>
+                        Important details about your order.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="delivery-info-grid">
+
+
+                <div class="delivery-info-card">
+
+                    <strong>
+                        Processing Time
+                    </strong>
+
+
+                    <p>
+                        Orders need to be processed
+                        before they can be sent for
+                        delivery. Processing time may
+                        vary depending on the order.
+                    </p>
+
+                </div>
+
+
+                <div class="delivery-info-card">
+
+                    <strong>
+                        Delivery Area
+                    </strong>
+
+
+                    <p>
+                        Delivery availability depends
+                        on the location provided during
+                        checkout.
+                    </p>
+
+                </div>
+
+
+                <div class="delivery-info-card">
+
+                    <strong>
+                        Delivery Fee
+                    </strong>
+
+
+                    <p>
+                        Any applicable delivery fee will
+                        be shown during the checkout
+                        process before you complete
+                        your order.
+                    </p>
+
+                </div>
+
+
+                <div class="delivery-info-card">
+
+                    <strong>
+                        Order Tracking
+                    </strong>
+
+
+                    <p>
+                        You can check the current status
+                        of your order through the
+                        My Orders section.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DELAY NOTICE
+        ================================================== -->
+
+        <section
+            class="delivery-section"
+            aria-labelledby="delay-title"
+        >
+
+            <div class="delivery-notice">
+
+                <div
+                    class="delivery-notice-icon"
+                    aria-hidden="true"
+                >
+                    !
+                </div>
+
+
+                <div>
+
+                    <h3 id="delay-title">
+                        Is Your Order Delayed?
+                    </h3>
+
+
+                    <p>
+                        If your order has taken longer
+                        than expected, check your order
+                        status first. If you still need
+                        assistance, contact THREADLY
+                        through Help &amp; Support.
+                    </p>
+
+
+                    <a
+                        href="help.html"
+                        class="delivery-button"
+                    >
+                        Contact Support
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ORDER LINK
+        ================================================== -->
+
+        <section class="delivery-section">
+
+            <div class="delivery-order-box">
+
+                <div>
+
+                    <p class="delivery-small-label">
+                        TRACK YOUR ORDER
+                    </p>
+
+
+                    <h3>
+                        Want to see where your order is?
+                    </h3>
+
+
+                    <p>
+                        Open My Orders to view your
+                        current order status and
+                        available delivery information.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="orders.html"
+                    class="delivery-button"
+                >
+                    My Orders
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="site-footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+
+            <h3 data-store-name>
+                THREADLY
+            </h3>
+
+
+            <p>
+                Modern clothing and footwear
+                for everyday style.
+            </p>
 
         </div>
 
 
-        <nav class="mobile-nav">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="shop.html">
-                Shop
-            </a>
-
-            <a href="shop.html?category=men">
-                Men
-            </a>
-
-            <a href="shop.html?category=women">
-                Women
-            </a>
-
-            <a href="shop.html?category=shoes">
-                Shoes
-            </a>
-
-
-            <div class="menu-divider"></div>
-
-
-            <a href="account.html">
-                My Account
-            </a>
-
-            <a href="cart.html">
-                My Cart
-            </a>
-
-            <a href="saved.html">
-                Saved Items
-            </a>
-
-            <a href="orders.html">
-                My Orders
-            </a>
-
-
-            <div class="menu-divider"></div>
-
-
-            <a href="settings.html">
-                Settings
-            </a>
+        <nav
+            class="footer-links"
+            aria-label="Footer navigation"
+        >
 
             <a href="help.html">
-                Help &amp; Support
+                Contact
             </a>
-
-            <a href="about.html">
-                About THREADLY
-            </a>
-
-
-            <div class="menu-divider"></div>
 
 
             <a
-                href="#"
-                id="mobileLogout"
+                href="delivery.html"
+                aria-current="page"
             >
-                Log Out
+                Delivery
+            </a>
+
+
+            <a href="returns.html">
+                Returns
+            </a>
+
+
+            <a href="help.html#faq">
+                FAQ
+            </a>
+
+
+            <a href="about.html">
+                About THREADLY
             </a>
 
         </nav>
@@ -225,409 +2518,645 @@
     </div>
 
 
+    <div class="footer-bottom">
 
-    <div
-        id="menuOverlay"
-        class="menu-overlay"
-    ></div>
+        <p>
+            © 2026
+            <span data-store-name>
+                THREADLY
+            </span>.
+            All rights reserved.
+        </p>
 
+    </div>
 
+</footer>
 
-    <!-- =========================
-         DELIVERY PAGE
-    ========================== -->
 
-    <main class="delivery-page">
+<!-- =====================================================
+     SUPABASE
+====================================================== -->
 
-        <div class="delivery-container">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script src="supabase-client.js"></script>
 
-            <!-- HERO -->
 
-            <section class="delivery-hero">
+<!-- =====================================================
+     STANDALONE DELIVERY JAVASCRIPT
+     NO app.js
+====================================================== -->
 
-                <p class="delivery-eyebrow">
-                    THREADLY INFORMATION
-                </p>
+<script>
 
-                <h2>
-                    Delivery
-                </h2>
+    (function () {
 
-                <p>
-                    Everything you need to know about
-                    receiving your THREADLY order.
-                </p>
+        "use strict";
 
-            </section>
 
+        /* =================================================
+           THEME
+        ================================================= */
 
+        const THEME_KEY =
+            "threadlyTheme";
 
-            <!-- HOW DELIVERY WORKS -->
 
-            <section class="delivery-section">
+        function getSystemTheme() {
 
-                <div class="delivery-section-heading">
+            if (
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches
+            ) {
 
-                    <div class="delivery-heading-icon">
-                        01
-                    </div>
+                return "dark";
 
-                    <div>
+            }
 
-                        <h3>
-                            How Delivery Works
-                        </h3>
 
-                        <p>
-                            From checkout to your doorstep.
-                        </p>
+            return "light";
 
-                    </div>
+        }
 
-                </div>
 
+        function applyTheme(
+            theme
+        ) {
 
-                <div class="delivery-steps">
+            let selectedTheme =
+                theme;
 
 
-                    <div class="delivery-step">
+            if (
+                selectedTheme !== "light" &&
+                selectedTheme !== "dark" &&
+                selectedTheme !== "system"
+            ) {
 
-                        <span>
-                            01
-                        </span>
+                selectedTheme =
+                    "system";
 
-                        <div>
+            }
 
-                            <strong>
-                                Place Your Order
-                            </strong>
 
-                            <p>
-                                Choose your products, select
-                                your options and complete
-                                checkout.
-                            </p>
+            const actualTheme =
+                selectedTheme === "system"
+                    ? getSystemTheme()
+                    : selectedTheme;
 
-                        </div>
 
-                    </div>
+            document.documentElement.classList.toggle(
+                "threadly-dark",
+                actualTheme === "dark"
+            );
 
 
-                    <div class="delivery-step">
+            if (
+                document.body
+            ) {
 
-                        <span>
-                            02
-                        </span>
+                document.body.classList.toggle(
+                    "dark-mode",
+                    actualTheme === "dark"
+                );
 
-                        <div>
+            }
 
-                            <strong>
-                                Order Processing
-                            </strong>
 
-                            <p>
-                                Your order is prepared and
-                                checked before it is sent
-                                for delivery.
-                            </p>
+            localStorage.setItem(
+                THEME_KEY,
+                selectedTheme
+            );
 
-                        </div>
+        }
 
-                    </div>
 
+        /* =================================================
+           MOBILE MENU
+        ====================================================== */
 
-                    <div class="delivery-step">
+        function initializeMobileMenu() {
 
-                        <span>
-                            03
-                        </span>
+            const menuButton =
+                document.getElementById(
+                    "menuButton"
+                );
 
-                        <div>
 
-                            <strong>
-                                Order Shipped
-                            </strong>
+            const closeMenu =
+                document.getElementById(
+                    "closeMenu"
+                );
 
-                            <p>
-                                Once your order is on its
-                                way, you can check its status
-                                from My Orders.
-                            </p>
 
-                        </div>
+            const mobileMenu =
+                document.getElementById(
+                    "mobileMenu"
+                );
 
-                    </div>
 
+            const menuOverlay =
+                document.getElementById(
+                    "menuOverlay"
+                );
 
-                    <div class="delivery-step">
 
-                        <span>
-                            04
-                        </span>
+            if (
+                !menuButton ||
+                !mobileMenu
+            ) {
 
-                        <div>
+                return;
 
-                            <strong>
-                                Delivered
-                            </strong>
+            }
 
-                            <p>
-                                Your order arrives at the
-                                delivery address provided
-                                during checkout.
-                            </p>
 
-                        </div>
+            function openMenu() {
 
-                    </div>
+                mobileMenu.classList.add(
+                    "active"
+                );
 
-                </div>
 
-            </section>
+                if (
+                    menuOverlay
+                ) {
 
+                    menuOverlay.classList.add(
+                        "active"
+                    );
 
+                    menuOverlay.setAttribute(
+                        "aria-hidden",
+                        "false"
+                    );
 
-            <!-- DELIVERY INFORMATION -->
+                }
 
-            <section class="delivery-section">
 
-                <div class="delivery-section-heading">
+                document.body.classList.add(
+                    "menu-open"
+                );
 
-                    <div class="delivery-heading-icon">
-                        02
-                    </div>
 
-                    <div>
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
 
-                        <h3>
-                            Delivery Information
-                        </h3>
 
-                        <p>
-                            Important details about your order.
-                        </p>
+                menuButton.setAttribute(
+                    "aria-label",
+                    "Close navigation menu"
+                );
 
-                    </div>
+            }
 
-                </div>
 
+            function closeMobileMenu() {
 
-                <div class="delivery-info-grid">
+                mobileMenu.classList.remove(
+                    "active"
+                );
 
 
-                    <div class="delivery-info-card">
+                if (
+                    menuOverlay
+                ) {
 
-                        <strong>
-                            Processing Time
-                        </strong>
+                    menuOverlay.classList.remove(
+                        "active"
+                    );
 
-                        <p>
-                            Orders need to be processed
-                            before they can be sent for
-                            delivery. Processing time may
-                            vary depending on the order.
-                        </p>
+                    menuOverlay.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
 
-                    </div>
+                }
 
 
-                    <div class="delivery-info-card">
+                document.body.classList.remove(
+                    "menu-open"
+                );
 
-                        <strong>
-                            Delivery Area
-                        </strong>
 
-                        <p>
-                            Delivery availability depends
-                            on the location provided during
-                            checkout.
-                        </p>
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
 
-                    </div>
 
+                menuButton.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
 
-                    <div class="delivery-info-card">
+            }
 
-                        <strong>
-                            Delivery Fee
-                        </strong>
 
-                        <p>
-                            Any applicable delivery fee will
-                            be shown during the checkout
-                            process before you complete
-                            your order.
-                        </p>
+            menuButton.addEventListener(
+                "click",
+                function (
+                    event
+                ) {
 
-                    </div>
+                    event.preventDefault();
 
 
-                    <div class="delivery-info-card">
+                    if (
+                        mobileMenu.classList.contains(
+                            "active"
+                        )
+                    ) {
 
-                        <strong>
-                            Order Tracking
-                        </strong>
+                        closeMobileMenu();
 
-                        <p>
-                            You can check the current status
-                            of your order through the
-                            My Orders section.
-                        </p>
+                    } else {
 
-                    </div>
+                        openMenu();
 
-                </div>
+                    }
 
-            </section>
+                }
+            );
 
 
+            if (
+                closeMenu
+            ) {
 
-            <!-- DELAY -->
+                closeMenu.addEventListener(
+                    "click",
+                    function (
+                        event
+                    ) {
 
-            <section class="delivery-section">
+                        event.preventDefault();
 
-                <div class="delivery-notice">
+                        closeMobileMenu();
 
-                    <div class="delivery-notice-icon">
-                        !
-                    </div>
+                    }
+                );
 
-                    <div>
+            }
 
-                        <h3>
-                            Is Your Order Delayed?
-                        </h3>
 
-                        <p>
-                            If your order has taken longer
-                            than expected, check your order
-                            status first. If you still need
-                            assistance, contact THREADLY
-                            through Help &amp; Support.
-                        </p>
+            if (
+                menuOverlay
+            ) {
 
-                        <a
-                            href="help.html"
-                            class="delivery-button"
-                        >
-                            Contact Support
-                        </a>
+                menuOverlay.addEventListener(
+                    "click",
+                    closeMobileMenu
+                );
 
-                    </div>
+            }
 
-                </div>
 
-            </section>
+            mobileMenu
+                .querySelectorAll(
+                    "a"
+                )
+                .forEach(
+                    function (
+                        link
+                    ) {
 
+                        link.addEventListener(
+                            "click",
+                            closeMobileMenu
+                        );
 
+                    }
+                );
 
-            <!-- ORDER LINK -->
 
-            <section class="delivery-section">
+            document.addEventListener(
+                "keydown",
+                function (
+                    event
+                ) {
 
-                <div class="delivery-order-box">
+                    if (
+                        event.key ===
+                        "Escape"
+                    ) {
 
-                    <div>
+                        closeMobileMenu();
 
-                        <p class="delivery-small-label">
-                            TRACK YOUR ORDER
-                        </p>
+                    }
 
-                        <h3>
-                            Want to see where your order is?
-                        </h3>
+                }
+            );
 
-                        <p>
-                            Open My Orders to view your
-                            current order status and
-                            available delivery information.
-                        </p>
+        }
 
-                    </div>
 
+        /* =================================================
+           STOREFRONT SETTINGS
+        ====================================================== */
 
-                    <a
-                        href="orders.html"
-                        class="delivery-button"
-                    >
-                        My Orders
-                    </a>
+        async function loadStorefrontSettings() {
 
-                </div>
+            try {
 
-            </section>
+                const client =
+                    window.threadlySupabase;
 
 
-        </div>
+                if (
+                    !client
+                ) {
 
-    </main>
+                    return;
 
+                }
 
 
-    <!-- =========================
-         FOOTER
-    ========================== -->
+                const {
+                    data,
+                    error
+                } =
+                    await client
+                        .from(
+                            "storefront_settings"
+                        )
+                        .select(`
+                            store_name,
+                            store_email,
+                            store_phone,
+                            store_address,
+                            store_city,
+                            store_state,
+                            store_open
+                        `)
+                        .eq(
+                            "id",
+                            1
+                        )
+                        .maybeSingle();
 
-    <footer class="site-footer">
 
-        <div class="footer-inner">
+                if (
+                    error
+                ) {
 
-            <div class="footer-brand">
+                    console.error(
+                        "THREADLY storefront settings error:",
+                        error
+                    );
 
-                <h3>
-                    THREADLY
-                </h3>
+                    return;
 
-                <p>
-                    Modern clothing and footwear
-                    for everyday style.
-                </p>
+                }
 
-            </div>
 
+                if (
+                    !data
+                ) {
 
-            <div class="footer-links">
+                    return;
 
-                <a href="help.html">
-                    Contact
-                </a>
+                }
 
-                <a href="delivery.html">
-                    Delivery
-                </a>
 
-                <a href="returns.html">
-                    Returns
-                </a>
+                window.threadlyStorefront =
+                    data;
 
-                <a href="help.html#faq">
-                    FAQ
-                </a>
 
-                <a href="about.html">
-                    About THREADLY
-                </a>
+                window.threadlyStoreOpen =
+                    data.store_open === true;
 
-            </div>
 
-        </div>
+                const storeName =
+                    data.store_name ||
+                    "THREADLY";
 
 
-        <div class="footer-bottom">
+                document
+                    .querySelectorAll(
+                        "[data-store-name]"
+                    )
+                    .forEach(
+                        function (
+                            element
+                        ) {
 
-            <p>
-                © 2026 THREADLY. All rights reserved.
-            </p>
+                            element.textContent =
+                                storeName;
 
-        </div>
+                        }
+                    );
 
-    </footer>
 
+                document.body.dataset.storeOpen =
+                    data.store_open === true
+                        ? "true"
+                        : "false";
 
+            } catch (error) {
 
-    <script src="app.js"></script>
+                console.error(
+                    "THREADLY storefront settings loading failed:",
+                    error
+                );
 
+            }
+
+        }
+
+
+        /* =================================================
+           LOGOUT
+        ====================================================== */
+
+        async function logoutUser(
+            event
+        ) {
+
+            if (
+                event
+            ) {
+
+                event.preventDefault();
+
+            }
+
+
+            try {
+
+                const client =
+                    window.threadlySupabase;
+
+
+                if (
+                    client
+                ) {
+
+                    const {
+                        error
+                    } =
+                        await client
+                            .auth
+                            .signOut();
+
+
+                    if (
+                        error
+                    ) {
+
+                        console.error(
+                            "THREADLY logout error:",
+                            error
+                        );
+
+                    }
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY logout failed:",
+                    error
+                );
+
+            }
+
+
+            localStorage.removeItem(
+                "threadlyLoggedIn"
+            );
+
+
+            localStorage.removeItem(
+                "threadlyUser"
+            );
+
+
+            window.location.replace(
+                "login.html"
+            );
+
+        }
+
+
+        /* =================================================
+           SKIP LINK
+        ====================================================== */
+
+        function initializeSkipLink() {
+
+            const skipLink =
+                document.querySelector(
+                    ".skip-link"
+                );
+
+
+            const mainContent =
+                document.getElementById(
+                    "main-content"
+                );
+
+
+            if (
+                skipLink &&
+                mainContent
+            ) {
+
+                skipLink.addEventListener(
+                    "click",
+                    function () {
+
+                        setTimeout(
+                            function () {
+
+                                mainContent.focus();
+
+                            },
+                            0
+                        );
+
+                    }
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           PAGE INITIALIZATION
+        ====================================================== */
+
+        function initializeDeliveryPage() {
+
+            const savedTheme =
+                localStorage.getItem(
+                    THEME_KEY
+                ) || "system";
+
+
+            applyTheme(
+                savedTheme
+            );
+
+
+            initializeMobileMenu();
+
+
+            initializeSkipLink();
+
+
+            const mobileLogout =
+                document.getElementById(
+                    "mobileLogout"
+                );
+
+
+            if (
+                mobileLogout
+            ) {
+
+                mobileLogout.addEventListener(
+                    "click",
+                    logoutUser
+                );
+
+            }
+
+
+            loadStorefrontSettings();
+
+        }
+
+
+        if (
+            document.readyState ===
+            "loading"
+        ) {
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                initializeDeliveryPage,
+                {
+                    once:
+                        true
+                }
+            );
+
+        } else {
+
+            initializeDeliveryPage();
+
+        }
+
+    })();
+
+</script>
 
 </body>
 

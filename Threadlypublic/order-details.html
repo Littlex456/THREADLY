@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -23,13 +22,11 @@
         localStorage.getItem("threadlyTheme") ||
         "system";
 
-
     const prefersDark =
         window.matchMedia &&
         window.matchMedia(
             "(prefers-color-scheme: dark)"
         ).matches;
-
 
     const shouldUseDark =
         savedTheme === "dark" ||
@@ -37,7 +34,6 @@
             savedTheme === "system" &&
             prefersDark
         );
-
 
     if (shouldUseDark) {
 
@@ -54,6 +50,10 @@
 
 <style>
 
+/* ==============================
+   ROOT
+============================== */
+
 :root {
 
     --bg: #f7f5f2;
@@ -66,11 +66,13 @@
 
 }
 
+
 * {
 
     box-sizing: border-box;
 
 }
+
 
 html {
 
@@ -78,21 +80,28 @@ html {
 
 }
 
+
 body {
 
     margin: 0;
+
     font-family: Arial, sans-serif;
+
     background: var(--bg);
+
     color: var(--text);
 
 }
 
+
 a {
 
     color: inherit;
+
     text-decoration: none;
 
 }
+
 
 button {
 
@@ -125,40 +134,58 @@ button {
 .site-header {
 
     height: 80px;
+
     padding: 0 6%;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
+
     border-bottom: 1px solid var(--border);
+
     background: var(--surface);
+
     position: sticky;
+
     top: 0;
+
     z-index: 1000;
 
 }
 
+
 .logo-link h1 {
 
     margin: 0;
+
     font-size: 25px;
+
     letter-spacing: 3px;
 
 }
 
+
 .desktop-nav {
 
     display: flex;
+
     align-items: center;
+
     gap: 30px;
 
 }
 
+
 .desktop-nav a {
 
     font-size: 14px;
+
     transition: 0.3s ease;
 
 }
+
 
 .desktop-nav a:hover {
 
@@ -166,20 +193,28 @@ button {
 
 }
 
+
 .header-actions {
 
     display: flex;
+
     align-items: center;
 
 }
 
+
 .menu-button {
 
     border: 0;
+
     background: transparent;
+
     color: var(--text);
+
     font-size: 27px;
+
     cursor: pointer;
+
     display: none;
 
 }
@@ -192,16 +227,25 @@ button {
 .mobile-menu {
 
     position: fixed;
+
     top: 0;
+
     right: -100%;
+
     width: min(360px, 90%);
+
     height: 100vh;
+
     background: var(--surface);
+
     z-index: 1100;
+
     transition: right 0.3s ease;
+
     padding: 25px;
 
 }
+
 
 .mobile-menu.open {
 
@@ -209,49 +253,69 @@ button {
 
 }
 
+
 .mobile-menu-header {
 
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     padding-bottom: 25px;
+
     border-bottom: 1px solid var(--border);
 
 }
+
 
 .mobile-menu-header h2 {
 
     margin: 0;
+
     font-size: 16px;
+
     letter-spacing: 2px;
 
 }
 
+
 .close-menu {
 
     border: 0;
+
     background: transparent;
+
     color: var(--text);
+
     font-size: 30px;
+
     cursor: pointer;
 
 }
 
+
 .mobile-nav {
 
     display: flex;
+
     flex-direction: column;
+
     margin-top: 20px;
 
 }
 
+
 .mobile-nav a {
 
     padding: 14px 0;
+
     font-size: 15px;
+
     border-bottom: 1px solid var(--border);
 
 }
+
 
 .mobile-nav a.active {
 
@@ -259,27 +323,37 @@ button {
 
 }
 
+
 .menu-divider {
 
     height: 20px;
 
 }
 
+
 .menu-overlay {
 
     position: fixed;
+
     inset: 0;
+
     background: rgba(0, 0, 0, 0.45);
+
     opacity: 0;
+
     visibility: hidden;
+
     transition: 0.3s ease;
+
     z-index: 1050;
 
 }
 
+
 .menu-overlay.open {
 
     opacity: 1;
+
     visibility: visible;
 
 }
@@ -292,9 +366,11 @@ button {
 .order-details-page {
 
     width: min(1000px, 90%);
+
     margin: 70px auto 100px;
 
 }
+
 
 .page-intro {
 
@@ -302,27 +378,37 @@ button {
 
 }
 
+
 .page-intro p {
 
     margin: 0 0 10px;
+
     color: var(--accent);
+
     font-size: 12px;
+
     letter-spacing: 2px;
+
     font-weight: 600;
 
 }
 
+
 .page-intro h2 {
 
     margin: 0 0 12px;
+
     font-size: 38px;
+
     font-weight: 500;
 
 }
 
+
 .page-intro span {
 
     color: var(--muted);
+
     font-size: 15px;
 
 }
@@ -335,53 +421,76 @@ button {
 .order-main-card {
 
     background: var(--surface);
+
     border: 1px solid var(--border);
 
 }
+
 
 .order-heading {
 
     padding: 30px;
+
     display: flex;
+
     justify-content: space-between;
+
     gap: 25px;
+
     align-items: center;
+
     border-bottom: 1px solid var(--border);
 
 }
 
+
 .order-number-label {
 
     margin: 0 0 7px;
+
     color: var(--muted);
+
     font-size: 12px;
+
     letter-spacing: 1px;
 
 }
+
 
 .order-number {
 
     margin: 0;
+
     font-size: 24px;
+
     font-weight: 500;
 
 }
 
+
 .order-date {
 
     margin-top: 8px;
+
     color: var(--muted);
+
     font-size: 13px;
 
 }
 
+
 .status-badge {
 
     padding: 10px 14px;
+
     border: 1px solid var(--border);
+
     color: var(--accent);
+
     font-size: 12px;
+
     letter-spacing: 1px;
+
     white-space: nowrap;
 
 }
@@ -394,10 +503,13 @@ button {
 .status-progress {
 
     padding: 30px;
+
     border-bottom: 1px solid var(--border);
+
     overflow-x: auto;
 
 }
+
 
 .progress-track {
 
@@ -418,6 +530,7 @@ button {
 
 }
 
+
 .progress-track::before {
 
     content: "";
@@ -427,6 +540,7 @@ button {
     top: 7px;
 
     left: 8%;
+
     right: 8%;
 
     height: 2px;
@@ -436,6 +550,7 @@ button {
     z-index: 0;
 
 }
+
 
 .progress-track::after {
 
@@ -459,6 +574,7 @@ button {
 
 }
 
+
 .progress-item {
 
     position: relative;
@@ -468,6 +584,7 @@ button {
     z-index: 1;
 
 }
+
 
 .progress-dot {
 
@@ -490,6 +607,7 @@ button {
 
 }
 
+
 .progress-item.completed .progress-dot {
 
     background: var(--accent);
@@ -497,6 +615,7 @@ button {
     border-color: var(--accent);
 
 }
+
 
 .progress-item.active .progress-dot {
 
@@ -507,6 +626,7 @@ button {
     transform: scale(1.2);
 
 }
+
 
 .progress-item p {
 
@@ -520,12 +640,14 @@ button {
 
 }
 
+
 .progress-item.completed p,
 .progress-item.active p {
 
     color: var(--text);
 
 }
+
 
 .progress-item.active p {
 
@@ -541,14 +663,18 @@ button {
 .details-section {
 
     padding: 30px;
+
     border-bottom: 1px solid var(--border);
 
 }
 
+
 .section-title {
 
     margin: 0 0 20px;
+
     font-size: 16px;
+
     font-weight: 500;
 
 }
@@ -561,38 +687,54 @@ button {
 .product-row {
 
     display: flex;
+
     align-items: center;
+
     gap: 18px;
+
     padding: 15px 0;
+
     border-bottom: 1px solid var(--border);
 
 }
 
+
 .product-row:last-child {
 
     border-bottom: 0;
+
     padding-bottom: 0;
 
 }
 
+
 .product-image {
 
     width: 90px;
+
     height: 105px;
+
     background: var(--soft);
+
     overflow: hidden;
+
     flex-shrink: 0;
 
 }
 
+
 .product-image img {
 
     width: 100%;
+
     height: 100%;
+
     object-fit: cover;
+
     display: block;
 
 }
+
 
 .product-info {
 
@@ -600,25 +742,33 @@ button {
 
 }
 
+
 .product-info h4 {
 
     margin: 0 0 10px;
+
     font-size: 15px;
+
     font-weight: 500;
 
 }
 
+
 .product-info p {
 
     margin: 5px 0;
+
     color: var(--muted);
+
     font-size: 13px;
 
 }
 
+
 .product-price {
 
     font-size: 15px;
+
     font-weight: 500;
 
 }
@@ -631,10 +781,13 @@ button {
 .details-columns {
 
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     border-bottom: 1px solid var(--border);
 
 }
+
 
 .details-columns .details-section {
 
@@ -642,23 +795,29 @@ button {
 
 }
 
+
 .details-columns .details-section:first-child {
 
     border-right: 1px solid var(--border);
 
 }
 
+
 .details-text {
 
     color: var(--muted);
+
     font-size: 14px;
+
     line-height: 1.7;
 
 }
 
+
 .details-text strong {
 
     color: var(--text);
+
     font-weight: 500;
 
 }
@@ -671,23 +830,34 @@ button {
 .price-row {
 
     display: flex;
+
     justify-content: space-between;
+
     gap: 20px;
+
     padding: 9px 0;
+
     color: var(--muted);
+
     font-size: 14px;
 
 }
 
+
 .price-row.total {
 
     margin-top: 12px;
+
     padding-top: 18px;
+
     border-top: 1px solid var(--border);
+
     color: var(--text);
+
     font-size: 16px;
 
 }
+
 
 .price-row.total strong {
 
@@ -703,16 +873,22 @@ button {
 .order-actions {
 
     padding: 30px;
+
     display: flex;
+
     gap: 12px;
+
     flex-wrap: wrap;
 
 }
 
+
 .action-button {
 
     display: inline-flex;
+
     justify-content: center;
+
     align-items: center;
 
     min-height: 46px;
@@ -722,9 +898,11 @@ button {
     border: 1px solid var(--text);
 
     background: var(--text);
+
     color: var(--surface);
 
     font-size: 12px;
+
     letter-spacing: 1px;
 
     cursor: pointer;
@@ -733,19 +911,24 @@ button {
 
 }
 
+
 .action-button:hover {
 
     opacity: 0.85;
 
 }
 
+
 .action-button.secondary {
 
     background: transparent;
+
     color: var(--text);
+
     border-color: var(--border);
 
 }
+
 
 .action-button.secondary:hover {
 
@@ -772,18 +955,22 @@ button {
 
 }
 
+
 .order-error.show {
 
     display: block;
 
 }
 
+
 .order-error h3 {
 
     margin: 0 0 10px;
+
     font-size: 20px;
 
 }
+
 
 .order-error p {
 
@@ -805,9 +992,11 @@ button {
     .site-header {
 
         height: 70px;
+
         padding: 0 5%;
 
     }
+
 
     .desktop-nav {
 
@@ -815,18 +1004,22 @@ button {
 
     }
 
+
     .menu-button {
 
         display: block;
 
     }
 
+
     .order-details-page {
 
         width: 92%;
+
         margin: 45px auto 70px;
 
     }
+
 
     .page-intro h2 {
 
@@ -834,13 +1027,17 @@ button {
 
     }
 
+
     .order-heading {
 
         padding: 22px;
+
         flex-direction: column;
+
         align-items: flex-start;
 
     }
+
 
     .status-badge {
 
@@ -848,11 +1045,13 @@ button {
 
     }
 
+
     .status-progress {
 
         padding: 22px;
 
     }
+
 
     .progress-track {
 
@@ -860,11 +1059,13 @@ button {
 
     }
 
+
     .details-section {
 
         padding: 22px;
 
     }
+
 
     .details-columns {
 
@@ -872,12 +1073,15 @@ button {
 
     }
 
+
     .details-columns .details-section:first-child {
 
         border-right: 0;
+
         border-bottom: 1px solid var(--border);
 
     }
+
 
     .product-row {
 
@@ -885,12 +1089,15 @@ button {
 
     }
 
+
     .product-image {
 
         width: 75px;
+
         height: 90px;
 
     }
+
 
     .product-price {
 
@@ -898,12 +1105,15 @@ button {
 
     }
 
+
     .order-actions {
 
         padding: 22px;
+
         flex-direction: column;
 
     }
+
 
     .action-button {
 
@@ -972,9 +1182,7 @@ button {
         type="button"
         aria-label="Open menu"
     >
-
         ☰
-
     </button>
 
 </div>
@@ -987,82 +1195,80 @@ button {
     class="mobile-menu"
 >
 
-<div class="mobile-menu-header">
+    <div class="mobile-menu-header">
 
-    <h2>
-        MENU
-    </h2>
-
-
-    <button
-        id="closeMenu"
-        class="close-menu"
-        type="button"
-        aria-label="Close menu"
-    >
-
-        ×
-
-    </button>
-
-</div>
+        <h2>
+            MENU
+        </h2>
 
 
-<nav class="mobile-nav">
+        <button
+            id="closeMenu"
+            class="close-menu"
+            type="button"
+            aria-label="Close menu"
+        >
+            ×
+        </button>
 
-    <a href="index.html">
-        Home
-    </a>
-
-    <a href="shop.html">
-        Shop
-    </a>
-
-    <a href="shop.html?category=men">
-        Men
-    </a>
-
-    <a href="shop.html?category=women">
-        Women
-    </a>
-
-    <a href="shop.html?category=shoes">
-        Shoes
-    </a>
+    </div>
 
 
-    <div class="menu-divider"></div>
+    <nav class="mobile-nav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="shop.html">
+            Shop
+        </a>
+
+        <a href="shop.html?category=men">
+            Men
+        </a>
+
+        <a href="shop.html?category=women">
+            Women
+        </a>
+
+        <a href="shop.html?category=shoes">
+            Shoes
+        </a>
 
 
-    <a href="login.html">
-        My Account
-    </a>
-
-    <a href="orders.html">
-        My Orders
-    </a>
-
-    <a href="cart.html">
-        My Cart
-    </a>
-
-    <a href="saved.html">
-        Saved Items
-    </a>
+        <div class="menu-divider"></div>
 
 
-    <div class="menu-divider"></div>
+        <a href="login.html">
+            My Account
+        </a>
+
+        <a href="orders.html">
+            My Orders
+        </a>
+
+        <a href="cart.html">
+            My Cart
+        </a>
+
+        <a href="saved.html">
+            Saved Items
+        </a>
 
 
-    <a href="settings.html">
-        Settings
-    </a>
+        <div class="menu-divider"></div>
 
-    <a href="help.html">
-        Help &amp; Support
-    </a>
 
-</nav>
+        <a href="settings.html">
+            Settings
+        </a>
+
+        <a href="help.html">
+            Help &amp; Support
+        </a>
+
+    </nav>
 
 </div>
 
@@ -1258,9 +1464,7 @@ button {
         Products
     </h3>
 
-    <div id="productsList">
-
-    </div>
+    <div id="productsList"></div>
 
 </div>
 
@@ -1373,21 +1577,28 @@ button {
 
 </section>
 
-
 </main>
 
+
+<!-- =========================================
+     SUPABASE + AUTH GUARD
+========================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase-client.js"></script>
 
-<script src="app.js"></script>
+<script src="auth-guard.js"></script>
 
 
 <script>
 
-(function () {
 
+// =========================================
+// MOBILE MENU
+// =========================================
+
+(function () {
 
     const menuButton =
         document.getElementById(
@@ -1419,11 +1630,9 @@ button {
             "open"
         );
 
-
         menuOverlay.classList.add(
             "open"
         );
-
 
         document.body.style.overflow =
             "hidden";
@@ -1437,11 +1646,9 @@ button {
             "open"
         );
 
-
         menuOverlay.classList.remove(
             "open"
         );
-
 
         document.body.style.overflow =
             "";
@@ -1466,6 +1673,28 @@ button {
         closeMobileMenu
     );
 
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeMobileMenu();
+
+            }
+
+        }
+    );
+
+})();
+
+
+// =========================================
+// ORDER DETAILS
+// =========================================
+
+(function () {
 
     const orderNumber =
         document.getElementById(
@@ -1568,9 +1797,7 @@ button {
     ];
 
 
-    function formatPrice(
-        value
-    ) {
+    function formatPrice(value) {
 
         return (
             "₦" +
@@ -1582,9 +1809,7 @@ button {
     }
 
 
-    function formatDate(
-        value
-    ) {
+    function formatDate(value) {
 
         if (!value) {
 
@@ -1594,9 +1819,7 @@ button {
 
 
         const date =
-            new Date(
-                value
-            );
+            new Date(value);
 
 
         if (
@@ -1622,9 +1845,7 @@ button {
     }
 
 
-    function normalizeStatus(
-        value
-    ) {
+    function normalizeStatus(value) {
 
         return String(
             value || ""
@@ -1638,9 +1859,7 @@ button {
     }
 
 
-    function getOrderNumber(
-        order
-    ) {
+    function getOrderNumber(order) {
 
         return (
             order.order_number ||
@@ -1654,9 +1873,7 @@ button {
     }
 
 
-    function getDeliveryStatus(
-        order
-    ) {
+    function getDeliveryStatus(order) {
 
         let status =
             normalizeStatus(
@@ -1671,8 +1888,7 @@ button {
             status !== "delivered"
         ) {
 
-            status =
-                "processing";
+            status = "processing";
 
         }
 
@@ -1682,9 +1898,7 @@ button {
     }
 
 
-    function getPaymentStatus(
-        order
-    ) {
+    function getPaymentStatus(order) {
 
         return normalizeStatus(
             order.payment_status ||
@@ -1694,20 +1908,14 @@ button {
     }
 
 
-    function getCurrentStage(
-        order
-    ) {
+    function getCurrentStage(order) {
 
         const paymentStatus =
-            getPaymentStatus(
-                order
-            );
+            getPaymentStatus(order);
 
 
         const deliveryStatus =
-            getDeliveryStatus(
-                order
-            );
+            getDeliveryStatus(order);
 
 
         if (
@@ -1732,11 +1940,11 @@ button {
 
         if (
             paymentStatus ===
-            "awaiting-verification" ||
+                "awaiting-verification" ||
             paymentStatus ===
-            "pending-verification" ||
+                "pending-verification" ||
             paymentStatus ===
-            "verifying"
+                "verifying"
         ) {
 
             return "verifying";
@@ -1746,11 +1954,11 @@ button {
 
         if (
             paymentStatus ===
-            "pending" ||
+                "pending" ||
             paymentStatus ===
-            "awaiting-payment" ||
+                "awaiting-payment" ||
             paymentStatus ===
-            "unpaid"
+                "unpaid"
         ) {
 
             return "pending";
@@ -1759,12 +1967,9 @@ button {
 
 
         if (
-            paymentStatus ===
-            "paid" ||
-            paymentStatus ===
-            "successful" ||
-            paymentStatus ===
-            "success"
+            paymentStatus === "paid" ||
+            paymentStatus === "successful" ||
+            paymentStatus === "success"
         ) {
 
             return "processing";
@@ -1787,9 +1992,7 @@ button {
     }
 
 
-    function getStageLabel(
-        stage
-    ) {
+    function getStageLabel(stage) {
 
         const labels = {
 
@@ -1822,9 +2025,7 @@ button {
     }
 
 
-    function updateProgress(
-        order
-    ) {
+    function updateProgress(order) {
 
         const stages = [
 
@@ -1839,9 +2040,7 @@ button {
 
 
         const currentStage =
-            getCurrentStage(
-                order
-            );
+            getCurrentStage(order);
 
 
         const currentIndex =
@@ -1851,22 +2050,15 @@ button {
 
 
         const paymentStatus =
-            getPaymentStatus(
-                order
-            );
+            getPaymentStatus(order);
 
 
         progressItems.forEach(
-            function (
-                item,
-                index
-            ) {
-
+            function (item, index) {
 
                 item.classList.remove(
                     "completed"
                 );
-
 
                 item.classList.remove(
                     "active"
@@ -1900,20 +2092,10 @@ button {
         );
 
 
-        /*
-         * Once payment is marked paid,
-         * the Paid stage is completed.
-         * Processing becomes the active
-         * delivery stage.
-         */
-
         if (
-            paymentStatus ===
-                "paid" ||
-            paymentStatus ===
-                "successful" ||
-            paymentStatus ===
-                "success"
+            paymentStatus === "paid" ||
+            paymentStatus === "successful" ||
+            paymentStatus === "success"
         ) {
 
             progressItems[2].classList.add(
@@ -1923,8 +2105,7 @@ button {
         }
 
 
-        let progressWidth =
-            0;
+        let progressWidth = 0;
 
 
         if (
@@ -1935,8 +2116,7 @@ button {
                 (
                     currentIndex /
                     (
-                        stages.length -
-                        1
+                        stages.length - 1
                     )
                 ) * 84;
 
@@ -1957,13 +2137,10 @@ button {
     }
 
 
-    function getItems(
-        order
-    ) {
+    function getItems(order) {
 
         let items =
-            order.items ||
-            [];
+            order.items || [];
 
 
         if (
@@ -1987,18 +2164,14 @@ button {
         }
 
 
-        return Array.isArray(
-            items
-        )
+        return Array.isArray(items)
             ? items
             : [];
 
     }
 
 
-    function getProductName(
-        item
-    ) {
+    function getProductName(item) {
 
         return (
             item.name ||
@@ -2010,9 +2183,7 @@ button {
     }
 
 
-    function getProductImage(
-        item
-    ) {
+    function getProductImage(item) {
 
         return (
             item.image ||
@@ -2024,10 +2195,7 @@ button {
     }
 
 
-    function getProductSize(
-        item,
-        order
-    ) {
+    function getProductSize(item, order) {
 
         return (
             item.size ||
@@ -2039,9 +2207,7 @@ button {
     }
 
 
-    function getProductQuantity(
-        item
-    ) {
+    function getProductQuantity(item) {
 
         return Number(
             item.quantity ||
@@ -2052,9 +2218,7 @@ button {
     }
 
 
-    function getProductPrice(
-        item
-    ) {
+    function getProductPrice(item) {
 
         return Number(
             item.price ||
@@ -2064,16 +2228,11 @@ button {
     }
 
 
-    function getOrderSubtotal(
-        order,
-        items
-    ) {
+    function getOrderSubtotal(order, items) {
 
         if (
-            order.subtotal !==
-            undefined &&
-            order.subtotal !==
-            null
+            order.subtotal !== undefined &&
+            order.subtotal !== null
         ) {
 
             return (
@@ -2085,22 +2244,15 @@ button {
         }
 
 
-        let value =
-            0;
+        let value = 0;
 
 
         items.forEach(
-            function (
-                item
-            ) {
+            function (item) {
 
                 value +=
-                    getProductPrice(
-                        item
-                    ) *
-                    getProductQuantity(
-                        item
-                    );
+                    getProductPrice(item) *
+                    getProductQuantity(item);
 
             }
         );
@@ -2111,9 +2263,7 @@ button {
     }
 
 
-    function getDeliveryFee(
-        order
-    ) {
+    function getDeliveryFee(order) {
 
         return (
             Number(
@@ -2124,16 +2274,11 @@ button {
     }
 
 
-    function getTotal(
-        order,
-        items
-    ) {
+    function getTotal(order, items) {
 
         if (
-            order.total !==
-            undefined &&
-            order.total !==
-            null
+            order.total !== undefined &&
+            order.total !== null
         ) {
 
             return (
@@ -2158,9 +2303,7 @@ button {
     }
 
 
-    function getCustomer(
-        order
-    ) {
+    function getCustomer(order) {
 
         let customer =
             order.customer;
@@ -2219,9 +2362,7 @@ button {
 
 
             if (
-                Array.isArray(
-                    saved
-                )
+                Array.isArray(saved)
             ) {
 
                 orders.push(
@@ -2257,9 +2398,7 @@ button {
 
                 const exists =
                     orders.some(
-                        function (
-                            order
-                        ) {
+                        function (order) {
 
                             return (
                                 getOrderNumber(
@@ -2284,8 +2423,6 @@ button {
 
         } catch (error) {
 
-            /* Nothing to do */
-
         }
 
 
@@ -2306,17 +2443,13 @@ button {
                 window.threadlySupabase
             ) {
 
-                return (
-                    window.threadlySupabase
-                );
+                return window.threadlySupabase;
 
             }
 
 
             await new Promise(
-                function (
-                    resolve
-                ) {
+                function (resolve) {
 
                     setTimeout(
                         resolve,
@@ -2334,17 +2467,13 @@ button {
     }
 
 
-    async function findOrder(
-        orderNumber
-    ) {
+    async function findOrder(orderNumberValue) {
 
         const client =
             await waitForSupabase();
 
 
-        if (
-            client
-        ) {
+        if (client) {
 
             try {
 
@@ -2355,9 +2484,7 @@ button {
                     await client.auth.getUser();
 
 
-                if (
-                    userError
-                ) {
+                if (userError) {
 
                     throw userError;
 
@@ -2368,9 +2495,7 @@ button {
                     userData.user;
 
 
-                if (
-                    user
-                ) {
+                if (user) {
 
                     const result =
                         await client
@@ -2382,23 +2507,19 @@ button {
                             )
                             .eq(
                                 "order_number",
-                                orderNumber
+                                orderNumberValue
                             )
                             .maybeSingle();
 
 
-                    if (
-                        result.error
-                    ) {
+                    if (result.error) {
 
                         throw result.error;
 
                     }
 
 
-                    if (
-                        result.data
-                    ) {
+                    if (result.data) {
 
                         return result.data;
 
@@ -2423,9 +2544,7 @@ button {
 
 
         return localOrders.find(
-            function (
-                order
-            ) {
+            function (order) {
 
                 return (
                     String(
@@ -2434,7 +2553,7 @@ button {
                         )
                     ).toLowerCase() ===
                     String(
-                        orderNumber
+                        orderNumberValue
                     ).toLowerCase()
                 );
 
@@ -2444,21 +2563,14 @@ button {
     }
 
 
-    function showProducts(
-        items,
-        order
-    ) {
+    function showProducts(items, order) {
 
-        productsList.innerHTML =
-            "";
+        productsList.innerHTML = "";
 
 
-        if (
-            !items.length
-        ) {
+        if (!items.length) {
 
             productsList.innerHTML =
-
                 "<p class='details-text'>" +
                 "No product information found." +
                 "</p>";
@@ -2469,9 +2581,7 @@ button {
 
 
         items.forEach(
-            function (
-                item
-            ) {
+            function (item) {
 
                 const row =
                     document.createElement(
@@ -2635,9 +2745,7 @@ button {
     }
 
 
-    function showOrder(
-        order
-    ) {
+    function showOrder(order) {
 
         const orderNumberValue =
             getOrderNumber(
@@ -2705,7 +2813,6 @@ button {
 
 
         let deliveryHTML =
-
             "<strong>" +
             String(
                 deliveryMethod
@@ -2794,7 +2901,6 @@ button {
 
 
         paymentDetails.innerHTML =
-
             "<strong>" +
             String(
                 paymentMethod
@@ -2805,9 +2911,7 @@ button {
                 )
                 .toUpperCase() +
             "</strong><br>" +
-
             "Status: " +
-
             String(
                 paymentStatus
             )
@@ -2856,9 +2960,7 @@ button {
 
 
         const requestedOrderNumber =
-            params.get(
-                "id"
-            );
+            params.get("id");
 
 
         if (
@@ -2885,9 +2987,7 @@ button {
             );
 
 
-        if (
-            !order
-        ) {
+        if (!order) {
 
             orderContent.style.display =
                 "none";
@@ -2912,7 +3012,6 @@ button {
 
     startOrderDetails();
 
-
 })();
 
 </script>
@@ -2921,4 +3020,3 @@ button {
 </body>
 
 </html>
-

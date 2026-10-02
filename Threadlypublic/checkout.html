@@ -1,78 +1,2257 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+<meta charset="UTF-8">
 
-    <meta charset="UTF-8">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="description"
+    content="Complete your THREADLY order with secure delivery details and payment options."
+>
 
-    <title>Checkout | THREADLY</title>
+<meta
+    name="robots"
+    content="noindex, nofollow"
+>
 
+<meta
+    name="theme-color"
+    content="#f6f3ef"
+>
 
-    <script>
-
-        (function () {
-
-            const savedTheme =
-                localStorage.getItem("threadlyTheme") ||
-                "system";
-
-
-            const prefersDark =
-                window.matchMedia &&
-                window.matchMedia(
-                    "(prefers-color-scheme: dark)"
-                ).matches;
+<title>Checkout | THREADLY</title>
 
 
-            const shouldUseDark =
-                savedTheme === "dark" ||
-                (
-                    savedTheme === "system" &&
-                    prefersDark
+<!-- =====================================================
+     EARLY THEME
+====================================================== -->
+
+<script>
+
+    (function () {
+
+        const savedTheme =
+            localStorage.getItem(
+                "threadlyTheme"
+            ) || "system";
+
+
+        const prefersDark =
+            window.matchMedia &&
+            window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            ).matches;
+
+
+        const shouldUseDark =
+            savedTheme === "dark" ||
+            (
+                savedTheme === "system" &&
+                prefersDark
+            );
+
+
+        if (shouldUseDark) {
+
+            document.documentElement.classList.add(
+                "threadly-dark"
+            );
+
+        }
+
+    })();
+
+</script>
+
+
+<!-- =====================================================
+     INLINE CHECKOUT CSS
+====================================================== -->
+
+<style>
+
+    /* =====================================================
+       THREADLY VARIABLES
+    ====================================================== */
+
+    :root {
+
+        --bg:
+            #f6f3ef;
+
+        --surface:
+            #ffffff;
+
+        --surface-2:
+            #eeebe6;
+
+        --text:
+            #171717;
+
+        --muted:
+            #747474;
+
+        --accent:
+            #7b2639;
+
+        --accent-dark:
+            #641d2d;
+
+        --accent-soft:
+            #f1e2e6;
+
+        --border:
+            #ded9d3;
+
+        --shadow:
+            0 18px 45px
+            rgba(
+                0,
+                0,
+                0,
+                0.07
+            );
+
+        --shadow-small:
+            0 8px 25px
+            rgba(
+                0,
+                0,
+                0,
+                0.06
+            );
+
+        --max-width:
+            1280px;
+
+        --transition:
+            0.28s ease;
+
+        color-scheme:
+            light;
+    }
+
+
+    /* =====================================================
+       DARK MODE
+    ====================================================== */
+
+    html.threadly-dark,
+    body.dark-mode {
+
+        --bg:
+            #111111;
+
+        --surface:
+            #1a1a1a;
+
+        --surface-2:
+            #232323;
+
+        --text:
+            #f5f3f0;
+
+        --muted:
+            #a4a4a4;
+
+        --accent:
+            #c65b72;
+
+        --accent-dark:
+            #a74359;
+
+        --accent-soft:
+            #321d23;
+
+        --border:
+            #303030;
+
+        --shadow:
+            0
+            18px
+            45px
+            rgba(
+                0,
+                0,
+                0,
+                0.28
+            );
+
+        --shadow-small:
+            0
+            8px
+            25px
+            rgba(
+                0,
+                0,
+                0,
+                0.22
+            );
+
+        color-scheme:
+            dark;
+    }
+
+
+    /* =====================================================
+       RESET
+    ====================================================== */
+
+    html {
+
+        scroll-behavior:
+            smooth;
+
+        box-sizing:
+            border-box;
+
+        background:
+            var(--bg);
+
+        max-width:
+            100%;
+
+        overflow-x:
+            hidden;
+    }
+
+
+    *,
+    *::before,
+    *::after {
+
+        box-sizing:
+            inherit;
+    }
+
+
+    body {
+
+        margin:
+            0;
+
+        width:
+            100%;
+
+        min-height:
+            100vh;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+        background:
+            var(--bg);
+
+        color:
+            var(--text);
+
+        line-height:
+            1.6;
+
+        transition:
+            background-color var(--transition),
+            color var(--transition);
+
+        overflow-x:
+            hidden;
+    }
+
+
+    body.menu-open {
+
+        overflow:
+            hidden;
+    }
+
+
+    a {
+
+        color:
+            inherit;
+
+        text-decoration:
+            none;
+    }
+
+
+    button,
+    input,
+    textarea {
+
+        font:
+            inherit;
+    }
+
+
+    button {
+
+        cursor:
+            pointer;
+    }
+
+
+    img {
+
+        display:
+            block;
+
+        width:
+            100%;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ====================================================== */
+
+    .skip-link {
+
+        position:
+            fixed;
+
+        top:
+            12px;
+
+        left:
+            12px;
+
+        z-index:
+            2000;
+
+        padding:
+            10px 15px;
+
+        border-radius:
+            7px;
+
+        background:
+            var(--accent);
+
+        color:
+            #ffffff;
+
+        font-size:
+            13px;
+
+        font-weight:
+            700;
+
+        text-decoration:
+            none;
+
+        transform:
+            translateY(-150%);
+
+        transition:
+            transform var(--transition);
+    }
+
+
+    .skip-link:focus {
+
+        transform:
+            translateY(0);
+    }
+
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+
+        outline:
+            2px solid
+            var(--accent);
+
+        outline-offset:
+            3px;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ====================================================== */
+
+    .site-header {
+
+        position:
+            sticky;
+
+        top:
+            0;
+
+        z-index:
+            1000;
+
+        width:
+            100%;
+
+        padding:
+            0 30px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        height:
+            76px;
+
+        background:
+            rgba(
+                246,
+                243,
+                239,
+                0.94
+            );
+
+        border-bottom:
+            1px solid
+            var(--border);
+
+        backdrop-filter:
+            blur(16px);
+
+        -webkit-backdrop-filter:
+            blur(16px);
+    }
+
+
+    body.dark-mode .site-header {
+
+        background:
+            rgba(
+                17,
+                17,
+                17,
+                0.94
+            );
+    }
+
+
+    .logo {
+
+        color:
+            var(--text);
+
+        font-size:
+            22px;
+
+        font-weight:
+            800;
+
+        letter-spacing:
+            4px;
+    }
+
+
+    .desktop-nav {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            30px;
+
+        margin-left:
+            auto;
+
+        margin-right:
+            35px;
+    }
+
+
+    .desktop-nav a {
+
+        position:
+            relative;
+
+        color:
+            var(--text);
+
+        font-size:
+            13px;
+
+        font-weight:
+            600;
+
+        letter-spacing:
+            0.4px;
+    }
+
+
+    .desktop-nav a::after {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        left:
+            0;
+
+        bottom:
+            -8px;
+
+        width:
+            0;
+
+        height:
+            1.5px;
+
+        background:
+            var(--accent);
+
+        transition:
+            width var(--transition);
+    }
+
+
+    .desktop-nav a:hover {
+
+        color:
+            var(--accent);
+    }
+
+
+    .desktop-nav a:hover::after {
+
+        width:
+            100%;
+    }
+
+
+    .header-actions {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+    }
+
+
+    .menu-button {
+
+        position:
+            relative;
+
+        z-index:
+            1101;
+
+        width:
+            43px;
+
+        height:
+            43px;
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        gap:
+            4px;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            50%;
+
+        background:
+            var(--surface);
+
+        color:
+            var(--text);
+    }
+
+
+    .menu-button:hover {
+
+        background:
+            var(--accent);
+
+        border-color:
+            var(--accent);
+
+        color:
+            #ffffff;
+    }
+
+
+    .menu-button span {
+
+        display:
+            block;
+
+        width:
+            16px;
+
+        height:
+            1.5px;
+
+        background:
+            currentColor;
+
+        border-radius:
+            2px;
+    }
+
+
+    /* =====================================================
+       MOBILE MENU
+    ====================================================== */
+
+    .menu-overlay {
+
+        position:
+            fixed;
+
+        inset:
+            0;
+
+        z-index:
+            1090;
+
+        background:
+            rgba(
+                0,
+                0,
+                0,
+                0.45
+            );
+
+        opacity:
+            0;
+
+        visibility:
+            hidden;
+
+        pointer-events:
+            none;
+
+        transition:
+            opacity var(--transition),
+            visibility var(--transition);
+    }
+
+
+    .menu-overlay.active {
+
+        opacity:
+            1;
+
+        visibility:
+            visible;
+
+        pointer-events:
+            auto;
+    }
+
+
+    .mobile-menu {
+
+        position:
+            fixed;
+
+        top:
+            0;
+
+        right:
+            0;
+
+        z-index:
+            1100;
+
+        width:
+            min(
+                360px,
+                88vw
+            );
+
+        height:
+            100vh;
+
+        background:
+            var(--surface);
+
+        color:
+            var(--text);
+
+        border-left:
+            1px solid
+            var(--border);
+
+        transform:
+            translateX(100%);
+
+        visibility:
+            hidden;
+
+        opacity:
+            0;
+
+        transition:
+            transform 0.3s ease,
+            opacity 0.3s ease,
+            visibility 0.3s ease;
+
+        overflow-y:
+            auto;
+    }
+
+
+    .mobile-menu.active {
+
+        transform:
+            translateX(0);
+
+        visibility:
+            visible;
+
+        opacity:
+            1;
+    }
+
+
+    .mobile-menu-header {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        padding:
+            24px;
+
+        border-bottom:
+            1px solid
+            var(--border);
+    }
+
+
+    .mobile-menu-header span {
+
+        font-size:
+            20px;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            3px;
+    }
+
+
+    .close-menu {
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            50%;
+
+        background:
+            var(--surface);
+
+        color:
+            var(--text);
+
+        font-size:
+            25px;
+    }
+
+
+    .close-menu:hover {
+
+        background:
+            var(--accent);
+
+        border-color:
+            var(--accent);
+
+        color:
+            #ffffff;
+    }
+
+
+    .mobile-nav {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        padding:
+            12px 20px 30px;
+    }
+
+
+    .mobile-nav a {
+
+        display:
+            block;
+
+        padding:
+            15px 4px;
+
+        color:
+            var(--text);
+
+        transition:
+            color var(--transition);
+    }
+
+
+    .mobile-nav a:hover {
+
+        color:
+            var(--accent);
+    }
+
+
+    .mobile-menu-divider {
+
+        width:
+            100%;
+
+        height:
+            1px;
+
+        margin:
+            10px 0;
+
+        background:
+            var(--border);
+    }
+
+
+    /* =====================================================
+       CHECKOUT PAGE
+    ====================================================== */
+
+    .checkout-page {
+
+        width:
+            min(
+                1180px,
+                92%
+            );
+
+        margin:
+            0 auto;
+
+        padding:
+            70px
+            0
+            100px;
+    }
+
+
+    .checkout-top {
+
+        margin-bottom:
+            50px;
+    }
+
+
+    .back-to-shop {
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.8rem;
+
+        font-weight:
+            600;
+
+        transition:
+            color var(--transition);
+    }
+
+
+    .back-to-shop:hover {
+
+        color:
+            var(--accent);
+    }
+
+
+    .checkout-heading {
+
+        max-width:
+            700px;
+
+        margin-top:
+            28px;
+    }
+
+
+    .checkout-heading h1 {
+
+        margin:
+            8px 0 14px;
+
+        font-size:
+            clamp(
+                2.2rem,
+                5vw,
+                4rem
+            );
+
+        line-height:
+            1;
+
+        letter-spacing:
+            -0.05em;
+
+        color:
+            var(--text);
+    }
+
+
+    .checkout-heading
+    p:last-child {
+
+        margin:
+            0;
+
+        max-width:
+            620px;
+
+        color:
+            var(--muted);
+
+        line-height:
+            1.7;
+    }
+
+
+    .checkout-layout {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            minmax(
+                0,
+                1.35fr
+            )
+            minmax(
+                320px,
+                0.65fr
+            );
+
+        gap:
+            35px;
+
+        align-items:
+            start;
+    }
+
+
+    .checkout-card,
+    .checkout-summary-card {
+
+        background:
+            var(--surface);
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            16px;
+    }
+
+
+    .checkout-card {
+
+        padding:
+            34px;
+    }
+
+
+    .checkout-summary-card {
+
+        padding:
+            28px;
+
+        position:
+            sticky;
+
+        top:
+            25px;
+    }
+
+
+    .checkout-card-heading {
+
+        margin-bottom:
+            28px;
+    }
+
+
+    .checkout-card-heading
+    .section-label {
+
+        margin:
+            0 0 7px;
+
+        color:
+            var(--accent);
+
+        font-size:
+            0.7rem;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            0.13em;
+    }
+
+
+    .checkout-card-heading h2 {
+
+        margin:
+            0;
+
+        font-size:
+            1.35rem;
+
+        letter-spacing:
+            -0.03em;
+
+        color:
+            var(--text);
+    }
+
+
+    .checkout-form {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        gap:
+            24px;
+    }
+
+
+    .checkout-form-row {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(
+                    0,
+                    1fr
+                )
+            );
+
+        gap:
+            18px;
+    }
+
+
+    .checkout-field {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        gap:
+            9px;
+    }
+
+
+    .checkout-field label {
+
+        font-size:
+            0.78rem;
+
+        font-weight:
+            700;
+
+        letter-spacing:
+            0.08em;
+
+        text-transform:
+            uppercase;
+
+        color:
+            var(--text);
+    }
+
+
+    .checkout-field input,
+    .checkout-field textarea {
+
+        width:
+            100%;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            10px;
+
+        padding:
+            14px 15px;
+
+        background:
+            var(--surface-2);
+
+        color:
+            var(--text);
+
+        outline:
+            none;
+
+        transition:
+            border-color
+            0.25s
+            ease,
+
+            box-shadow
+            0.25s
+            ease,
+
+            background
+            0.25s
+            ease;
+    }
+
+
+    .checkout-field textarea {
+
+        resize:
+            vertical;
+
+        min-height:
+            115px;
+    }
+
+
+    .checkout-field input::placeholder,
+    .checkout-field textarea::placeholder {
+
+        color:
+            var(--muted);
+    }
+
+
+    .checkout-field input:focus,
+    .checkout-field textarea:focus {
+
+        border-color:
+            var(--accent);
+
+        box-shadow:
+            0
+            0
+            0
+            3px
+            var(--accent-soft);
+    }
+
+
+    .checkout-field input.invalid,
+    .checkout-field textarea.invalid {
+
+        border-color:
+            #b33a50;
+    }
+
+
+    .checkout-section {
+
+        padding-top:
+            12px;
+
+        border-top:
+            1px solid
+            var(--border);
+    }
+
+
+    .delivery-options {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        gap:
+            12px;
+    }
+
+
+    .delivery-option {
+
+        display:
+            block;
+
+        cursor:
+            pointer;
+    }
+
+
+    .delivery-option input {
+
+        position:
+            absolute;
+
+        opacity:
+            0;
+
+        pointer-events:
+            none;
+    }
+
+
+    .delivery-option-content {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        gap:
+            20px;
+
+        padding:
+            18px;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            12px;
+
+        background:
+            var(--surface-2);
+
+        transition:
+            border-color
+            0.25s
+            ease,
+
+            background
+            0.25s
+            ease,
+
+            transform
+            0.25s
+            ease;
+    }
+
+
+    .delivery-option-content > span {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        gap:
+            5px;
+    }
+
+
+    .delivery-option-content strong {
+
+        color:
+            var(--text);
+    }
+
+
+    .delivery-option-content small {
+
+        color:
+            var(--muted);
+
+        line-height:
+            1.5;
+    }
+
+
+    .delivery-option:hover
+    .delivery-option-content {
+
+        transform:
+            translateY(-2px);
+
+        border-color:
+            var(--accent);
+    }
+
+
+    .delivery-option input:checked
+    + .delivery-option-content {
+
+        border-color:
+            var(--accent);
+
+        background:
+            var(--accent-soft);
+
+        box-shadow:
+            0
+            0
+            0
+            1px
+            var(--accent);
+    }
+
+
+    .payment-placeholder {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            16px;
+
+        padding:
+            18px;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            12px;
+
+        background:
+            var(--surface-2);
+    }
+
+
+    .payment-placeholder-icon {
+
+        width:
+            44px;
+
+        height:
+            44px;
+
+        flex:
+            0 0 44px;
+
+        display:
+            grid;
+
+        place-items:
+            center;
+
+        border-radius:
+            50%;
+
+        background:
+            var(--accent);
+
+        color:
+            #ffffff;
+
+        font-weight:
+            700;
+    }
+
+
+    .payment-placeholder strong {
+
+        display:
+            block;
+
+        margin-bottom:
+            5px;
+
+        color:
+            var(--text);
+    }
+
+
+    .payment-placeholder p {
+
+        margin:
+            0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.88rem;
+
+        line-height:
+            1.5;
+    }
+
+
+    .checkout-place-order {
+
+        width:
+            100%;
+
+        border:
+            0;
+
+        border-radius:
+            10px;
+
+        padding:
+            17px 20px;
+
+        background:
+            var(--accent);
+
+        color:
+            #ffffff;
+
+        font-size:
+            0.78rem;
+
+        font-weight:
+            800;
+
+        letter-spacing:
+            0.1em;
+
+        transition:
+            background
+            0.25s
+            ease,
+
+            transform
+            0.25s
+            ease,
+
+            box-shadow
+            0.25s
+            ease;
+    }
+
+
+    .checkout-place-order:hover {
+
+        background:
+            var(--accent-dark);
+
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0
+            10px
+            24px
+            rgba(
+                0,
+                0,
+                0,
+                0.12
+            );
+    }
+
+
+    .checkout-place-order:disabled {
+
+        opacity:
+            0.55;
+
+        cursor:
+            not-allowed;
+
+        transform:
+            none;
+
+        box-shadow:
+            none;
+    }
+
+
+    .checkout-message {
+
+        margin:
+            -8px 0 0;
+
+        min-height:
+            20px;
+
+        text-align:
+            center;
+
+        color:
+            var(--accent);
+
+        font-size:
+            0.88rem;
+    }
+
+
+    .checkout-message.error {
+
+        color:
+            #b33a50;
+    }
+
+
+    /* =====================================================
+       CHECKOUT ITEMS
+    ====================================================== */
+
+    .checkout-items {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        gap:
+            16px;
+
+        max-height:
+            450px;
+
+        overflow-y:
+            auto;
+
+        padding-right:
+            4px;
+    }
+
+
+    .checkout-item {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            72px
+            minmax(
+                0,
+                1fr
+            )
+            auto;
+
+        gap:
+            13px;
+
+        align-items:
+            start;
+    }
+
+
+    .checkout-item-image {
+
+        width:
+            72px;
+
+        height:
+            88px;
+
+        overflow:
+            hidden;
+
+        border-radius:
+            9px;
+
+        background:
+            var(--surface-2);
+    }
+
+
+    .checkout-item-image img {
+
+        width:
+            100%;
+
+        height:
+            100%;
+
+        object-fit:
+            cover;
+    }
+
+
+    .checkout-item h4 {
+
+        margin:
+            2px 0 6px;
+
+        font-size:
+            0.92rem;
+
+        color:
+            var(--text);
+    }
+
+
+    .checkout-item p {
+
+        margin:
+            3px 0;
+
+        font-size:
+            0.78rem;
+
+        color:
+            var(--muted);
+
+        line-height:
+            1.4;
+    }
+
+
+    .checkout-item-total {
+
+        color:
+            var(--text);
+
+        font-size:
+            0.85rem;
+
+        white-space:
+            nowrap;
+    }
+
+
+    .checkout-empty {
+
+        padding:
+            20px;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            10px;
+
+        text-align:
+            center;
+
+        color:
+            var(--muted);
+    }
+
+
+    /* =====================================================
+       CHECKOUT SUMMARY
+    ====================================================== */
+
+    .checkout-summary-divider {
+
+        height:
+            1px;
+
+        margin:
+            24px 0;
+
+        background:
+            var(--border);
+    }
+
+
+    .checkout-summary-row,
+    .checkout-summary-total {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        gap:
+            20px;
+    }
+
+
+    .checkout-summary-row {
+
+        margin-bottom:
+            14px;
+    }
+
+
+    .checkout-summary-row span {
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.88rem;
+    }
+
+
+    .checkout-summary-row strong {
+
+        color:
+            var(--text);
+
+        font-size:
+            0.9rem;
+    }
+
+
+    .checkout-summary-total {
+
+        margin-top:
+            22px;
+
+        padding-top:
+            20px;
+
+        border-top:
+            1px solid
+            var(--border);
+    }
+
+
+    .checkout-summary-total span {
+
+        font-weight:
+            700;
+
+        color:
+            var(--text);
+    }
+
+
+    .checkout-summary-total strong {
+
+        font-size:
+            1.3rem;
+
+        color:
+            var(--accent);
+    }
+
+
+    .checkout-secure-note {
+
+        display:
+            flex;
+
+        align-items:
+            flex-start;
+
+        gap:
+            9px;
+
+        margin-top:
+            24px;
+
+        padding-top:
+            18px;
+
+        border-top:
+            1px solid
+            var(--border);
+    }
+
+
+    .checkout-secure-note span {
+
+        color:
+            var(--accent);
+
+        font-weight:
+            800;
+    }
+
+
+    .checkout-secure-note p {
+
+        margin:
+            0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            0.75rem;
+
+        line-height:
+            1.5;
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ====================================================== */
+
+    .site-footer {
+
+        border-top:
+            1px solid
+            var(--border);
+
+        padding:
+            55px 30px 25px;
+
+        background:
+            var(--surface);
+    }
+
+
+    .footer-brand h2 {
+
+        margin:
+            0;
+
+        font-size:
+            20px;
+
+        letter-spacing:
+            4px;
+    }
+
+
+    .footer-brand p {
+
+        margin:
+            7px 0 0;
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+    }
+
+
+    .footer-links {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+
+        gap:
+            40px;
+
+        margin-top:
+            35px;
+    }
+
+
+    .footer-links h3 {
+
+        margin:
+            0 0 12px;
+
+        color:
+            var(--accent);
+
+        font-size:
+            11px;
+
+        letter-spacing:
+            2px;
+    }
+
+
+    .footer-links a {
+
+        display:
+            block;
+
+        margin-bottom:
+            8px;
+
+        color:
+            var(--muted);
+
+        font-size:
+            13px;
+    }
+
+
+    .footer-links a:hover {
+
+        color:
+            var(--accent);
+    }
+
+
+    .footer-bottom {
+
+        margin-top:
+            40px;
+
+        padding-top:
+            20px;
+
+        border-top:
+            1px solid
+            var(--border);
+
+        color:
+            var(--muted);
+
+        font-size:
+            12px;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ====================================================== */
+
+    @media (max-width: 950px) {
+
+        .checkout-layout {
+
+            grid-template-columns:
+                1fr;
+        }
+
+
+        .checkout-summary-card {
+
+            position:
+                static;
+        }
+
+    }
+
+
+    @media (max-width: 768px) {
+
+        .site-header {
+
+            height:
+                70px;
+
+            padding:
+                0 5%;
+        }
+
+
+        .desktop-nav {
+
+            display:
+                none;
+        }
+
+
+        .logo {
+
+            font-size:
+                20px;
+
+            letter-spacing:
+                3px;
+        }
+
+
+        .menu-button {
+
+            width:
+                40px;
+
+            height:
+                40px;
+        }
+
+
+        .checkout-page {
+
+            width:
+                92%;
+
+            padding:
+                48px
+                0
+                70px;
+        }
+
+
+        .checkout-top {
+
+            margin-bottom:
+                35px;
+        }
+
+
+        .checkout-heading {
+
+            margin-top:
+                22px;
+        }
+
+
+        .checkout-heading h1 {
+
+            font-size:
+                2.25rem;
+        }
+
+
+        .checkout-card {
+
+            padding:
+                22px 17px;
+
+            border-radius:
+                12px;
+        }
+
+
+        .checkout-summary-card {
+
+            padding:
+                20px 17px;
+
+            border-radius:
+                12px;
+        }
+
+
+        .checkout-form-row {
+
+            grid-template-columns:
+                1fr;
+
+            gap:
+                20px;
+        }
+
+
+        .checkout-form {
+
+            gap:
+                20px;
+        }
+
+
+        .checkout-section {
+
+            padding-top:
+                8px;
+        }
+
+
+        .delivery-option-content {
+
+            padding:
+                15px;
+
+            gap:
+                12px;
+        }
+
+
+        .delivery-option-content small {
+
+            font-size:
+                0.73rem;
+        }
+
+
+        .payment-placeholder {
+
+            align-items:
+                flex-start;
+
+            padding:
+                15px;
+        }
+
+
+        .checkout-place-order {
+
+            padding:
+                16px;
+        }
+
+
+        .checkout-item {
+
+            grid-template-columns:
+                65px
+                minmax(
+                    0,
+                    1fr
                 );
 
-
-            if (shouldUseDark) {
-
-                document.documentElement.classList.add(
-                    "threadly-dark"
-                );
-
-            }
-
-        })();
-
-    </script>
+            gap:
+                11px;
+        }
 
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+        .checkout-item-image {
+
+            width:
+                65px;
+
+            height:
+                80px;
+        }
+
+
+        .checkout-item-total {
+
+            grid-column:
+                2;
+
+            margin-top:
+                3px;
+        }
+
+
+        .footer-links {
+
+            gap:
+                15px;
+        }
+
+    }
+
+
+    @media (max-width: 420px) {
+
+        .mobile-menu {
+
+            width:
+                92vw;
+        }
+
+
+        .checkout-heading h1 {
+
+            font-size:
+                2rem;
+        }
+
+
+        .checkout-card {
+
+            padding:
+                19px
+                15px;
+        }
+
+
+        .checkout-summary-card {
+
+            padding:
+                18px
+                15px;
+        }
+
+    }
+
+</style>
 
 </head>
 
-
 <body>
+<!-- =====================================================
+     ACCESSIBILITY
+====================================================== -->
 
+<a
+    href="#main-content"
+    class="skip-link"
+>
+    Skip to main content
+</a>
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
 
 <header class="site-header">
-
 
     <a
         href="index.html"
         class="logo"
+        aria-label="THREADLY home"
     >
         THREADLY
     </a>
 
 
-    <nav class="desktop-nav">
+    <nav
+        class="desktop-nav"
+        aria-label="Main navigation"
+    >
 
         <a href="index.html">
             Home
@@ -107,7 +2286,9 @@
             id="menuButton"
             class="menu-button"
             type="button"
-            aria-label="Open menu"
+            aria-label="Open navigation menu"
+            aria-controls="mobileMenu"
+            aria-expanded="false"
         >
 
             <span></span>
@@ -118,23 +2299,25 @@
 
     </div>
 
-
 </header>
 
 
+<!-- =====================================================
+     MOBILE MENU
+====================================================== -->
 
 <div
     id="menuOverlay"
     class="menu-overlay"
+    aria-hidden="true"
 ></div>
-
 
 
 <aside
     id="mobileMenu"
     class="mobile-menu"
+    aria-label="Mobile navigation"
 >
-
 
     <div class="mobile-menu-header">
 
@@ -147,7 +2330,7 @@
             id="closeMenu"
             class="close-menu"
             type="button"
-            aria-label="Close menu"
+            aria-label="Close navigation menu"
         >
             ×
         </button>
@@ -155,87 +2338,79 @@
     </div>
 
 
-
-    <nav class="mobile-nav">
-
+    <nav
+        class="mobile-nav"
+        aria-label="Mobile navigation"
+    >
 
         <a href="index.html">
             Home
         </a>
 
-
         <a href="shop.html">
             Shop
         </a>
-
 
         <a href="shop.html?category=men">
             Men
         </a>
 
-
         <a href="shop.html?category=women">
             Women
         </a>
-
 
         <a href="shop.html?category=shoes">
             Shoes
         </a>
 
 
-
         <div class="mobile-menu-divider"></div>
-
 
 
         <a href="account.html">
             My Account
         </a>
 
-
         <a href="cart.html">
             My Cart
         </a>
-
 
         <a href="saved.html">
             Saved Items
         </a>
 
-
         <a href="orders.html">
             My Orders
         </a>
-
 
         <a href="settings.html">
             Settings
         </a>
 
-
         <a href="help.html">
             Help &amp; Support
         </a>
-
 
         <a href="about.html">
             About THREADLY
         </a>
 
-
     </nav>
-
 
 </aside>
 
 
+<!-- =====================================================
+     CHECKOUT PAGE
+====================================================== -->
 
-<main class="checkout-page">
-
+<main
+    id="main-content"
+    class="checkout-page"
+    tabindex="-1"
+>
 
     <div class="checkout-top">
-
 
         <a
             href="cart.html"
@@ -245,9 +2420,7 @@
         </a>
 
 
-
         <div class="checkout-heading">
-
 
             <p class="section-label">
                 THREADLY CHECKOUT
@@ -260,42 +2433,40 @@
 
 
             <p>
-                Enter your delivery details and choose your preferred delivery option.
+                Enter your delivery details and choose
+                your preferred delivery option.
             </p>
 
-
         </div>
-
 
     </div>
 
 
+    <section
+        class="checkout-layout"
+        aria-label="Checkout"
+    >
 
-    <section class="checkout-layout">
 
-
+        <!-- =================================================
+             CHECKOUT DETAILS
+        ================================================== -->
 
         <div class="checkout-details">
 
-
             <div class="checkout-card">
 
-
                 <div class="checkout-card-heading">
-
 
                     <p class="section-label">
                         01
                     </p>
 
-
                     <h2>
                         Delivery Details
                     </h2>
 
-
                 </div>
-
 
 
                 <form
@@ -306,9 +2477,7 @@
 
                     <div class="checkout-form-row">
 
-
                         <div class="checkout-field">
-
 
                             <label for="checkoutFullName">
                                 Full Name
@@ -320,16 +2489,14 @@
                                 id="checkoutFullName"
                                 name="fullName"
                                 placeholder="Enter your full name"
+                                autocomplete="name"
                                 required
                             >
-
 
                         </div>
 
 
-
                         <div class="checkout-field">
-
 
                             <label for="checkoutPhone">
                                 Phone Number
@@ -341,19 +2508,17 @@
                                 id="checkoutPhone"
                                 name="phone"
                                 placeholder="08012345678"
+                                autocomplete="tel"
+                                inputmode="tel"
                                 required
                             >
 
-
                         </div>
-
 
                     </div>
 
 
-
                     <div class="checkout-field">
-
 
                         <label for="checkoutEmail">
                             Email Address
@@ -365,16 +2530,14 @@
                             id="checkoutEmail"
                             name="email"
                             placeholder="you@example.com"
+                            autocomplete="email"
                             required
                         >
-
 
                     </div>
 
 
-
                     <div class="checkout-field">
-
 
                         <label for="checkoutAddress">
                             Delivery Address
@@ -386,19 +2549,16 @@
                             name="address"
                             rows="4"
                             placeholder="Enter your full delivery address"
+                            autocomplete="street-address"
                             required
                         ></textarea>
-
 
                     </div>
 
 
-
                     <div class="checkout-form-row">
 
-
                         <div class="checkout-field">
-
 
                             <label for="checkoutState">
                                 State
@@ -410,16 +2570,14 @@
                                 id="checkoutState"
                                 name="state"
                                 placeholder="Lagos"
+                                autocomplete="address-level1"
                                 required
                             >
-
 
                         </div>
 
 
-
                         <div class="checkout-field">
-
 
                             <label for="checkoutCity">
                                 City
@@ -431,42 +2589,38 @@
                                 id="checkoutCity"
                                 name="city"
                                 placeholder="Ikeja"
+                                autocomplete="address-level2"
                                 required
                             >
 
-
                         </div>
-
 
                     </div>
 
 
+                    <!-- =================================================
+                         DELIVERY
+                    ================================================== -->
 
                     <div class="checkout-section">
 
-
                         <div class="checkout-card-heading">
-
 
                             <p class="section-label">
                                 02
                             </p>
 
-
                             <h2>
                                 Delivery Option
                             </h2>
 
-
                         </div>
-
 
 
                         <div class="delivery-options">
 
 
                             <label class="delivery-option">
-
 
                                 <input
                                     type="radio"
@@ -478,19 +2632,16 @@
 
                                 <span class="delivery-option-content">
 
-
                                     <span>
-
 
                                         <strong>
                                             Standard Delivery
                                         </strong>
 
-
                                         <small>
-                                            Delivery within 3–7 business days
+                                            Delivery within
+                                            3–7 business days
                                         </small>
-
 
                                     </span>
 
@@ -499,16 +2650,12 @@
                                         ₦2,500
                                     </strong>
 
-
                                 </span>
-
 
                             </label>
 
 
-
                             <label class="delivery-option">
-
 
                                 <input
                                     type="radio"
@@ -519,19 +2666,16 @@
 
                                 <span class="delivery-option-content">
 
-
                                     <span>
-
 
                                         <strong>
                                             Express Delivery
                                         </strong>
 
-
                                         <small>
-                                            Faster delivery within 1–3 business days
+                                            Faster delivery within
+                                            1–3 business days
                                         </small>
-
 
                                     </span>
 
@@ -540,50 +2684,45 @@
                                         ₦4,500
                                     </strong>
 
-
                                 </span>
-
 
                             </label>
 
-
                         </div>
-
 
                     </div>
 
 
+                    <!-- =================================================
+                         PAYMENT
+                    ================================================== -->
 
                     <div class="checkout-section">
 
-
                         <div class="checkout-card-heading">
-
 
                             <p class="section-label">
                                 03
                             </p>
 
-
                             <h2>
                                 Payment
                             </h2>
 
-
                         </div>
-
 
 
                         <div class="payment-placeholder">
 
-
-                            <div class="payment-placeholder-icon">
+                            <div
+                                class="payment-placeholder-icon"
+                                aria-hidden="true"
+                            >
                                 ₦
                             </div>
 
 
                             <div>
-
 
                                 <strong>
                                     Bank Transfer
@@ -591,54 +2730,54 @@
 
 
                                 <p>
-                                    Continue to the secure bank transfer page to complete your payment.
+                                    Continue to the secure
+                                    bank transfer page to
+                                    complete your payment.
                                 </p>
-
 
                             </div>
 
-
                         </div>
 
-
                     </div>
-
 
 
                     <button
                         type="button"
                         class="checkout-place-order"
                         id="continueToPayment"
+                        disabled
                     >
                         CONTINUE TO PAYMENT
                     </button>
 
 
-
                     <p
                         id="checkoutMessage"
                         class="checkout-message"
+                        aria-live="polite"
                     ></p>
 
 
                 </form>
 
-
             </div>
-
 
         </div>
 
 
+        <!-- =================================================
+             ORDER SUMMARY
+        ================================================== -->
 
-        <aside class="checkout-summary">
-
+        <aside
+            class="checkout-summary"
+            aria-label="Order summary"
+        >
 
             <div class="checkout-summary-card">
 
-
                 <div class="checkout-card-heading">
-
 
                     <p class="section-label">
                         YOUR ORDER
@@ -649,24 +2788,21 @@
                         Order Summary
                     </h2>
 
-
                 </div>
-
 
 
                 <div
                     id="checkoutItems"
                     class="checkout-items"
+                    aria-live="polite"
+                    aria-busy="true"
                 ></div>
-
 
 
                 <div class="checkout-summary-divider"></div>
 
 
-
                 <div class="checkout-summary-row">
-
 
                     <span>
                         Subtotal
@@ -677,13 +2813,10 @@
                         ₦0
                     </strong>
 
-
                 </div>
 
 
-
                 <div class="checkout-summary-row">
-
 
                     <span>
                         Delivery
@@ -694,13 +2827,10 @@
                         ₦2,500
                     </strong>
 
-
                 </div>
 
 
-
                 <div class="checkout-summary-total">
-
 
                     <span>
                         Total
@@ -711,45 +2841,39 @@
                         ₦0
                     </strong>
 
-
                 </div>
-
 
 
                 <div class="checkout-secure-note">
 
-
-                    <span>
+                    <span aria-hidden="true">
                         ✓
                     </span>
 
 
                     <p>
-                        Your order details are saved securely during checkout.
+                        Your order details are saved
+                        securely during checkout.
                     </p>
-
 
                 </div>
 
-
             </div>
-
 
         </aside>
 
-
     </section>
-
 
 </main>
 
 
+<!-- =====================================================
+     FOOTER
+====================================================== -->
 
 <footer class="site-footer">
 
-
     <div class="footer-brand">
-
 
         <h2>
             THREADLY
@@ -760,16 +2884,12 @@
             Wear your thread.
         </p>
 
-
     </div>
-
 
 
     <div class="footer-links">
 
-
         <div>
-
 
             <h3>
                 SHOP
@@ -795,13 +2915,10 @@
                 Shoes
             </a>
 
-
         </div>
 
 
-
         <div>
-
 
             <h3>
                 HELP
@@ -827,575 +2944,2086 @@
                 FAQ
             </a>
 
-
         </div>
-
 
     </div>
 
 
-
     <div class="footer-bottom">
-
 
         <p>
             © 2026 THREADLY. All rights reserved.
         </p>
 
-
     </div>
-
 
 </footer>
 
 
+<!-- =====================================================
+     SUPABASE
+====================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase-client.js"></script>
+<script src="auth-guard.js"></script>
 
-<script src="app.js"></script>
 
-
+<!-- =====================================================
+     STANDALONE CHECKOUT JAVASCRIPT
+     NO app.js
+====================================================== -->
 
 <script>
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+    (function () {
+
+        "use strict";
 
 
-        const button =
-            document.getElementById(
-                "continueToPayment"
+        /* =================================================
+           CONFIG
+        ================================================= */
+
+        const LOGIN_PAGE =
+            "login.html";
+
+
+        const CART_KEY =
+            "threadlyCart";
+
+
+        const THEME_KEY =
+            "threadlyTheme";
+
+
+        const STANDARD_DELIVERY =
+            2500;
+
+
+        const EXPRESS_DELIVERY =
+            4500;
+
+
+        let supabase =
+            null;
+
+
+        let currentUser =
+            null;
+
+
+        /* =================================================
+           SUPABASE
+        ================================================= */
+
+        async function getSupabaseClient() {
+
+            if (
+                window.threadlySupabase
+            ) {
+
+                return (
+                    window.threadlySupabase
+                );
+
+            }
+
+
+            if (
+                window.supabase &&
+                window.threadlySupabase
+            ) {
+
+                return (
+                    window.threadlySupabase
+                );
+
+            }
+
+
+            throw new Error(
+                "THREADLY Supabase client is unavailable."
             );
-
-
-        const form =
-            document.getElementById(
-                "checkoutForm"
-            );
-
-
-        const message =
-            document.getElementById(
-                "checkoutMessage"
-            );
-
-
-        if (!button || !form) {
-
-            return;
 
         }
 
 
+        /* =================================================
+           AUTHENTICATION
+        ================================================= */
 
-        button.addEventListener(
-            "click",
-            async function () {
+        async function getSession() {
 
-
-                message.textContent = "";
-
-
-                if (!form.checkValidity()) {
-
-                    form.reportValidity();
-
-                    return;
-
-                }
+            const client =
+                await getSupabaseClient();
 
 
+            const {
+                data,
+                error
+            } =
+                await client
+                    .auth
+                    .getSession();
 
-               
 
-                try {
+            if (
+                error
+            ) {
 
-                    cart =
-                        JSON.parse(
-                            localStorage.getItem(
-                                "threadlyCart"
-                            )
-                        );
+                throw error;
 
-                } catch (error) {
+            }
 
-                    cart = [];
 
-                }
+            return (
+                data.session ||
+                null
+            );
 
+        }
+
+
+        async function protectCheckout() {
+
+            try {
+
+                supabase =
+                    await getSupabaseClient();
+
+
+                const session =
+                    await getSession();
 
 
                 if (
-                    !Array.isArray(cart) ||
-                    cart.length === 0
+                    !session ||
+                    !session.user
                 ) {
 
-                    message.textContent =
-                        "Your cart is empty.";
+                    window.location.replace(
+                        LOGIN_PAGE +
+                        "?redirect=checkout.html"
+                    );
 
-                    return;
+
+                    return false;
 
                 }
 
 
-
-                button.disabled = true;
-
-                button.textContent =
-                    "PROCESSING...";
+                currentUser =
+                    session.user;
 
 
-
-                try {
-
-
-                    const supabase =
-                        window.threadlySupabase;
+                localStorage.setItem(
+                    "threadlyLoggedIn",
+                    "true"
+                );
 
 
+                return true;
 
-                    if (!supabase) {
+            } catch (error) {
 
-                        throw new Error(
-                            "Supabase is not connected. Refresh the page and try again."
-                        );
-
-                    }
-
-
-
-                    const {
-                        data: sessionData,
-                        error: sessionError
-                    } =
-                        await supabase.auth.getSession();
+                console.error(
+                    "THREADLY checkout authentication error:",
+                    error
+                );
 
 
-
-                    if (sessionError) {
-
-                        throw sessionError;
-
-                    }
+                window.location.replace(
+                    LOGIN_PAGE +
+                    "?redirect=checkout.html"
+                );
 
 
+                return false;
 
-                    const session =
-                        sessionData.session;
+            }
+
+        }
 
 
+        /* =================================================
+           AUTH STATE
+        ================================================= */
 
-                    if (
-                        !session ||
-                        !session.user
+        function initializeAuthState() {
+
+            if (
+                !supabase
+            ) {
+
+                return;
+
+            }
+
+
+            supabase
+                .auth
+                .onAuthStateChange(
+                    function (
+                        event,
+                        session
                     ) {
 
-                        window.location.href =
-                            "login.html?redirect=checkout.html";
+                        currentUser =
+                            session?.user ||
+                            null;
+
+
+                        if (
+                            currentUser
+                        ) {
+
+                            localStorage.setItem(
+                                "threadlyLoggedIn",
+                                "true"
+                            );
+
+                        } else {
+
+                            localStorage.removeItem(
+                                "threadlyLoggedIn"
+                            );
+
+                        }
+
+                    }
+                );
+
+        }
+
+
+        /* =================================================
+           BROWSER HISTORY PROTECTION
+        ================================================= */
+
+        function protectHistory() {
+
+            window.history.replaceState(
+                null,
+                "",
+                window.location.href
+            );
+
+
+            window.addEventListener(
+                "pageshow",
+                async function (
+                    event
+                ) {
+
+                    if (
+                        !event.persisted &&
+                        performance.getEntriesByType(
+                            "navigation"
+                        )[0]?.type !==
+                        "back_forward"
+                    ) {
 
                         return;
 
                     }
 
 
+                    try {
 
-                    const user =
-                        session.user;
+                        const session =
+                            await getSession();
 
 
+                        if (
+                            !session
+                        ) {
 
-                    const fullName =
-                        document
-                            .getElementById(
-                                "checkoutFullName"
-                            )
-                            .value
-                            .trim();
-
-
-
-                    const phone =
-                        document
-                            .getElementById(
-                                "checkoutPhone"
-                            )
-                            .value
-                            .trim();
-
-
-
-                    const email =
-                        document
-                            .getElementById(
-                                "checkoutEmail"
-                            )
-                            .value
-                            .trim();
-
-
-
-                    const address =
-                        document
-                            .getElementById(
-                                "checkoutAddress"
-                            )
-                            .value
-                            .trim();
-
-
-
-                    const state =
-                        document
-                            .getElementById(
-                                "checkoutState"
-                            )
-                            .value
-                            .trim();
-
-
-
-                    const city =
-                        document
-                            .getElementById(
-                                "checkoutCity"
-                            )
-                            .value
-                            .trim();
-
-
-
-                    const deliveryInput =
-                        document.querySelector(
-                            'input[name="deliveryMethod"]:checked'
-                        );
-
-
-
-                    if (!deliveryInput) {
-
-                        throw new Error(
-                            "Please select a delivery method."
-                        );
-
-                    }
-
-
-
-                    const deliveryMethod =
-                        deliveryInput.value;
-
-
-
-                    let subtotal = 0;
-
-
-
-                    const orderItems =
-                        cart.map(
-                            function (item) {
-
-
-                                const quantity =
-                                    Number(
-                                        item.quantity || 1
-                                    );
-
-
-                                const price =
-                                    Number(
-                                        item.price || 0
-                                    );
-
-
-                                subtotal +=
-                                    price * quantity;
-
-
-
-                                return {
-
-                                    id:
-                                        item.id,
-
-                                    name:
-                                        item.name,
-
-                                    price:
-                                        price,
-
-                                    image:
-                                        item.image || "",
-
-                                    size:
-                                        item.size || "",
-
-                                    quantity:
-                                        quantity
-
-                                };
-
-
-                            }
-                        );
-
-
-
-                    const delivery =
-                        deliveryMethod === "express"
-                            ? 4500
-                            : 2500;
-
-
-
-                    const total =
-                        subtotal + delivery;
-
-
-
-                    const orderSize =
-                        orderItems.length === 1
-                            ? orderItems[0].size
-                            : "Multiple";
-
-
-
-                    const orderNumber =
-                        "THR-" +
-                        Date.now()
-                            .toString()
-                            .slice(-8);
-
-
-
-                    const now =
-                        new Date()
-                            .toISOString();
-
-
-
-                    const customer = {
-
-                        fullName:
-                            fullName,
-
-                        email:
-                            email,
-
-                        phone:
-                            phone,
-
-                        address:
-                            address,
-
-                        state:
-                            state,
-
-                        city:
-                            city
-
-                    };
-
-
-
-                    const orderData = {
-
-                        user_id:
-                            user.id,
-
-                        order_number:
-                            orderNumber,
-
-                        items:
-                            orderItems,
-
-                        customer:
-                            customer,
-
-                        subtotal:
-                            subtotal,
-
-                        delivery_fee:
-                            delivery,
-
-                        delivery_method:
-                            deliveryMethod,
-
-                        total:
-                            total,
-
-                        payment_status:
-                            "pending",
-
-                        payment_method:
-                            "transfer",
-
-                        delivery_status:
-                            "processing",
-
-                        size:
-                            orderSize,
-
-                        receipt_url:
-                            "",
-
-                        estimated_delivery:
-                            deliveryMethod === "express"
-                                ? "1-3 days"
-                                : "3-7 days",
-
-                        created_at:
-                            now,
-
-                        updated_at:
-                            now
-
-                    };
-
-
-
-                    
-
-
-
-                    const {
-                        error:
-                            insertError
-                    } =
-                        await supabase
-                            .from("orders")
-                            .insert(
-                                orderData
+                            window.location.replace(
+                                LOGIN_PAGE
                             );
 
+                        }
 
+                    } catch (error) {
 
-                    if (insertError) {
-
-                        console.error(
-                            "SUPABASE ERROR:",
-                            insertError
-                        );
-
-                        throw new Error(
-                            insertError.message
+                        window.location.replace(
+                            LOGIN_PAGE
                         );
 
                     }
 
+                }
+            );
+
+        }
 
 
-                    const pendingOrder = {
+        /* =================================================
+           THEME
+        ====================================================== */
 
-                        orderId:
-                            orderNumber,
+        function getSystemTheme() {
 
-                        order_number:
-                            orderNumber,
+            if (
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches
+            ) {
 
-                        user_id:
-                            user.id,
+                return "dark";
 
-                        items:
-                            orderItems,
-
-                        customer:
-                            customer,
-
-                        subtotal:
-                            subtotal,
-
-                        deliveryFee:
-                            delivery,
-
-                        delivery_method:
-                            deliveryMethod,
-
-                        total:
-                            total,
-
-                        paymentStatus:
-                            "pending",
-
-                        paymentMethod:
-                            "transfer",
-
-                        deliveryStatus:
-                            "processing",
-
-                        size:
-                            orderSize,
-
-                        estimatedDelivery:
-                            deliveryMethod === "express"
-                                ? "1-3 days"
-                                : "3-7 days",
-
-                        createdAt:
-                            now
-
-                    };
+            }
 
 
+            return "light";
 
-                    localStorage.setItem(
-                        "threadlyPendingOrder",
-                        JSON.stringify(
-                            pendingOrder
-                        )
+        }
+
+
+        function applyTheme(
+            theme
+        ) {
+
+            let selectedTheme =
+                theme;
+
+
+            if (
+                selectedTheme !== "light" &&
+                selectedTheme !== "dark" &&
+                selectedTheme !== "system"
+            ) {
+
+                selectedTheme =
+                    "system";
+
+            }
+
+
+            const actualTheme =
+                selectedTheme === "system"
+                    ? getSystemTheme()
+                    : selectedTheme;
+
+
+            document.documentElement.classList.toggle(
+                "threadly-dark",
+                actualTheme === "dark"
+            );
+
+
+            document.body.classList.toggle(
+                "dark-mode",
+                actualTheme === "dark"
+            );
+
+
+            localStorage.setItem(
+                THEME_KEY,
+                selectedTheme
+            );
+
+        }
+
+
+        function initializeTheme() {
+
+            const savedTheme =
+                localStorage.getItem(
+                    THEME_KEY
+                ) || "system";
+
+
+            applyTheme(
+                savedTheme
+            );
+
+        }
+
+
+        /* =================================================
+           MOBILE MENU
+        ====================================================== */
+
+        function initializeMobileMenu() {
+
+            const menuButton =
+                document.getElementById(
+                    "menuButton"
+                );
+
+
+            const closeMenu =
+                document.getElementById(
+                    "closeMenu"
+                );
+
+
+            const mobileMenu =
+                document.getElementById(
+                    "mobileMenu"
+                );
+
+
+            const menuOverlay =
+                document.getElementById(
+                    "menuOverlay"
+                );
+
+
+            if (
+                !menuButton ||
+                !mobileMenu
+            ) {
+
+                return;
+
+            }
+
+
+            function closeMobileMenu() {
+
+                mobileMenu.classList.remove(
+                    "active"
+                );
+
+
+                if (
+                    menuOverlay
+                ) {
+
+                    menuOverlay.classList.remove(
+                        "active"
                     );
 
-
-
-                    localStorage.setItem(
-                        "threadlyLastOrder",
-                        JSON.stringify(
-                            pendingOrder
-                        )
+                    menuOverlay.setAttribute(
+                        "aria-hidden",
+                        "true"
                     );
-
-
-
-                    window.location.href =
-                        "transfer.html";
-
-
-                } catch (error) {
-
-
-                    console.error(
-                        "CHECKOUT ERROR:",
-                        error
-                    );
-
-
-                    message.textContent =
-                        error.message ||
-                        "Something went wrong.";
-
-
-                    button.disabled =
-                        false;
-
-
-                    button.textContent =
-                        "CONTINUE TO PAYMENT";
-
 
                 }
 
+
+                document.body.classList.remove(
+                    "menu-open"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
+
+            }
+
+
+            function openMobileMenu() {
+
+                mobileMenu.classList.add(
+                    "active"
+                );
+
+
+                if (
+                    menuOverlay
+                ) {
+
+                    menuOverlay.classList.add(
+                        "active"
+                    );
+
+                    menuOverlay.setAttribute(
+                        "aria-hidden",
+                        "false"
+                    );
+
+                }
+
+
+                document.body.classList.add(
+                    "menu-open"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-label",
+                    "Close navigation menu"
+                );
+
+            }
+
+
+            menuButton.addEventListener(
+                "click",
+                function () {
+
+                    if (
+                        mobileMenu.classList.contains(
+                            "active"
+                        )
+                    ) {
+
+                        closeMobileMenu();
+
+                    } else {
+
+                        openMobileMenu();
+
+                    }
+
+                }
+            );
+
+
+            if (
+                closeMenu
+            ) {
+
+                closeMenu.addEventListener(
+                    "click",
+                    closeMobileMenu
+                );
+
+            }
+
+
+            if (
+                menuOverlay
+            ) {
+
+                menuOverlay.addEventListener(
+                    "click",
+                    closeMobileMenu
+                );
+
+            }
+
+
+            mobileMenu
+                .querySelectorAll(
+                    "a"
+                )
+                .forEach(
+                    function (
+                        link
+                    ) {
+
+                        link.addEventListener(
+                            "click",
+                            closeMobileMenu
+                        );
+
+                    }
+                );
+
+
+            document.addEventListener(
+                "keydown",
+                function (
+                    event
+                ) {
+
+                    if (
+                        event.key ===
+                        "Escape"
+                    ) {
+
+                        closeMobileMenu();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           CART
+        ====================================================== */
+
+        function getCart() {
+
+            try {
+
+                const savedCart =
+                    JSON.parse(
+                        localStorage.getItem(
+                            CART_KEY
+                        )
+                    );
+
+
+                return Array.isArray(
+                    savedCart
+                )
+                    ? savedCart
+                    : [];
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY checkout cart error:",
+                    error
+                );
+
+
+                return [];
+
+            }
+
+        }
+
+
+        function formatPrice(
+            price
+        ) {
+
+            return (
+                "₦" +
+                Number(
+                    price || 0
+                ).toLocaleString(
+                    "en-NG"
+                )
+            );
+
+        }
+
+
+        function escapeHTML(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =================================================
+           ELEMENTS
+        ====================================================== */
+
+        const checkoutItems =
+            document.getElementById(
+                "checkoutItems"
+            );
+
+
+        const checkoutSubtotal =
+            document.getElementById(
+                "checkoutSubtotal"
+            );
+
+
+        const checkoutDelivery =
+            document.getElementById(
+                "checkoutDelivery"
+            );
+
+
+        const checkoutTotal =
+            document.getElementById(
+                "checkoutTotal"
+            );
+
+
+        const checkoutForm =
+            document.getElementById(
+                "checkoutForm"
+            );
+
+
+        const continueToPayment =
+            document.getElementById(
+                "continueToPayment"
+            );
+
+
+        const checkoutMessage =
+            document.getElementById(
+                "checkoutMessage"
+            );
+
+
+        const deliveryOptions =
+            document.querySelectorAll(
+                'input[name="deliveryMethod"]'
+            );
+
+
+        /* =================================================
+           MESSAGE
+        ====================================================== */
+
+        function setMessage(
+            message,
+            type
+        ) {
+
+            if (
+                !checkoutMessage
+            ) {
+
+                return;
+
+            }
+
+
+            checkoutMessage.textContent =
+                message || "";
+
+
+            checkoutMessage.classList.toggle(
+                "error",
+                type === "error"
+            );
+
+        }
+
+
+        /* =================================================
+           DELIVERY
+        ====================================================== */
+
+        function getSelectedDelivery() {
+
+            const selected =
+                document.querySelector(
+                    'input[name="deliveryMethod"]:checked'
+                );
+
+
+            return selected
+                ? selected.value
+                : "standard";
+
+        }
+
+
+        function getDeliveryFee() {
+
+            return (
+                getSelectedDelivery() ===
+                "express"
+            )
+                ? EXPRESS_DELIVERY
+                : STANDARD_DELIVERY;
+
+        }
+
+
+        /* =================================================
+           TOTALS
+        ====================================================== */
+
+        function calculateSubtotal() {
+
+            const cart =
+                getCart();
+
+
+            let subtotal =
+                0;
+
+
+            cart.forEach(
+                function (
+                    item
+                ) {
+
+                    const price =
+                        Math.max(
+                            0,
+                            Number(
+                                item.price ||
+                                0
+                            )
+                        );
+
+
+                    const quantity =
+                        Math.max(
+                            1,
+                            Number(
+                                item.quantity ||
+                                1
+                            )
+                        );
+
+
+                    subtotal +=
+                        price *
+                        quantity;
+
+                }
+            );
+
+
+            return subtotal;
+
+        }
+
+
+        function updateCheckoutTotal() {
+
+            const subtotal =
+                calculateSubtotal();
+
+
+            const delivery =
+                getDeliveryFee();
+
+
+            const total =
+                subtotal +
+                delivery;
+
+
+            if (
+                checkoutSubtotal
+            ) {
+
+                checkoutSubtotal.textContent =
+                    formatPrice(
+                        subtotal
+                    );
+
+            }
+
+
+            if (
+                checkoutDelivery
+            ) {
+
+                checkoutDelivery.textContent =
+                    formatPrice(
+                        delivery
+                    );
+
+            }
+
+
+            if (
+                checkoutTotal
+            ) {
+
+                checkoutTotal.textContent =
+                    formatPrice(
+                        total
+                    );
+
+            }
+
+        }
+
+
+        /* =================================================
+           RENDER ITEMS
+        ====================================================== */
+
+        function renderCheckoutItems() {
+
+            const cart =
+                getCart();
+
+
+            if (
+                !checkoutItems
+            ) {
+
+                return;
+
+            }
+
+
+            checkoutItems.innerHTML =
+                "";
+
+
+            if (
+                !cart.length
+            ) {
+
+                checkoutItems.innerHTML = `
+
+                    <p class="checkout-empty">
+                        Your cart is empty.
+                        Return to the cart to add products.
+                    </p>
+
+                `;
+
+
+                checkoutItems.setAttribute(
+                    "aria-busy",
+                    "false"
+                );
+
+
+                if (
+                    continueToPayment
+                ) {
+
+                    continueToPayment.disabled =
+                        true;
+
+                }
+
+
+                return;
+
+            }
+
+
+            cart.forEach(
+                function (
+                    item
+                ) {
+
+                    const itemPrice =
+                        Math.max(
+                            0,
+                            Number(
+                                item.price ||
+                                0
+                            )
+                        );
+
+
+                    const itemQuantity =
+                        Math.max(
+                            1,
+                            Number(
+                                item.quantity ||
+                                1
+                            )
+                        );
+
+
+                    const itemTotal =
+                        itemPrice *
+                        itemQuantity;
+
+
+                    const element =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    element.className =
+                        "checkout-item";
+
+
+                    element.innerHTML = `
+
+                        <div class="checkout-item-image">
+
+                            <img
+                                src="${escapeHTML(item.image || "")}"
+                                alt="${escapeHTML(item.name || "Product")}"
+                            >
+
+                        </div>
+
+
+                        <div class="checkout-item-info">
+
+                            <h4>
+                                ${escapeHTML(
+                                    item.name ||
+                                    "Product"
+                                )}
+                            </h4>
+
+
+                            <p>
+                                Size:
+                                ${escapeHTML(
+                                    item.size ||
+                                    "One size"
+                                )}
+                            </p>
+
+
+                            <p>
+                                Quantity:
+                                ${itemQuantity}
+                            </p>
+
+                        </div>
+
+
+                        <strong class="checkout-item-total">
+
+                            ${formatPrice(
+                                itemTotal
+                            )}
+
+                        </strong>
+
+                    `;
+
+
+                    checkoutItems.appendChild(
+                        element
+                    );
+
+                }
+            );
+
+
+            checkoutItems.setAttribute(
+                "aria-busy",
+                "false"
+            );
+
+        }
+
+
+        /* =================================================
+           PROFILE AUTOFILL
+        ====================================================== */
+
+        async function loadCustomerDetails() {
+
+            try {
+
+                if (
+                    !supabase ||
+                    !currentUser
+                ) {
+
+                    return;
+
+                }
+
+
+                const {
+                    data: profile,
+                    error
+                } =
+                    await supabase
+                        .from(
+                            "profiles"
+                        )
+                        .select(
+                            "full_name, phone"
+                        )
+                        .eq(
+                            "id",
+                            currentUser.id
+                        )
+                        .maybeSingle();
+
+
+                if (
+                    error
+                ) {
+
+                    console.warn(
+                        "THREADLY checkout profile could not be loaded:",
+                        error
+                    );
+
+                    return;
+
+                }
+
+
+                const fullNameInput =
+                    document.getElementById(
+                        "checkoutFullName"
+                    );
+
+
+                const phoneInput =
+                    document.getElementById(
+                        "checkoutPhone"
+                    );
+
+
+                const emailInput =
+                    document.getElementById(
+                        "checkoutEmail"
+                    );
+
+
+                if (
+                    fullNameInput &&
+                    !fullNameInput.value
+                ) {
+
+                    fullNameInput.value =
+                        profile?.full_name ||
+                        currentUser.user_metadata?.full_name ||
+                        "";
+
+                }
+
+
+                if (
+                    phoneInput &&
+                    !phoneInput.value
+                ) {
+
+                    phoneInput.value =
+                        profile?.phone ||
+                        currentUser.user_metadata?.phone ||
+                        "";
+
+                }
+
+
+                if (
+                    emailInput &&
+                    !emailInput.value
+                ) {
+
+                    emailInput.value =
+                        currentUser.email ||
+                        "";
+
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    "THREADLY checkout autofill failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           VALIDATION
+        ====================================================== */
+
+        function validateCheckout() {
+
+            if (
+                !checkoutForm
+            ) {
+
+                return false;
+
+            }
+
+
+            const requiredFields =
+                checkoutForm.querySelectorAll(
+                    "[required]"
+                );
+
+
+            let valid =
+                true;
+
+
+            requiredFields.forEach(
+                function (
+                    field
+                ) {
+
+                    field.classList.remove(
+                        "invalid"
+                    );
+
+
+                    if (
+                        !field.value.trim()
+                    ) {
+
+                        field.classList.add(
+                            "invalid"
+                        );
+
+                        valid =
+                            false;
+
+                    }
+
+                }
+            );
+
+
+            const email =
+                document.getElementById(
+                    "checkoutEmail"
+                );
+
+
+            if (
+                email &&
+                email.value.trim()
+            ) {
+
+                const emailPattern =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+                if (
+                    !emailPattern.test(
+                        email.value.trim()
+                    )
+                ) {
+
+                    email.classList.add(
+                        "invalid"
+                    );
+
+                    valid =
+                        false;
+
+                }
+
+            }
+
+
+            const phone =
+                document.getElementById(
+                    "checkoutPhone"
+                );
+
+
+            if (
+                phone &&
+                phone.value.trim()
+            ) {
+
+                const digits =
+                    phone.value.replace(
+                        /\D/g,
+                        ""
+                    );
+
+
+                if (
+                    digits.length <
+                    7
+                ) {
+
+                    phone.classList.add(
+                        "invalid"
+                    );
+
+                    valid =
+                        false;
+
+                }
+
+            }
+
+
+            if (
+                !valid
+            ) {
+
+                setMessage(
+                    "Please complete all required delivery details.",
+                    "error"
+                );
+
+
+                if (
+                    checkoutForm.reportValidity
+                ) {
+
+                    checkoutForm.reportValidity();
+
+                }
+
+            }
+
+
+            return valid;
+
+        }
+
+
+        /* =================================================
+           CREATE ORDER
+        ====================================================== */
+
+        async function createOrder() {
+
+            if (
+                !supabase
+            ) {
+
+                throw new Error(
+                    "Supabase is not connected."
+                );
+
+            }
+
+
+            if (
+                !currentUser
+            ) {
+
+                throw new Error(
+                    "Your session has expired. Please log in again."
+                );
+
+            }
+
+
+            const cart =
+                getCart();
+
+
+            if (
+                !cart.length
+            ) {
+
+                throw new Error(
+                    "Your cart is empty."
+                );
+
+            }
+
+
+            const fullName =
+                document
+                    .getElementById(
+                        "checkoutFullName"
+                    )
+                    .value
+                    .trim();
+
+
+            const phone =
+                document
+                    .getElementById(
+                        "checkoutPhone"
+                    )
+                    .value
+                    .trim();
+
+
+            const email =
+                document
+                    .getElementById(
+                        "checkoutEmail"
+                    )
+                    .value
+                    .trim();
+
+
+            const address =
+                document
+                    .getElementById(
+                        "checkoutAddress"
+                    )
+                    .value
+                    .trim();
+
+
+            const state =
+                document
+                    .getElementById(
+                        "checkoutState"
+                    )
+                    .value
+                    .trim();
+
+
+            const city =
+                document
+                    .getElementById(
+                        "checkoutCity"
+                    )
+                    .value
+                    .trim();
+
+
+            const deliveryMethod =
+                getSelectedDelivery();
+
+
+            let subtotal =
+                0;
+
+
+            const orderItems =
+                cart.map(
+                    function (
+                        item
+                    ) {
+
+                        const quantity =
+                            Math.max(
+                                1,
+                                Number(
+                                    item.quantity ||
+                                    1
+                                )
+                            );
+
+
+                        const price =
+                            Math.max(
+                                0,
+                                Number(
+                                    item.price ||
+                                    0
+                                )
+                            );
+
+
+                        subtotal +=
+                            price *
+                            quantity;
+
+
+                        return {
+
+                            id:
+                                item.id,
+
+                            name:
+                                item.name,
+
+                            price:
+                                price,
+
+                            image:
+                                item.image ||
+                                "",
+
+                            size:
+                                item.size ||
+                                "",
+
+                            quantity:
+                                quantity
+
+                        };
+
+                    }
+                );
+
+
+            const delivery =
+                deliveryMethod ===
+                "express"
+
+                    ? EXPRESS_DELIVERY
+
+                    : STANDARD_DELIVERY;
+
+
+            const total =
+                subtotal +
+                delivery;
+
+
+            const orderSize =
+                orderItems.length ===
+                1
+
+                    ? orderItems[0].size
+
+                    : "Multiple";
+
+
+            const orderNumber =
+                "THR-" +
+                Date.now()
+                    .toString()
+                    .slice(
+                        -8
+                    );
+
+
+            const now =
+                new Date()
+                    .toISOString();
+
+
+            const customer = {
+
+                fullName:
+                    fullName,
+
+                email:
+                    email,
+
+                phone:
+                    phone,
+
+                address:
+                    address,
+
+                state:
+                    state,
+
+                city:
+                    city
+
+            };
+
+
+            const orderData = {
+
+                user_id:
+                    currentUser.id,
+
+                order_number:
+                    orderNumber,
+
+                items:
+                    orderItems,
+
+                customer:
+                    customer,
+
+                subtotal:
+                    subtotal,
+
+                delivery_fee:
+                    delivery,
+
+                delivery_method:
+                    deliveryMethod,
+
+                total:
+                    total,
+
+                payment_status:
+                    "pending",
+
+                payment_method:
+                    "transfer",
+
+                delivery_status:
+                    "processing",
+
+                size:
+                    orderSize,
+
+                receipt_url:
+                    "",
+
+                estimated_delivery:
+                    deliveryMethod ===
+                    "express"
+
+                        ? "1-3 days"
+
+                        : "3-7 days",
+
+                created_at:
+                    now,
+
+                updated_at:
+                    now
+
+            };
+
+
+            const {
+                error:
+                    insertError
+            } =
+                await supabase
+                    .from(
+                        "orders"
+                    )
+                    .insert(
+                        orderData
+                    );
+
+
+            if (
+                insertError
+            ) {
+
+                console.error(
+                    "THREADLY order insert error:",
+                    insertError
+                );
+
+
+                throw new Error(
+                    insertError.message ||
+                    "The order could not be created."
+                );
+
+            }
+
+
+            const pendingOrder = {
+
+                orderId:
+                    orderNumber,
+
+                order_number:
+                    orderNumber,
+
+                user_id:
+                    currentUser.id,
+
+                items:
+                    orderItems,
+
+                customer:
+                    customer,
+
+                subtotal:
+                    subtotal,
+
+                deliveryFee:
+                    delivery,
+
+                delivery_method:
+                    deliveryMethod,
+
+                total:
+                    total,
+
+                paymentStatus:
+                    "pending",
+
+                paymentMethod:
+                    "transfer",
+
+                deliveryStatus:
+                    "processing",
+
+                size:
+                    orderSize,
+
+                estimatedDelivery:
+                    deliveryMethod ===
+                    "express"
+
+                        ? "1-3 days"
+
+                        : "3-7 days",
+
+                createdAt:
+                    now
+
+            };
+
+
+            localStorage.setItem(
+                "threadlyPendingOrder",
+                JSON.stringify(
+                    pendingOrder
+                )
+            );
+
+
+            localStorage.setItem(
+                "threadlyLastOrder",
+                JSON.stringify(
+                    pendingOrder
+                )
+            );
+
+
+            localStorage.setItem(
+                "threadlyOrderReference",
+                orderNumber
+            );
+
+
+            localStorage.setItem(
+                "threadlyPaymentAmount",
+                String(
+                    total
+                )
+            );
+
+
+            localStorage.setItem(
+                "threadlyPaymentMethod",
+                "transfer"
+            );
+
+
+            return pendingOrder;
+
+        }
+
+
+        /* =================================================
+           DELIVERY CHANGE
+        ====================================================== */
+
+        deliveryOptions.forEach(
+            function (
+                option
+            ) {
+
+                option.addEventListener(
+                    "change",
+                    function () {
+
+                        updateCheckoutTotal();
+
+                    }
+                );
 
             }
         );
 
 
-    }
-);
+        /* =================================================
+           FORM SUBMIT
+        ====================================================== */
+
+        if (
+            checkoutForm
+        ) {
+
+            checkoutForm.addEventListener(
+                "submit",
+                function (
+                    event
+                ) {
+
+                    event.preventDefault();
+
+
+                    if (
+                        continueToPayment
+                    ) {
+
+                        continueToPayment.click();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           CONTINUE TO PAYMENT
+        ====================================================== */
+
+        if (
+            continueToPayment
+        ) {
+
+            continueToPayment.addEventListener(
+                "click",
+                async function () {
+
+                    setMessage(
+                        ""
+                    );
+
+
+                    if (
+                        !validateCheckout()
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const cart =
+                        getCart();
+
+
+                    if (
+                        !cart.length
+                    ) {
+
+                        setMessage(
+                            "Your cart is empty.",
+                            "error"
+                        );
+
+
+                        return;
+
+                    }
+
+
+                    continueToPayment.disabled =
+                        true;
+
+
+                    continueToPayment.textContent =
+                        "PROCESSING...";
+
+
+                    setMessage(
+                        "Creating your order..."
+                    );
+
+
+                    try {
+
+                        const session =
+                            await getSession();
+
+
+                        if (
+                            !session ||
+                            !session.user
+                        ) {
+
+                            window.location.replace(
+                                LOGIN_PAGE +
+                                "?redirect=checkout.html"
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        currentUser =
+                            session.user;
+
+
+                        await createOrder();
+
+
+                        setMessage(
+                            "Order created. Redirecting to payment..."
+                        );
+
+
+                        window.location.href =
+                            "transfer.html";
+
+                    } catch (error) {
+
+                        console.error(
+                            "THREADLY checkout error:",
+                            error
+                        );
+
+
+                        setMessage(
+                            error.message ||
+                            "Something went wrong while creating your order.",
+                            "error"
+                        );
+
+
+                        continueToPayment.disabled =
+                            false;
+
+
+                        continueToPayment.textContent =
+                            "CONTINUE TO PAYMENT";
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           SKIP LINK
+        ====================================================== */
+
+        function initializeSkipLink() {
+
+            const skipLink =
+                document.querySelector(
+                    ".skip-link"
+                );
+
+
+            const mainContent =
+                document.getElementById(
+                    "main-content"
+                );
+
+
+            if (
+                skipLink &&
+                mainContent
+            ) {
+
+                skipLink.addEventListener(
+                    "click",
+                    function () {
+
+                        setTimeout(
+                            function () {
+
+                                mainContent.focus();
+
+                            },
+                            0
+                        );
+
+                    }
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           INITIALIZATION
+        ====================================================== */
+
+        async function initializeCheckoutPage() {
+
+            initializeTheme();
+
+
+            initializeMobileMenu();
+
+
+            protectHistory();
+
+
+            initializeSkipLink();
+
+
+            const authenticated =
+                await protectCheckout();
+
+
+            if (
+                !authenticated
+            ) {
+
+                return;
+
+            }
+
+
+            initializeAuthState();
+
+
+            const cart =
+                getCart();
+
+
+            if (
+                !cart.length
+            ) {
+
+                renderCheckoutItems();
+
+                updateCheckoutTotal();
+
+
+                if (
+                    continueToPayment
+                ) {
+
+                    continueToPayment.disabled =
+                        true;
+
+                }
+
+
+                setMessage(
+                    "Your cart is empty. Return to your cart to add products.",
+                    "error"
+                );
+
+
+                return;
+
+            }
+
+
+            renderCheckoutItems();
+
+
+            updateCheckoutTotal();
+
+
+            await loadCustomerDetails();
+
+
+            if (
+                continueToPayment
+            ) {
+
+                continueToPayment.disabled =
+                    false;
+
+            }
+
+        }
+
+
+        if (
+            document.readyState ===
+            "loading"
+        ) {
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                initializeCheckoutPage,
+                {
+                    once:
+                        true
+                }
+            );
+
+        } else {
+
+            initializeCheckoutPage();
+
+        }
+
+    })();
 
 </script>
-
 
 </body>
 

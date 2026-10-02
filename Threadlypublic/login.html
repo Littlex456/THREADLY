@@ -3,7 +3,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+
+<meta charset="UTF-8">
 
 <meta
     name="viewport"
@@ -12,7 +13,9 @@
 
 <title>Login | THREADLY</title>
 
+
 <script>
+
     (function () {
 
         const savedTheme =
@@ -33,181 +36,503 @@
             );
 
         if (shouldUseDark) {
+
             document.documentElement.classList.add(
                 "threadly-dark"
             );
+
         }
 
     })();
+
 </script>
+
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 
+
 <body>
-
-<header class="site-header">
-
-    <a href="index.html" class="logo-link">
-        <h1>THREADLY</h1>
-    </a>
-
-    <nav class="desktop-nav">
-
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-        <a href="shop.html">Men</a>
-        <a href="shop.html">Women</a>
-        <a href="shop.html">Shoes</a>
-        <a href="cart.html">Cart</a>
-
-    </nav>
-
-    <div class="header-actions">
-
-        <button
-            id="menuButton"
-            class="menu-button"
-            aria-label="Open menu"
-        >
-            ☰
-        </button>
-
-    </div>
-
-</header>
-
-
-<div id="mobileMenu" class="mobile-menu">
-
-    <div class="mobile-menu-header">
-
-        <h2>THREADLY</h2>
-
-        <button
-            id="closeMenu"
-            class="close-menu"
-            aria-label="Close menu"
-        >
-            ×
-        </button>
-
-    </div>
-
-    <nav class="mobile-nav">
-
-        <a href="login.html">Login</a>
-        <a href="signup.html">Create Account</a>
-
-        <div class="menu-divider"></div>
-
-        <a href="settings.html">Settings</a>
-        <a href="help.html">Help &amp; Support</a>
-
-    </nav>
-
-</div>
-
-<div id="menuOverlay" class="menu-overlay"></div>
 
 
 <main class="auth-page">
 
-    <div class="auth-container">
 
-        <div class="auth-heading">
+<div class="auth-container">
 
-            <p>WELCOME BACK</p>
 
-            <h2>Login</h2>
+    <div class="auth-heading">
 
-            <span>
-                Sign in to continue shopping with THREADLY.
-            </span>
+        <p>WELCOME BACK</p>
+
+        <h2>Login</h2>
+
+        <span>
+            Sign in to continue shopping with THREADLY.
+        </span>
+
+    </div>
+
+
+    <form id="loginForm">
+
+
+        <div class="form-group">
+
+            <label for="loginEmail">
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                id="loginEmail"
+                autocomplete="email"
+                placeholder="Enter your email"
+                required
+            >
 
         </div>
 
 
-        <form id="loginForm">
+        <div class="form-group">
 
-            <div class="form-group">
+            <label for="loginPassword">
+                Password
+            </label>
 
-                <label for="loginEmail">
-                    Email Address
-                </label>
+            <input
+                type="password"
+                id="loginPassword"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
+            >
 
-                <input
-                    type="email"
-                    id="loginEmail"
-                    autocomplete="email"
-                    placeholder="Enter your email"
-                    required
-                >
-
-            </div>
+        </div>
 
 
-            <div class="form-group">
+        <div class="forgot-password-area">
 
-                <label for="loginPassword">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="loginPassword"
-                    autocomplete="current-password"
-                    placeholder="Enter your password"
-                    required
-                >
-
-            </div>
-            <div class="forgot-password-area">
-
-              <a
+            <a
                 href="forgot-password.html"
                 class="forgot-password-link"
-               >
-                 Forgot Password?
-               </a>
-
-            </div>
-
-
-            <p
-                id="loginMessage"
-                class="auth-message"
-            ></p>
-
-
-            <button
-                type="submit"
-                class="auth-button"
             >
-                LOGIN
-            </button>
-
-        </form>
-
-
-        <p class="auth-switch">
-
-            Don't have an account?
-
-            <a href="signup.html">
-                Create one
+                Forgot Password?
             </a>
 
-        </p>
+        </div>
 
-    </div>
+
+        <p
+            id="loginMessage"
+            class="auth-message"
+        ></p>
+
+
+        <button
+            type="submit"
+            class="auth-button"
+        >
+            LOGIN
+        </button>
+
+    </form>
+
+
+    <p class="auth-switch">
+
+        Don't have an account?
+
+        <a href="signup.html">
+            Create one
+        </a>
+
+    </p>
+
+
+</div>
 
 </main>
 
 
-<script src="app.js"></script>
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-client.js"></script>
+
+
+<script>
+
+
+// =========================================
+// THREADLY THEME
+// =========================================
+
+(function () {
+
+    const THEME_KEY =
+        "threadlyTheme";
+
+
+    function getSystemTheme() {
+
+        return window.matchMedia &&
+            window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            ).matches
+            ? "dark"
+            : "light";
+
+    }
+
+
+    function applyTheme(theme) {
+
+        if (
+            theme !== "light" &&
+            theme !== "dark" &&
+            theme !== "system"
+        ) {
+
+            theme = "system";
+
+        }
+
+
+        const actualTheme =
+            theme === "system"
+                ? getSystemTheme()
+                : theme;
+
+
+        document.documentElement.classList.toggle(
+            "threadly-dark",
+            actualTheme === "dark"
+        );
+
+
+        document.body.classList.toggle(
+            "dark-mode",
+            actualTheme === "dark"
+        );
+
+
+        localStorage.setItem(
+            THEME_KEY,
+            theme
+        );
+
+    }
+
+
+    const savedTheme =
+        localStorage.getItem(THEME_KEY) ||
+        "system";
+
+
+    applyTheme(savedTheme);
+
+
+    if (window.matchMedia) {
+
+        const mediaQuery =
+            window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            );
+
+
+        mediaQuery.addEventListener(
+            "change",
+            function () {
+
+                const currentTheme =
+                    localStorage.getItem(
+                        THEME_KEY
+                    ) || "system";
+
+
+                if (
+                    currentTheme === "system"
+                ) {
+
+                    applyTheme("system");
+
+                }
+
+            }
+        );
+
+    }
+
+
+    window.threadlyApplyTheme =
+        applyTheme;
+
+})();
+
+
+
+// =========================================
+// LOGIN
+// =========================================
+
+(function () {
+
+    const loginForm =
+        document.getElementById(
+            "loginForm"
+        );
+
+
+    if (!loginForm) {
+        return;
+    }
+
+
+    const loginEmail =
+        document.getElementById(
+            "loginEmail"
+        );
+
+
+    const loginPassword =
+        document.getElementById(
+            "loginPassword"
+        );
+
+
+    const loginMessage =
+        document.getElementById(
+            "loginMessage"
+        );
+
+
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const email =
+                loginEmail?.value
+                    .trim()
+                    .toLowerCase() || "";
+
+
+            const password =
+                loginPassword?.value || "";
+
+
+            loginMessage.textContent =
+                "";
+
+
+            if (!email || !password) {
+
+                loginMessage.textContent =
+                    "Please enter your email and password.";
+
+                return;
+
+            }
+
+
+            const supabase =
+                window.threadlySupabase;
+
+
+            if (!supabase) {
+
+                console.error(
+                    "THREADLY Supabase client is unavailable."
+                );
+
+
+                loginMessage.textContent =
+                    "Authentication service is unavailable.";
+
+                return;
+
+            }
+
+
+            loginMessage.textContent =
+                "Signing you in...";
+
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabase.auth.signInWithPassword({
+
+                        email: email,
+
+                        password: password
+
+                    });
+
+
+                if (error) {
+
+                    console.error(
+                        "THREADLY login error:",
+                        error
+                    );
+
+
+                    loginMessage.textContent =
+                        "Incorrect email or password.";
+
+                    return;
+
+                }
+
+
+                if (
+                    !data.session ||
+                    !data.user
+                ) {
+
+                    loginMessage.textContent =
+                        "Login could not be completed.";
+
+                    return;
+
+                }
+
+
+                const metadata =
+                    data.user.user_metadata ||
+                    {};
+
+
+                localStorage.setItem(
+                    "threadlyUser",
+                    JSON.stringify({
+
+                        name:
+                            metadata.full_name ||
+                            "",
+
+                        email:
+                            data.user.email ||
+                            email,
+
+                        phone:
+                            metadata.phone ||
+                            "",
+
+                        username:
+                            metadata.username ||
+                            ""
+
+                    })
+                );
+
+
+                localStorage.setItem(
+                    "threadlyLoggedIn",
+                    "true"
+                );
+
+
+                const {
+                    data: profile,
+                    error: profileError
+                } =
+                    await supabase
+                        .from("profiles")
+                        .select("role")
+                        .eq(
+                            "id",
+                            data.user.id
+                        )
+                        .single();
+
+
+                if (profileError) {
+
+                    console.error(
+                        "THREADLY profile loading error:",
+                        profileError
+                    );
+
+
+                    loginMessage.textContent =
+                        "Your account profile could not be loaded.";
+
+                    return;
+
+                }
+
+
+                if (
+                    profile.role === "vendor" ||
+                    profile.role === "admin"
+                ) {
+
+                    window.location.href =
+                        "vendor-dashboard.html";
+
+                    return;
+
+                }
+
+
+                const params =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+
+                const redirect =
+                    params.get("redirect");
+
+
+                if (redirect) {
+
+                    window.location.href =
+                        decodeURIComponent(
+                            redirect
+                        );
+
+                } else {
+
+                    window.location.href =
+                        "index.html";
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "THREADLY login failed:",
+                    error
+                );
+
+
+                loginMessage.textContent =
+                    "Authentication service is unavailable.";
+
+            }
+
+        }
+    );
+
+})();
+
+</script>
+
 
 </body>
 
 </html>
+
